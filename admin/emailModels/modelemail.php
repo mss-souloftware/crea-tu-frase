@@ -1,10 +1,10 @@
 <?php
 /**
  * 
- * author: ricardo perez
+ * author: M. Sufyan Shaikh
  * description: process form and send info to cookie
  * @package Chocoletras
- * @subpackage Ricardo Perez
+ * @subpackage M. Sufyan Shaikh
  * 
  * 
 */ 
@@ -31,7 +31,7 @@ function typeproceso(){
     $email .= '<li style="margin-bottom:5px;"><a style="color: #e3d5d5; text-decoration: none;" href="https://chocoletra.com/about/">Quienes somos</a></li>';
     $email .= '<li style="margin-bottom:5px;"><a style="color: #e3d5d5; text-decoration: none;" href="https://chocoletra.com/contact-us/">Contacto</a></li>';
     $email .= '</ul>';
-    // $email .= '<div style="background: rgb(63, 61, 61);"><a style="color: gold; display: block; font-size: 10px; padding: 10px; text-decoration: none;" href="mailto:infoarte247@gmail.com">Design by: Lic. Ricardo Perez</a></div>';
+    // $email .= '<div style="background: rgb(63, 61, 61);"><a style="color: gold; display: block; font-size: 10px; padding: 10px; text-decoration: none;" href="mailto:infoarte247@gmail.com">Design by: Lic. M. Sufyan Shaikh</a></div>';
     $email .= '</footer>';
     $email .= '</div>';
 
@@ -56,7 +56,7 @@ function typeEnviado(){
     $email .= '<li style="margin-bottom:5px;"><a style="color: #e3d5d5; text-decoration: none;" href="https://chocoletra.com/about/">Quienes somos</a></li>';
     $email .= '<li style="margin-bottom:5px;"><a style="color: #e3d5d5; text-decoration: none;" href="https://chocoletra.com/contact-us/">Contacto</a></li>';
     $email .= '</ul>';
-    // $email .= '<div style="background: rgb(63, 61, 61);"><a style="color: gold; display: block; font-size: 10px; padding: 10px; text-decoration: none;" href="mailto:infoarte247@gmail.com">Design by: Lic. Ricardo Perez</a></div>';
+    // $email .= '<div style="background: rgb(63, 61, 61);"><a style="color: gold; display: block; font-size: 10px; padding: 10px; text-decoration: none;" href="mailto:infoarte247@gmail.com">Design by: Lic. M. Sufyan Shaikh</a></div>';
     $email .= '</footer>';
     $email .= '</div>';
 

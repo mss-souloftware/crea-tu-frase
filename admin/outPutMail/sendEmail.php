@@ -2,10 +2,10 @@
 
 /**
  * 
- * author: ricardo perez
+ * author: M. Sufyan Shaikh
  * description: process form and send info to cookie
  * @package Chocoletras
- * @subpackage Ricardo Perez
+ * @subpackage M. Sufyan Shaikh
  * 
  * 
  */

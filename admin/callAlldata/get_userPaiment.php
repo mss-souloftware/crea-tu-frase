@@ -2,7 +2,7 @@
 /**
  * 
  * @package Chocoletras
- * @subpackage Ricardo Perez
+ * @subpackage M. Sufyan Shaikh
  * @conected to class ./pagination/makePagination
 */ 
 

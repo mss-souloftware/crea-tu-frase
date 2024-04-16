@@ -3,7 +3,7 @@
 /**
  * 
  * @package Chocoletras
- * @subpackage Ricardo Perez
+ * @subpackage M. Sufyan Shaikh
  * 
  */
 
