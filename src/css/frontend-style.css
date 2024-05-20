@@ -1,14 +1,8 @@
-* {
-    margin: 0;
-    padding: 0
-}
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-html {
-    height: 100%
-}
 
-p {
-    color: grey
+.ctf_plugin_main * {
+    font-family: "Lato", sans-serif;
 }
 
 #heading {
@@ -17,13 +11,12 @@ p {
     font-weight: normal
 }
 
-#msform {
+#ctf_form {
     text-align: center;
     position: relative;
-    margin-top: 20px
 }
 
-#msform fieldset {
+#ctf_form fieldset {
     background: white;
     border: 0 none;
     border-radius: 0.5rem;
@@ -38,16 +31,16 @@ p {
     text-align: left
 }
 
-#msform fieldset:not(:first-of-type) {
+#ctf_form fieldset:not(:first-of-type) {
     display: none
 }
 
-#msform input,
-#msform textarea {
+#ctf_form input,
+#ctf_form textarea {
     padding: 8px 15px 8px 15px;
     border: 1px solid #ccc;
     border-radius: 0px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     margin-top: 2px;
     width: 100%;
     box-sizing: border-box;
@@ -58,8 +51,8 @@ p {
     letter-spacing: 1px
 }
 
-#msform input:focus,
-#msform textarea:focus {
+#ctf_form input:focus,
+#ctf_form textarea:focus {
     -moz-box-shadow: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
@@ -67,25 +60,25 @@ p {
     outline-width: 0
 }
 
-#msform .action-button {
-    width: 100px;
-    background: #673AB7;
+#ctf_form .action-button {
+    width: 100%;
+    background: #000;
     font-weight: bold;
     color: white;
     border: 0 none;
-    border-radius: 0px;
     cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 0px 10px 5px;
-    float: right
+    padding: 20px 15px;
+    margin: 20px 0px 10px 5px;
+    float: right;
+    border-radius: 8px;
 }
 
-#msform .action-button:hover,
-#msform .action-button:focus {
-    background-color: #311B92
+#ctf_form .action-button:hover,
+#ctf_form .action-button:focus {
+    background-color: #DF0500
 }
 
-#msform .action-button-previous {
+#ctf_form .action-button-previous {
     width: 100px;
     background: #616161;
     font-weight: bold;
@@ -98,8 +91,8 @@ p {
     float: right
 }
 
-#msform .action-button-previous:hover,
-#msform .action-button-previous:focus {
+#ctf_form .action-button-previous:hover,
+#ctf_form .action-button-previous:focus {
     background-color: #000000
 }
 
@@ -109,12 +102,17 @@ p {
     position: relative
 }
 
+
 .fs-title {
     font-size: 25px;
     color: #673AB7;
     margin-bottom: 15px;
     font-weight: normal;
     text-align: left
+}
+
+#ctf_form .fs-title {
+    font-size: 24px;
 }
 
 .purple-text {
@@ -138,11 +136,12 @@ p {
 #progressbar {
     margin-bottom: 30px;
     overflow: hidden;
-    color: lightgrey
+    color: lightgrey;
+    padding: 0;
 }
 
 #progressbar .active {
-    color: #673AB7
+    color: #000;
 }
 
 #progressbar li {
@@ -153,6 +152,8 @@ p {
     position: relative;
     font-weight: 400
 }
+
+/*
 
 #progressbar #account:before {
     font-family: FontAwesome;
@@ -174,14 +175,16 @@ p {
     content: "\f00c"
 }
 
+*/
+
 #progressbar li:before {
-    width: 50px;
-    height: 50px;
+    width: 0px;
+    height: 0px;
     line-height: 45px;
     display: block;
     font-size: 20px;
     color: #ffffff;
-    background: lightgray;
+    background: #656565;
     border-radius: 50%;
     margin: 0 auto 10px auto;
     padding: 2px
@@ -191,7 +194,7 @@ p {
     content: '';
     width: 100%;
     height: 2px;
-    background: lightgray;
+    background: #656565;
     position: absolute;
     left: 0;
     top: 25px;
@@ -200,7 +203,7 @@ p {
 
 #progressbar li.active:before,
 #progressbar li.active:after {
-    background: #673AB7
+    background: #000;
 }
 
 .progress {
@@ -208,7 +211,7 @@ p {
 }
 
 .progress-bar {
-    background-color: #673AB7
+    background-color: #000;
 }
 
 .fit-image {
@@ -217,11 +220,147 @@ p {
 }
 
 div#typewriter {
-    display:flex;
-    flex-flow:wrap;
+    display: flex;
+    flex-flow: wrap;
+    background: #F7F7F7;
+    padding: 20px;
+    border-radius: 8px;
+    justify-content: center;
 }
 
-div#typewriter img{
-    max-width:100px;
-    margin:5px;
+div#typewriter img {
+    max-width: 80px;
+    margin: 5px;
+}
+
+
+#ctf_form {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 4px 4px 48px rgba(28, 51, 64, .1);
+}
+
+#ctf_form input {
+    background: #fff;
+    padding: 25px 15px;
+    border-radius: 5px;
+    color: #000;
+    font-size: 16px;
+    font-family: 'Lato';
+}
+
+#ctf_form input:focus {
+    border: 1px solid #000 !important;
+}
+
+#addNewFrase {
+    margin-left: auto;
+    background: #585858;
+    max-width: fit-content;
+    padding: 5px 15px 5px 10px;
+    border-radius: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s linear;
+}
+
+#addNewFrase:hover {
+    background: #000;
+}
+
+#addNewFrase img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+#ctf_form select {
+    height: 52px;
+    border-radius: 5px;
+    color: #000;
+    font-size: 16px;
+    font-family: 'Lato';
+    margin: 20px 0;
+}
+
+#ctf_form .expressShipping {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+#ctf_form .expressShipping .expressBox {
+    display: flex;
+    align-items: center;
+    width: 75%;
+}
+
+#ctf_form .expressShipping .expressBox input {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    margin-right: 10px;
+}
+
+#ctf_form .expressShipping .expressBox b {
+    font-size: 20px;
+}
+
+#ctf_form .expressShipping .expressBox label {
+    border: 0px !important;
+}
+
+#ctf_form .expressShipping .expressIcon {
+    width: 25%;
+}
+
+#ctf_form textarea {
+    background: #fff;
+    border: 1px solid #CCCCCC;
+    border-radius: 8px;
+    height: 120px;
+    font-family: 'Lato', 'sans-serif';
+}
+
+#ctf_form textarea:focus {
+    border: 1px solid #000;
+}
+
+.standardShipping {
+    margin-top: 20px;
+}
+
+.standardShipping h4,
+.standardShipping p {
+    margin-bottom: 10px;
+}
+
+#ctf_form .twiceField {
+    display: flex;
+    gap: 0 15px;
+}
+
+.termCondition {
+    display: flex;
+    align-items: center;
+}
+
+.termCondition input {
+    max-width: 20px;
+    height: 20px;
+    margin: 0 10px 0 0 !important;
+}
+
+.termCondition label {
+    margin: 0 !important;
+    text-align: left;
+    font-size: 16px !important;
+    border: none;
+}
+
+.termCondition label a {
+    color: #FF0000;
 }

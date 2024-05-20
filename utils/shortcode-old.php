@@ -2,7 +2,7 @@
 
 /**
  * 
- * @package Chocoletras
+ * @package Crea Tu Frase
  * @subpackage M. Sufyan Shaikh
  * 
  */
@@ -46,7 +46,7 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
         console.log("Payment True");
     </script>
     <?php
-    require_once('finishprocess/finishProcessStripe.php');
+    require_once ('finishprocess/finishProcessStripe.php');
     $finishProcessStripeResult = finishProcessTripe();
     if (
         $finishProcessStripeResult->payment_status == "paid" &&
@@ -400,16 +400,16 @@ function chocoletras_shortCode()
                     </div>
 
                     <?php /*
-                 <div class="chocoletrasPlg__wrapperCode-payment-buttons-right">
+                <div class="chocoletrasPlg__wrapperCode-payment-buttons-right">
 
 
 
-                     <Button id="payment_strype"><span>
-                             <?php echo _e('Pagar con Tarjeta '); ?>
-                         </span><img src="<?php echo plugins_url('../img/card_png.png', __FILE__); ?>"
-                             alt="<?php echo _e('Chocoletras'); ?>"></Button>
+                    <Button id="payment_strype"><span>
+                            <?php echo _e('Pagar con Tarjeta '); ?>
+                        </span><img src="<?php echo plugins_url('../img/card_png.png', __FILE__); ?>"
+                            alt="<?php echo _e('Chocoletras'); ?>"></Button>
 
-                 </div>
+                </div>
 */ ?>
                     <div class="chocoletrasPlg__wrapperCode-payment-buttons-left">
                         <?php

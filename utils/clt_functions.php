@@ -47,9 +47,11 @@ function chocoletrasInsertScripts()
   wp_enqueue_style('pluginStylesClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
 
   wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
+  wp_enqueue_style('faltpickrForPlugin', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', array(), false);
 
   wp_enqueue_style('styleForFrontend', plugins_url('../src/css/frontend-style.css', __FILE__), array(), false);
 
+  wp_enqueue_script('flatpcikrScriptForFrontend', 'https://cdn.jsdelivr.net/npm/flatpickr', array(), '1.0.0', true);
   wp_enqueue_script('scriptForFrontend', plugins_url('../src/script.js', __FILE__), array(), '1.0.0', true);
 
   wp_localize_script('chocoletrasScript', 'ajax_variables', array(

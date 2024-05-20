@@ -4,7 +4,7 @@
  * 
  * author: M. Sufyan Shaikh
  * description: process form and send info to cookie
- * @package Chocoletras
+ * @package Crea Tu Frase
  * @subpackage M. Sufyan Shaikh
  * 
  * 

@@ -2,7 +2,7 @@
 
 /**
  * 
- * @package Chocoletras
+ * @package Crea Tu Frase
  * @subpackage M. Sufyan Shaikh
  * 
  */
