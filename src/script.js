@@ -26,23 +26,46 @@
             const $typewriter = $('#typewriter');
             $typewriter.empty(); // Clear previous images
 
-            for (const char of text) {
-                const keyCode = char.toUpperCase().charCodeAt(0);
-                const imgFileName = keyMap[keyCode];
+            const words = text.split('♥');
 
-                if (imgFileName) {
-                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${imgFileName}`;
+            words.forEach((word, index) => {
+                const $wordDiv = $('<div>').addClass('word');
+                for (const char of word) {
+                    let keyCode;
+                    if (char === '♥') {
+                        keyCode = 32; // Treat '♥' as a space
+                    } else {
+                        keyCode = char.toUpperCase().charCodeAt(0);
+                    }
+
+                    const imgFileName = keyMap[keyCode];
+
+                    if (imgFileName) {
+                        const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${imgFileName}`;
+                        const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
+                        $wordDiv.append($img);
+                    }
+                }
+                $typewriter.append($wordDiv);
+                if (index < words.length - 1) {
+                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${keyMap[32]}`;
                     const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
                     $typewriter.append($img);
                 }
-            }
+            });
         }
 
         $('#getText').on('input', function () {
-            const inputText = $(this).val();
+            let inputText = $(this).val();
+            inputText = inputText.replace(/ /g, '♥'); // Replace spaces with '♥'
             generateImages(inputText);
         });
+
+        $('#getText').on('keydown', function (event) {
+            console.log('Key code:', event.keyCode);
+        });
     });
+
 
     $(document).ready(function () {
 

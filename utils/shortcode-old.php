@@ -210,12 +210,14 @@ function chocoletras_shortCode()
                     </ul>
 
                     <ul class="chocoletrasPlg__wrapperCode-firstHead-wrapper-ulWrapperFirst-wrapperFrase">
-                        <li class="chocoletrasPlg__wrapperCode-firstHead-wrapper-firstHead-right-total"><span>
+                        <li class="chocoletrasPlg__wrapperCode-firstHead-wrapper-firstHead-right-total">
+                            <span>
                                 <?php echo _e('Total: ') ?>
                                 <b id="<?php echo _e('counter') ?>">
                                     <?php echo get_option('gastoMinimo') + get_option('precEnvio'); ?>
                                 </b>€
-                            </span></li>
+                            </span>
+                        </li>
                         <li>
                             <form><input id="<?php echo _e('getText') ?>" type="text"
                                     placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required></form>
@@ -400,16 +402,16 @@ function chocoletras_shortCode()
                     </div>
 
                     <?php /*
-                <div class="chocoletrasPlg__wrapperCode-payment-buttons-right">
+               <div class="chocoletrasPlg__wrapperCode-payment-buttons-right">
 
 
 
-                    <Button id="payment_strype"><span>
-                            <?php echo _e('Pagar con Tarjeta '); ?>
-                        </span><img src="<?php echo plugins_url('../img/card_png.png', __FILE__); ?>"
-                            alt="<?php echo _e('Chocoletras'); ?>"></Button>
+                   <Button id="payment_strype"><span>
+                           <?php echo _e('Pagar con Tarjeta '); ?>
+                       </span><img src="<?php echo plugins_url('../img/card_png.png', __FILE__); ?>"
+                           alt="<?php echo _e('Chocoletras'); ?>"></Button>
 
-                </div>
+               </div>
 */ ?>
                     <div class="chocoletrasPlg__wrapperCode-payment-buttons-left">
                         <?php

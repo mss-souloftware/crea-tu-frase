@@ -62,9 +62,9 @@
 
 #ctf_form .action-button {
     width: 100%;
-    background: #000;
+    background: #FAE9A2;
     font-weight: bold;
-    color: white;
+    color: #000;
     border: 0 none;
     cursor: pointer;
     padding: 20px 15px;
@@ -75,7 +75,9 @@
 
 #ctf_form .action-button:hover,
 #ctf_form .action-button:focus {
-    background-color: #DF0500
+    background-color: #000;
+    color: #fff;
+    outline: none !important;
 }
 
 #ctf_form .action-button-previous {
@@ -219,20 +221,24 @@
     object-fit: cover
 }
 
-div#typewriter {
+#typewriter {
     display: flex;
-    flex-flow: wrap;
+    flex-wrap: wrap;
     background: #F7F7F7;
     padding: 20px;
     border-radius: 8px;
     justify-content: center;
 }
 
-div#typewriter img {
+.word {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+#typewriter img {
     max-width: 80px;
     margin: 5px;
 }
-
 
 #ctf_form {
     background: #fff;
@@ -363,4 +369,49 @@ div#typewriter img {
 
 .termCondition label a {
     color: #FF0000;
+}
+
+#ctf_form #counter {
+    color: #000;
+}
+
+#ctf_form select#letras {
+    margin-top: 15px !important;
+}
+
+.swithcerBtnGroup {
+    display: flex;
+    align-items: center;
+}
+
+.swithcerBtnGroup .action-button-previous {
+    position: relative;
+    background: #000 !important;
+    width: 60px !important;
+    height: 50px !important;
+    margin: 10px 5px 0 0 !important;
+    border-radius: 50px !important;
+    padding: 0 !important;
+    border: 2px solid #000 !important;
+}
+
+.swithcerBtnGroup .action-button-previous:hover {
+    background: transparent !important;
+}
+
+.swithcerBtnGroup .action-button-previous:hover:before {
+    border-top: 3px solid #000;
+    border-left: 3px solid #000;
+}
+
+.swithcerBtnGroup .action-button-previous:before {
+    position: absolute;
+    content: "";
+    width: 17px;
+    height: 17px;
+    border-top: 3px solid #fff;
+    border-left: 3px solid #fff;
+    top: 15px;
+    left: 18px;
+    transform: rotate(310deg);
 }
