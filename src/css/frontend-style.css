@@ -31,6 +31,10 @@
     text-align: left
 }
 
+.form-card .steps #actual {
+    display: none;
+}
+
 #ctf_form fieldset:not(:first-of-type) {
     display: none
 }
@@ -230,7 +234,11 @@
     justify-content: center;
 }
 
-.word {
+#typewriter .dummyImg {
+    max-width: 100%;
+}
+
+#typewriter .word {
     display: inline-block;
     white-space: nowrap;
 }
@@ -414,4 +422,93 @@
     top: 15px;
     left: 18px;
     transform: rotate(310deg);
+}
+
+.ordersPanel .orderDetails {
+    position: relative;
+    display: flex;
+    align-items: self-start;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.ordersPanel .orderDetails .orderThumb {
+    width: 30%;
+    margin-right: 10px;
+}
+
+.ordersPanel .orderDetails .orderData {
+    width: 70%;
+}
+
+.ordersPanel .orderDetails .orderData .pinsPanel {
+    display: flex;
+    gap: 0 5px;
+}
+
+.ordersPanel .orderDetails .orderData p {
+    font-size: 14px;
+    margin: 0 0 6px 0;
+    color: #616161;
+    line-height: 1;
+}
+
+.ordersPanel .orderDetails .orderData .deliveryDate {
+    background: #a1a1a1;
+    max-width: fit-content;
+    line-height: 1;
+    padding: 5px 8px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.ordersPanel .orderDetails .closeBtn {
+    position: absolute;
+    right: -13px;
+    top: -12px;
+    cursor: pointer;
+}
+
+.paymentPanel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.paymentPanel .paymentCard {
+    position: relative;
+    width: calc(33.33% - 20px);
+    margin: 10px;
+    border: 1px solid #D1D5DB;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.paymentPanel .paymentCard .paymentData {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.paymentPanel .paymentCard .paymentIcon {
+    width: 100%;
+    height: 40px;
+}
+
+.paymentPanel .paymentCard .paymentIcon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.paymentPanel .paymentCard .selected {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    background: #fff;
+    line-height: 1;
 }
