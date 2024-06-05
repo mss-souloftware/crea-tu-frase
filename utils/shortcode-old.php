@@ -138,7 +138,7 @@ function chocoletras_shortCode()
             <img src="<?php echo plugins_url('../img/logospiner.gif', __FILE__); ?>" alt="<?php echo _e('Chocoletras'); ?>">
             <div class="chocoletrasPlg-spiner-ring">
             </div>
-        </div>
+        </div>  
         <div class="chocoletrasPlg__wrapperCode">
             <div class="chocoletrasPlg__wrapperCode-firstHead <?php
             if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {

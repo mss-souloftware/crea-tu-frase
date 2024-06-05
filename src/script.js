@@ -57,7 +57,7 @@
 
         $('#getText').on('input', function () {
             let inputText = $(this).val();
-            inputText = inputText.replace(/ /g, '♥'); // Replace spaces with '♥'
+            inputText = inputText.replace(/ /g, '♥');
             generateImages(inputText);
         });
 
@@ -74,6 +74,10 @@
                 console.log($(this).val());
             }
         });
+
+        $("#continuarBTN").on('click', function () {
+            $('.priceCounter').text($("#counter").text());
+        })
     });
 
 
