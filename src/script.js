@@ -64,6 +64,16 @@
         $('#getText').on('keydown', function (event) {
             console.log('Key code:', event.keyCode);
         });
+
+        $("#ctf_form #getText").on("keyup", function () {
+            if ($.trim($(this).val()) !== "") {
+                $("#ctf_form .action-button").removeAttr('disabled');
+                console.log($(this).val());
+            } else {
+                $("#ctf_form .action-button").prop('disabled', true);
+                console.log($(this).val());
+            }
+        });
     });
 
 
@@ -81,8 +91,8 @@
 
         $(".next").click(function () {
 
-            current_fs = $(this).parent();
-            next_fs = $(this).parent().next();
+            current_fs = $(this).parents('fieldset');
+            next_fs = $(this).parents('fieldset').next();
 
             //Add Class Active
             $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -108,8 +118,8 @@
 
         $(".previous").click(function () {
 
-            current_fs = $(this).parent();
-            previous_fs = $(this).parent().prev();
+            current_fs = $(this).parents('fieldset');
+            previous_fs = $(this).parents('fieldset').prev();
 
             //Remove class active
             $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
