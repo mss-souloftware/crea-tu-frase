@@ -79,10 +79,24 @@
             $('.priceCounter').text($("#counter").text());
         });
 
+        // Function to update the concatenated text
+        function updateGetText() {
+            let concatenatedText = '';
+            $('.fraseInput').each(function () {
+                concatenatedText += $(this).val();
+            });
+            $('#getText').val(concatenatedText);
+        }
 
         $("#addNewFrase").click(function () {
-            $('.fraseWrapper').append(`<div class="frasePanel"><input id="getText" type="text" placeholder="Escriba su frase aquí.." required=""></div>`);
-        })
+            $('.fraseWrapper').append('<div class="frasePanel"><input class="fraseInput" type="text" placeholder="Escriba su frase aquí.." required=""></div>');
+            updateGetText();
+        });
+
+        // Event listener for any changes in the appended inputs
+        $(document).on('keyup', '.fraseInput', function () {
+            updateGetText();
+        });
 
 
     });

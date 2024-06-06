@@ -136,10 +136,12 @@ function chocoletras_shortCode()
                                     </select>
                                     <div class="fraseWrapper">
                                         <div class="frasePanel">
-                                            <input id="<?php echo _e('getText') ?>" type="text"
+                                        <input class="<?php echo _e('fraseInput') ?>" type="text"
                                                 placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
                                         </div>
                                     </div>
+                                    <input id="<?php echo _e('getText') ?>" type="text"
+                                                placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
                                     <div id="addNewFrase">
                                         <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>"> Add New
                                     </div>
