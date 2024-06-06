@@ -134,8 +134,12 @@ function chocoletras_shortCode()
                                         <option selected value="Corazón" class="attached enabled">Corazón</option>
                                         <option value="Estrella" class="attached enabled">Estrella</option>
                                     </select>
-                                    <input id="<?php echo _e('getText') ?>" type="text"
-                                        placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
+                                    <div class="fraseWrapper">
+                                        <div class="frasePanel">
+                                            <input id="<?php echo _e('getText') ?>" type="text"
+                                                placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
+                                        </div>
+                                    </div>
                                     <div id="addNewFrase">
                                         <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>"> Add New
                                     </div>
@@ -191,21 +195,21 @@ function chocoletras_shortCode()
                                         <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
                                     </div>
                                     <?php /*
-                                      $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                                      $getCookieOUILast = explode("_", $getCookieOUI);
-                                      $lastCookieVal = end($getCookieOUILast);
-                                      function uniqueOrderNum(int $lengthURN = 10): string
-                                      {
-                                          $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                                          $randomOrderNum = '';
-                                          for ($i = 0; $i < $lengthURN; $i++) {
-                                              $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
-                                          }
-                                          return $randomOrderNum;
-                                      }
+                                    $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                                    $getCookieOUILast = explode("_", $getCookieOUI);
+                                    $lastCookieVal = end($getCookieOUILast);
+                                    function uniqueOrderNum(int $lengthURN = 10): string
+                                    {
+                                        $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                        $randomOrderNum = '';
+                                        for ($i = 0; $i < $lengthURN; $i++) {
+                                            $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
+                                        }
+                                        return $randomOrderNum;
+                                    }
 
-                                      $finalUON = uniqueOrderNum();
-                                      */ ?>
+                                    $finalUON = uniqueOrderNum();
+                                    */ ?>
                                     <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
                                         ?>" placeholder="Unique Order ID">
                                 </div>

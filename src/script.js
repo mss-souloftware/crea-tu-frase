@@ -77,7 +77,14 @@
 
         $("#continuarBTN").on('click', function () {
             $('.priceCounter').text($("#counter").text());
+        });
+
+
+        $("#addNewFrase").click(function () {
+            $('.fraseWrapper').append(`<div class="frasePanel"><input id="getText" type="text" placeholder="Escriba su frase aquí.." required=""></div>`);
         })
+
+
     });
 
 
