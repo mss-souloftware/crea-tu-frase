@@ -76,6 +76,7 @@ function chocoletras_shortCode()
 
                 <div class="col-md-7 col-12 text-center mb-2">
                     <div id="typewriter">
+                        <div class="typewriterInner"></div>
                         <img class="dummyImg" src="<?php echo plugin_dir_url(__DIR__) . "img/orders/dummy.png"; ?>" alt="">
                     </div>
                 </div>
@@ -134,17 +135,16 @@ function chocoletras_shortCode()
                                         <option selected value="Corazón" class="attached enabled">Corazón</option>
                                         <option value="Estrella" class="attached enabled">Estrella</option>
                                     </select>
+
                                     <div class="fraseWrapper">
                                         <div class="frasePanel">
-                                        <input class="<?php echo _e('fraseInput') ?>" type="text"
+                                            <input id="<?php echo _e('getText') ?>" type="text"
                                                 placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
                                         </div>
                                     </div>
-                                    <input id="<?php echo _e('getText') ?>" type="text"
-                                                placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
-                                    <div id="addNewFrase">
+                                    <button id="addNewFrase" disabled>
                                         <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>"> Add New
-                                    </div>
+                                    </button>
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
                                     class="next action-button" disabled>Continuar</button>
                             </fieldset <?php
@@ -197,21 +197,21 @@ function chocoletras_shortCode()
                                         <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
                                     </div>
                                     <?php /*
-                                    $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                                    $getCookieOUILast = explode("_", $getCookieOUI);
-                                    $lastCookieVal = end($getCookieOUILast);
-                                    function uniqueOrderNum(int $lengthURN = 10): string
-                                    {
-                                        $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                                        $randomOrderNum = '';
-                                        for ($i = 0; $i < $lengthURN; $i++) {
-                                            $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
-                                        }
-                                        return $randomOrderNum;
+                                $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                                $getCookieOUILast = explode("_", $getCookieOUI);
+                                $lastCookieVal = end($getCookieOUILast);
+                                function uniqueOrderNum(int $lengthURN = 10): string
+                                {
+                                    $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                    $randomOrderNum = '';
+                                    for ($i = 0; $i < $lengthURN; $i++) {
+                                        $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
                                     }
+                                    return $randomOrderNum;
+                                }
 
-                                    $finalUON = uniqueOrderNum();
-                                    */ ?>
+                                $finalUON = uniqueOrderNum();
+                                */ ?>
                                     <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
                                         ?>" placeholder="Unique Order ID">
                                 </div>
@@ -258,11 +258,14 @@ function chocoletras_shortCode()
                                     </div>
                                     <div class="ordersPanel">
                                         <?php
+
                                         $getOrderData = get_option($_COOKIE['chocol_cookie']);
                                         $orderData = explode("_", $getOrderData);
+                                        /*
                                         echo '<pre>';
                                         echo print_r($orderData);
                                         echo '</pre>';
+                                        */
                                         ?>
                                         <div class="orderDetails">
                                             <div class="closeBtn" id="cancelProcessPaiment">

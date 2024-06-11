@@ -1,5 +1,6 @@
 (function ($) {
 
+
     $(document).ready(function () {
         // Mapping of key codes to corresponding image file names
         const keyMap = {
@@ -22,9 +23,8 @@
             90: 'z.png'
         };
 
-        function generateImages(text) {
-            const $typewriter = $('#typewriter');
-            $typewriter.empty(); // Clear previous images
+        function generateImages(text, $typewriterInner) {
+            $typewriterInner.empty(); // Clear previous images
 
             const words = text.split('♥');
 
@@ -46,32 +46,36 @@
                         $wordDiv.append($img);
                     }
                 }
-                $typewriter.append($wordDiv);
+                $typewriterInner.append($wordDiv);
                 if (index < words.length - 1) {
                     const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${keyMap[32]}`;
                     const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
-                    $typewriter.append($img);
+                    $typewriterInner.append($img);
                 }
             });
         }
 
-        $('#getText').on('input', function () {
-            let inputText = $(this).val();
-            inputText = inputText.replace(/ /g, '♥');
-            generateImages(inputText);
-        });
+        function attachInputHandler($input, $typewriterInner) {
+            $input.on('input', function () {
+                let inputText = $(this).val();
+                inputText = inputText.replace(/ /g, '♥').toUpperCase();
+                $(this).val(inputText);
+                generateImages(inputText, $typewriterInner);
+            });
+        }
 
-        $('#getText').on('keydown', function (event) {
-            console.log('Key code:', event.keyCode);
-        });
+        // Initial handler for existing input
+        attachInputHandler($('#getText'), $('#typewriter .typewriterInner'));
 
         $("#ctf_form #getText").on("keyup", function () {
             if ($.trim($(this).val()) !== "") {
+                $(".dummyImg").css('display','none');
+                $("#addNewFrase").removeAttr('disabled');
                 $("#ctf_form .action-button").removeAttr('disabled');
-                console.log($(this).val());
             } else {
+                $(".dummyImg").css('display','block');
                 $("#ctf_form .action-button").prop('disabled', true);
-                console.log($(this).val());
+                $("#addNewFrase").prop('disabled', true);
             }
         });
 
@@ -79,27 +83,27 @@
             $('.priceCounter').text($("#counter").text());
         });
 
-        // Function to update the concatenated text
-        function updateGetText() {
-            let concatenatedText = '';
-            $('.fraseInput').each(function () {
-                concatenatedText += $(this).val();
-            });
-            $('#getText').val(concatenatedText);
-        }
+        let typewriterCounter = 1;
 
         $("#addNewFrase").click(function () {
-            $('.fraseWrapper').append('<div class="frasePanel"><input class="fraseInput" type="text" placeholder="Escriba su frase aquí.." required=""></div>');
-            updateGetText();
+            const newTypewriterInnerId = `typewriterInner_${typewriterCounter++}`;
+            const $newFrasePanel = $(`
+            <div class="frasePanel">
+                <input class="fraseInput" type="text" placeholder="Escriba su frase aquí.." required="">
+            </div>
+        `);
+            $('.fraseWrapper').append($newFrasePanel);
+
+            const $newTypewriterInner = $(`<div class="typewriterInner" id="${newTypewriterInnerId}"></div>`);
+            $('#typewriter').append($newTypewriterInner);
+
+            // Attach input handler for the new input
+            const $newInput = $newFrasePanel.find('.fraseInput');
+            attachInputHandler($newInput, $newTypewriterInner);
         });
-
-        // Event listener for any changes in the appended inputs
-        $(document).on('keyup', '.fraseInput', function () {
-            updateGetText();
-        });
-
-
     });
+
+
 
 
     $(document).ready(function () {

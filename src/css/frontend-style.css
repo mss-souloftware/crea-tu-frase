@@ -232,12 +232,16 @@
 }
 
 #typewriter {
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex;
+    flex-wrap: wrap; */
     background: #F7F7F7;
     padding: 20px;
     border-radius: 8px;
-    justify-content: center;
+    /* justify-content: center; */
+}
+
+#typewriter .typewriterInner:not(:last-child) {
+    margin-bottom: 20px;
 }
 
 #typewriter .dummyImg {
@@ -275,6 +279,7 @@
 }
 
 #addNewFrase {
+    display: block;
     margin-left: auto;
     background: #585858;
     max-width: fit-content;
