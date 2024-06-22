@@ -232,12 +232,9 @@
 }
 
 #typewriter {
-    /* display: flex;
-    flex-wrap: wrap; */
     background: #F7F7F7;
     padding: 20px;
     border-radius: 8px;
-    /* justify-content: center; */
 }
 
 #typewriter .typewriterInner:not(:last-child) {
@@ -254,8 +251,8 @@
 }
 
 #typewriter img {
-    max-width: 80px;
-    margin: 5px;
+    max-width: 50px;
+    margin: 2px;
 }
 
 #ctf_form {

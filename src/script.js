@@ -46,6 +46,15 @@
                         $wordDiv.append($img);
                     }
                 }
+
+                // Check if the word has more than 7 images
+                if ($wordDiv.children().length > 10) {
+                    $wordDiv.children().css('max-width', '35px');
+                } else if (($wordDiv.children().length > 7)) {
+                    $wordDiv.children().css('max-width', '50px');
+                }
+
+
                 $typewriterInner.append($wordDiv);
                 if (index < words.length - 1) {
                     const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${keyMap[32]}`;
@@ -69,18 +78,14 @@
 
         $("#ctf_form #getText").on("keyup", function () {
             if ($.trim($(this).val()) !== "") {
-                $(".dummyImg").css('display','none');
+                $(".dummyImg").css('display', 'none');
                 $("#addNewFrase").removeAttr('disabled');
                 $("#ctf_form .action-button").removeAttr('disabled');
             } else {
-                $(".dummyImg").css('display','block');
+                $(".dummyImg").css('display', 'block');
                 $("#ctf_form .action-button").prop('disabled', true);
                 $("#addNewFrase").prop('disabled', true);
             }
-        });
-
-        $("#continuarBTN").on('click', function () {
-            $('.priceCounter').text($("#counter").text());
         });
 
         let typewriterCounter = 1;
@@ -91,7 +96,7 @@
             <div class="frasePanel">
                 <input class="fraseInput" type="text" placeholder="Escriba su frase aquí.." required="">
             </div>
-        `);
+            `);
             $('.fraseWrapper').append($newFrasePanel);
 
             const $newTypewriterInner = $(`<div class="typewriterInner" id="${newTypewriterInnerId}"></div>`);
@@ -101,6 +106,56 @@
             const $newInput = $newFrasePanel.find('.fraseInput');
             attachInputHandler($newInput, $newTypewriterInner);
         });
+
+
+
+
+        $("#continuarBTN").on('click', function () {
+            $('.priceCounter').text($("#counter").text());
+
+            const text = $('#getText').val();
+            const cookieData = {
+                text: text,
+                timestamp: new Date().toISOString(),
+            };
+            const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
+            setCookie('typewriterData', cookieValue, 7); // Set cookie to expire in 7 days
+
+
+            // Capture screenshot of .typewriterInner with higher resolution
+            html2canvas(document.querySelector(".typewriterInner"), {
+                scale: 3, // Increase the scale for better resolution (adjust as needed)
+                useCORS: true
+            }).then(canvas => {
+                // Convert canvas to a data URL
+                const imgData = canvas.toDataURL('image/png');
+
+                // Send the data URL to the server
+                $.ajax({
+                    type: "POST",
+                    url: "/wordpress/wp-content/plugins/crea-tu-frase/utils/save_screenshot.php", // Update with your server-side handler URL
+                    data: {
+                        imgBase64: imgData
+                    },
+                    success: function (response) {
+                        console.log("Screenshot saved successfully.");
+                    },
+                    error: function (error) {
+                        console.error("Error saving screenshot:", error);
+                    }
+                });
+            });
+
+        });
+
+        // Function to set cookie
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
     });
 
 

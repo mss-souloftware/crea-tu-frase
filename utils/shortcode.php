@@ -177,64 +177,74 @@ function chocoletras_shortCode()
                                         <input type="text" name="province" id="" placeholder="Provincia" />
                                     </div>
                                     <input type="text" name="address" id="" placeholder="Direccion de entrega" required />
-                                    <div class="expressShipping">
-                                        <div class="expressBox">
-                                            <input type="checkbox" id="ExpressActivatorSwith">
-                                            <label for="ExpressActivatorSwith">
-                                                Envío Express! ( 24h-48h! días laborables ) por <b>
-                                                    €10 </b>
-                                            </label>
+                                    <div class="shippingPanel">
+                                        <div class="normalShipping">
+                                            Normal Shipping
+                                            <svg fill="#000000" width="20px" height="20px" viewBox="0 0 32 32" version="1.1"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <title>shipping</title>
+                                                <path
+                                                    d="M16.722 21.863c-0.456-0.432-0.988-0.764-1.569-0.971l-1.218-4.743 14.506-4.058 1.554 6.056-13.273 3.716zM12.104 9.019l9.671-2.705 1.555 6.058-9.67 2.705-1.556-6.058zM12.538 20.801c-0.27 0.076-0.521 0.184-0.765 0.303l-4.264-16.615h-1.604c-0.161 0.351-0.498 0.598-0.896 0.598h-2.002c-0.553 0-1.001-0.469-1.001-1.046s0.448-1.045 1.001-1.045h2.002c0.336 0 0.618 0.184 0.8 0.447h3.080v0.051l0.046-0.014 4.41 17.183c-0.269 0.025-0.538 0.064-0.807 0.138zM12.797 21.811c1.869-0.523 3.79 0.635 4.291 2.588 0.501 1.951-0.608 3.957-2.478 4.48-1.869 0.521-3.79-0.637-4.291-2.588s0.609-3.957 2.478-4.48zM12.27 25.814c0.214 0.836 1.038 1.332 1.839 1.107s1.276-1.084 1.062-1.92c-0.214-0.836-1.038-1.332-1.839-1.109-0.802 0.225-1.277 1.085-1.062 1.922zM29.87 21.701l-11.684 3.268c-0.021-0.279-0.060-0.561-0.132-0.842-0.071-0.281-0.174-0.545-0.289-0.799l11.623-3.25 0.482 1.623z">
+                                                </path>
+                                            </svg>
                                         </div>
-                                        <div class="expressIcon">
-                                            <img src="<?php echo plugin_dir_url(__DIR__) . "img/captura.png"; ?>" alt="">
+                                        <div class="expressShipping">
+                                            <div class="expressBox">
+                                                <input type="checkbox" id="ExpressActivatorSwith">
+                                                <svg fill="#000000" width="20px" height="20px" viewBox="0 -64 640 640"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M624 352h-16V243.9c0-12.7-5.1-24.9-14.1-33.9L494 110.1c-9-9-21.2-14.1-33.9-14.1H416V48c0-26.5-21.5-48-48-48H112C85.5 0 64 21.5 64 48v48H8c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h272c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H40c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h208c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H8c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h208c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H64v128c0 53 43 96 96 96s96-43 96-96h128c0 53 43 96 96 96s96-43 96-96h48c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zM160 464c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm320 0c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm80-208H416V144h44.1l99.9 99.9V256z" />
+                                                </svg>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="standardShipping">
-                                        <h4>Fecha deseada de entrega.</h4>
-                                        <p>Todos nuestros envíos se realizan en días laborables e igualmente las entregas se
-                                            hacen días laborables de 24h a 72h, envio ordinario.
-                                        </p>
-                                        <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
-                                    </div>
-                                    <?php /*
-                                $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                                $getCookieOUILast = explode("_", $getCookieOUI);
-                                $lastCookieVal = end($getCookieOUILast);
-                                function uniqueOrderNum(int $lengthURN = 10): string
-                                {
-                                    $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                                    $randomOrderNum = '';
-                                    for ($i = 0; $i < $lengthURN; $i++) {
-                                        $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
-                                    }
-                                    return $randomOrderNum;
-                                }
+                                        <div class="standardShipping">
+                                            <h4>Fecha deseada de entrega.</h4>
+                                            <p>Todos nuestros envíos se realizan en días laborables e igualmente las
+                                                entregas se
+                                                hacen días laborables de 24h a 72h, envio ordinario.
+                                            </p>
+                                            <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
+                                        </div>
+                                        <?php /*
+                             $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                             $getCookieOUILast = explode("_", $getCookieOUI);
+                             $lastCookieVal = end($getCookieOUILast);
+                             function uniqueOrderNum(int $lengthURN = 10): string
+                             {
+                                 $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                 $randomOrderNum = '';
+                                 for ($i = 0; $i < $lengthURN; $i++) {
+                                     $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
+                                 }
+                                 return $randomOrderNum;
+                             }
 
-                                $finalUON = uniqueOrderNum();
-                                */ ?>
-                                    <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
-                                        ?>" placeholder="Unique Order ID">
-                                </div>
-                                <textarea name="message" placeholder="Agregue su comentario aquí."></textarea>
-                                <div class="termCondition">
-                                    <input type="checkbox" name="term" id="TermAndCond" required>
-                                    <label for="TermAndCond">
-                                        Para continuar acepte nuestros <a href="/terminos-y-condiciones/">
-                                            terminos y condiciones. </a>
-                                    </label>
-                                </div>
+                             $finalUON = uniqueOrderNum();
+                             */ ?>
+                                        <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
+                                            ?>" placeholder="Unique Order ID">
+                                    </div>
+                                    <textarea name="message" placeholder="Agregue su comentario aquí."></textarea>
+                                    <div class="termCondition">
+                                        <input type="checkbox" name="term" id="TermAndCond" required>
+                                        <label for="TermAndCond">
+                                            Para continuar acepte nuestros <a href="/terminos-y-condiciones/">
+                                                terminos y condiciones. </a>
+                                        </label>
+                                    </div>
 
-                                <div class="swithcerBtnGroup">
-                                    <!-- <input type="button" name="previous" class="previous action-button-previous" /> -->
-                                    <div class="previous action-button-previous"></div>
-                                    <!-- <input type="submit" name="next" class="next action-button" value="Next" /> -->
-                                    <input type="submit" name="next" class="action-button" value="Next" />
-                                </div>
-                                <input class="chocoletrasPlg__wrapperCode-dataUser-form-input" type="hidden"
-                                    name="chocofrase" readonly>
-                                <input class="chocoletrasPlg__wrapperCode-dataUser-form-input-price" type="hidden"
-                                    name="price" readonly>
-                                <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
+                                    <div class="swithcerBtnGroup">
+                                        <!-- <input type="button" name="previous" class="previous action-button-previous" /> -->
+                                        <div class="previous action-button-previous"></div>
+                                        <!-- <input type="submit" name="next" class="next action-button" value="Next" /> -->
+                                        <input type="submit" name="next" class="action-button" value="Next" />
+                                    </div>
+                                    <input class="chocoletrasPlg__wrapperCode-dataUser-form-input" type="hidden"
+                                        name="chocofrase" readonly>
+                                    <input class="chocoletrasPlg__wrapperCode-dataUser-form-input-price" type="hidden"
+                                        name="price" readonly>
+                                    <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
                             </fieldset>
                             <fieldset <?php
                             if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
