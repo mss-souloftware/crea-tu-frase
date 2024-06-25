@@ -16,28 +16,28 @@
         d = document.getElementsByClassName("chocoletrasPlg__wrapperCode-firstHead-dataUser")[0],
         f = (document.getElementsByClassName(" chocoletrasPlg__wrapperCode-payment")[0], document.getElementsByClassName("chocoletrasPlg__wrapperCode-firstHead")[0]),
         y = document.getElementsByName("chocofrase")[0],
-        m = document.getElementsByClassName("chocoletrasPlg__wrapperCode-dataUser-form")[0],
         v = ["express", "action", "price", "chocofrase", "name", "email", "tel", "cp", "city", "address", "province", "message", "date"],
+        m = document.getElementsByClassName("chocoletrasPlg__wrapperCode-dataUser-form")[0],
         b = ["ExpressActivator", "ExpressActivatorSwith", "chocoletrasPlg__wrapperCode-dataUser-form_envioNormal", "picDate"],
         g = ["reportAproblem_wrapper_triguer", "reportClosedApplyOpacity", "reportAproblem_wrapper", "reportAproblem", "reportClosed"],
         h = ["reportAproblem_wrapper_response", "reportAproblem_wrapper_response_span", "reportFormId"],
         w = ["ramdomNumberOne", "ramdomNumberTwo", "ramdomNumberResults"];
     document.getElementById("itemsEmaiBtn");
     var E = function (e) {
-            var t = ajax_variables.precCoraz,
-                n = ajax_variables.precLetra,
-                r = e,
-                o = Array.from(r),
-                a = o.filter(function (e) {
-                    return "♥" === e;
-                }),
-                i = o.filter(function (e) {
-                    return "♥" != e;
-                }),
-                l = parseFloat(a.length) * parseFloat(t),
-                s = parseFloat(i.length) * parseFloat(n);
-            return { price: parseFloat(l) + parseFloat(s), count: o.length };
-        },
+        var t = ajax_variables.precCoraz,
+            n = ajax_variables.precLetra,
+            r = e,
+            o = Array.from(r),
+            a = o.filter(function (e) {
+                return "♥" === e;
+            }),
+            i = o.filter(function (e) {
+                return "♥" != e;
+            }),
+            l = parseFloat(a.length) * parseFloat(t),
+            s = parseFloat(i.length) * parseFloat(n);
+        return { price: parseFloat(l) + parseFloat(s), count: o.length };
+    },
         j = function (e, t, n, r, o) {
             if ("foward" === e)
                 return (
@@ -54,12 +54,12 @@
             if ("processEnd" !== e)
                 return "goBack" === e
                     ? ((p.style.height = "100%"),
-                      (p.style.opacity = 1),
-                      (f.style.height = "100%"),
-                      (d.style.height = 0),
-                      void setTimeout(function () {
-                          (p.style.height = 0), (p.style.opacity = 0);
-                      }, 800))
+                        (p.style.opacity = 1),
+                        (f.style.height = "100%"),
+                        (d.style.height = 0),
+                        void setTimeout(function () {
+                            (p.style.height = 0), (p.style.opacity = 0);
+                        }, 800))
                     : void 0;
             if (n)
                 try {
@@ -94,12 +94,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(o.prototype, i),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(o.prototype, i),
             Object.defineProperty(o, "prototype", { writable: !1 }),
             r
         );
@@ -122,22 +122,22 @@
                             t.preventDefault(),
                                 0 === e.value.length
                                     ? ((l.innerText = "Coloque una frase!"),
-                                      (l.style.background = "red"),
-                                      (e.value = ""),
-                                      setTimeout(function () {
-                                          (l.innerText = "continuar"), (l.style.background = "black");
-                                      }, 1e3))
+                                        (l.style.background = "red"),
+                                        (e.value = ""),
+                                        setTimeout(function () {
+                                            (l.innerText = "continuar"), (l.style.background = "black");
+                                        }, 1e3))
                                     : j("foward", e.value, null, null);
                         });
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(n.prototype, r),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(n.prototype, r),
             Object.defineProperty(n, "prototype", { writable: !1 }),
             t
         );
@@ -165,29 +165,24 @@
                             e.preventDefault(), j("processStart", null, null), t();
                         });
                         var t = function () {
-                            var t,
-                                n,
-                                r,
-                                o = [],
+                            var t, n, r, o = [],
                                 a = (function (e, t) {
                                     var n = ("undefined" != typeof Symbol && e[Symbol.iterator]) || e["@@iterator"];
                                     if (!n) {
-                                        if (
-                                            Array.isArray(e) ||
-                                            (n = (function (e, t) {
-                                                if (e) {
-                                                    if ("string" == typeof e) return P(e, t);
-                                                    var n = Object.prototype.toString.call(e).slice(8, -1);
-                                                    return (
-                                                        "Object" === n && e.constructor && (n = e.constructor.name),
-                                                        "Map" === n || "Set" === n ? Array.from(e) : "Arguments" === n || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n) ? P(e, t) : void 0
-                                                    );
-                                                }
-                                            })(e))
+                                        if (Array.isArray(e) || (n = (function (e, t) {
+                                            if (e) {
+                                                if ("string" == typeof e) return P(e, t);
+                                                var n = Object.prototype.toString.call(e).slice(8, -1);
+                                                return (
+                                                    "Object" === n && e.constructor && (n = e.constructor.name),
+                                                    "Map" === n || "Set" === n ? Array.from(e) : "Arguments" === n || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n) ? P(e, t) : void 0
+                                                );
+                                            }
+                                        })(e))
                                         ) {
                                             n && (e = n);
                                             var r = 0,
-                                                o = function () {};
+                                                o = function () { };
                                             return {
                                                 s: o,
                                                 n: function () {
@@ -225,7 +220,7 @@
                                     };
                                 })(v);
                             try {
-                                for (a.s(); !(n = a.n()).done; ) {
+                                for (a.s(); !(n = a.n()).done;) {
                                     var i = n.value;
                                     o.push(document.getElementsByName(i));
                                 }
@@ -236,59 +231,73 @@
                             }
                             document.getElementsByName(v[11])[0].value || (t = "message=No Mensaje");
                             var l = o
-                                    .filter(function (t) {
-                                        if ("date" == t[0].name && "" == t[0].value) return (t[0].value = "2000-01-01");
-                                        if (("express" == t[0].name && "on" == t[0].value && (r = !0), "price" == t[0].name && r)) {
-                                            var n = E(e.value).price,
-                                                o = ajax_variables.express,
-                                                a = parseFloat(n) + parseFloat(o);
-                                            t[0].value = parseFloat(a).toString().slice(0, 5);
+                                .filter(function (t) {
+                                    if ("date" == t[0].name && "" == t[0].value) return (t[0].value = "2000-01-01");
+                                    if (("express" == t[0].name && "on" == t[0].value && (r = !0), "price" == t[0].name && r)) {
+                                        var n = E(e.value).price,
+                                            o = ajax_variables.express,
+                                            a = parseFloat(n) + parseFloat(o);
+                                        t[0].value = parseFloat(a).toString().slice(0, 5);
+                                    }
+                                    if ("price" == t[0].name && !r) {
+                                        var i = E(e.value).price;
+                                        if (i < parseFloat(ajax_variables.gastoMinimo)) {
+                                            var l = parseFloat(ajax_variables.gastoMinimo) + parseFloat(ajax_variables.precEnvio);
+                                            t[0].value = l.toString().slice(0, 5);
+                                        } else {
+                                            var s = parseFloat(ajax_variables.precEnvio) + i;
+                                            t[0].value = s.toString().slice(0, 5);
                                         }
-                                        if ("price" == t[0].name && !r) {
-                                            var i = E(e.value).price;
-                                            if (i < parseFloat(ajax_variables.gastoMinimo)) {
-                                                var l = parseFloat(ajax_variables.gastoMinimo) + parseFloat(ajax_variables.precEnvio);
-                                                t[0].value = l.toString().slice(0, 5);
-                                            } else {
-                                                var s = parseFloat(ajax_variables.precEnvio) + i;
-                                                t[0].value = s.toString().slice(0, 5);
-                                            }
-                                        }
-                                        return "" != t[0].value;
-                                    })
-                                    .map(function (e) {
-                                        return "".concat(e[0].name, "=").concat(e[0].value);
-                                    })
-                                    .join("&"),
+                                    }
+                                    return "" != t[0].value;
+                                })
+                                .map(function (e) {
+                                    return "".concat(e[0].name, "=").concat(e[0].value);
+                                })
+                                .join("&"),
                                 s = document.getElementById("uniqueOrderID").value;
-                            (l += "&uoi=" + encodeURIComponent(s)),
-                                jQuery.ajax({
-                                    type: "post",
-                                    url: ajax_variables.ajax_url,
-                                    dataType: "text",
-                                    data: "".concat(l, "&nonce=").concat(ajax_variables.nonce, "&").concat(t),
-                                    error: function (e) {
-                                        console.error(e);
-                                    },
-                                    success: function (e) {
-                                        console.info("JSON.parse(response).Datos.Status ", e);
-                                        try {
-                                            JSON.parse(e).Datos.Status ? j("processEnd", JSON.parse(e).Datos.amount, JSON.parse(e).Datos.cookie, JSON.parse(e).Datos.nonce, ajax_variables.haveNonce) : alert(JSON.parse(e).Datos);
-                                        } catch (e) {
-                                            console.error(JSON.parse(e));
-                                        }
-                                    },
-                                });
+
+                            var mainText = [y.value];
+                            document.querySelectorAll('.fraseInput').forEach(function (input) {
+                                mainText.push(input.value);
+                            });
+
+                            var chocofraseData = "chocofrase=" + encodeURIComponent(JSON.stringify(mainText));
+                            l += "&" + chocofraseData + "&uoi=" + encodeURIComponent(s);
+
+                            jQuery.ajax({
+                                type: "post",
+                                url: ajax_variables.ajax_url,
+                                dataType: "text",
+                                data: "".concat(l, "&nonce=").concat(ajax_variables.nonce, "&").concat(t),
+                                error: function (e) {
+                                    console.error(e);
+                                },
+                                success: function (e) {
+                                    console.info("JSON.parse(response).Datos.Status ", e);
+                                    try {
+                                        JSON.parse(e).Datos.Status ? j("processEnd", JSON.parse(e).Datos.amount, JSON.parse(e).Datos.cookie, JSON.parse(e).Datos.nonce, ajax_variables.haveNonce) : alert(JSON.parse(e).Datos);
+                                    } catch (e) {
+                                        console.error(JSON.parse(e));
+                                    }
+                                },
+                            });
                         };
+
+                        // m.addEventListener("submit", function (e) {
+                        //     e.preventDefault();
+                        //     j("processStart", null, null);
+                        //     t();
+                        // });
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(n.prototype, r),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(n.prototype, r),
             Object.defineProperty(n, "prototype", { writable: !1 }),
             t
         );
@@ -298,11 +307,11 @@
             (B =
                 "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
                     ? function (e) {
-                          return typeof e;
-                      }
+                        return typeof e;
+                    }
                     : function (e) {
-                          return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-                      }),
+                        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
+                    }),
             B(e)
         );
     }
@@ -341,45 +350,45 @@
                                                     (function (e, t, n, r) {
                                                         t
                                                             ? jQuery.ajax({
-                                                                  type: "post",
-                                                                  url: ajax_variables.ajax_url,
-                                                                  dataType: "json",
-                                                                  data: "action=saveStripeSectionId&id=".concat(e, "&intent=").concat(t),
-                                                                  error: function (e) {
-                                                                      console.log(e),
-                                                                          n && (n.classList.add("stripeErrorHiddeP"), (n.innerText = "error: idStripe no guardado en base de datos: =>".concat(e.responseText))),
-                                                                          setTimeout(function () {
-                                                                              (n.innerText = ""), n.classList.remove("stripeErrorHiddeP"), (r.style.height = 0), (r.style.opacity = 0);
-                                                                          }, 5500);
-                                                                  },
-                                                                  success: function (t) {
-                                                                      if (1 === t.result.id)
-                                                                          try {
-                                                                              Stripe(ajax_variables.publicKy)
-                                                                                  .redirectToCheckout({ sessionId: e })
-                                                                                  .then(function (e) {
-                                                                                      console.log(e);
-                                                                                  });
-                                                                          } catch (e) {
-                                                                              console.error("Seccion id not redirect in externalPageStripe", e);
-                                                                          }
-                                                                      else
-                                                                          n.classList.add("stripeErrorHiddeP"),
-                                                                              (n.style.backgroundColor = "#f88"),
-                                                                              (n.style.color = "white"),
-                                                                              (n.innerText = "Ops! Algo salio mal al pasar al Checkout"),
-                                                                              setTimeout(function () {
-                                                                                  (n.innerText = ""), n.classList.remove("stripeErrorHiddeP"), (window.location.href = "/");
-                                                                              }, 7500);
-                                                                  },
-                                                              })
+                                                                type: "post",
+                                                                url: ajax_variables.ajax_url,
+                                                                dataType: "json",
+                                                                data: "action=saveStripeSectionId&id=".concat(e, "&intent=").concat(t),
+                                                                error: function (e) {
+                                                                    console.log(e),
+                                                                        n && (n.classList.add("stripeErrorHiddeP"), (n.innerText = "error: idStripe no guardado en base de datos: =>".concat(e.responseText))),
+                                                                        setTimeout(function () {
+                                                                            (n.innerText = ""), n.classList.remove("stripeErrorHiddeP"), (r.style.height = 0), (r.style.opacity = 0);
+                                                                        }, 5500);
+                                                                },
+                                                                success: function (t) {
+                                                                    if (1 === t.result.id)
+                                                                        try {
+                                                                            Stripe(ajax_variables.publicKy)
+                                                                                .redirectToCheckout({ sessionId: e })
+                                                                                .then(function (e) {
+                                                                                    console.log(e);
+                                                                                });
+                                                                        } catch (e) {
+                                                                            console.error("Seccion id not redirect in externalPageStripe", e);
+                                                                        }
+                                                                    else
+                                                                        n.classList.add("stripeErrorHiddeP"),
+                                                                            (n.style.backgroundColor = "#f88"),
+                                                                            (n.style.color = "white"),
+                                                                            (n.innerText = "Ops! Algo salio mal al pasar al Checkout"),
+                                                                            setTimeout(function () {
+                                                                                (n.innerText = ""), n.classList.remove("stripeErrorHiddeP"), (window.location.href = "/");
+                                                                            }, 7500);
+                                                                },
+                                                            })
                                                             : (n.classList.add("stripeErrorHiddeP"),
-                                                              (n.style.backgroundColor = "#f88"),
-                                                              (n.style.color = "white"),
-                                                              (n.innerText = "Ops! Algo salio mal al pasar al Checkout"),
-                                                              setTimeout(function () {
-                                                                  (n.innerText = ""), n.classList.remove("stripeErrorHiddeP"), (window.location.href = "/");
-                                                              }, 7500));
+                                                                (n.style.backgroundColor = "#f88"),
+                                                                (n.style.color = "white"),
+                                                                (n.innerText = "Ops! Algo salio mal al pasar al Checkout"),
+                                                                setTimeout(function () {
+                                                                    (n.innerText = ""), n.classList.remove("stripeErrorHiddeP"), (window.location.href = "/");
+                                                                }, 7500));
                                                     })(e.id, e.payment_intent, r, p);
                                             } catch (e) {
                                                 !(function (e, t, n) {
@@ -396,12 +405,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -442,12 +451,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -476,12 +485,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -506,9 +515,9 @@
                             r && "payment" === t[0] && "true" === t[1]
                                 ? (r.classList.add("stripeErrorHiddeP"), (r.style.backgroundColor = "#7dbf65"), (r.style.color = "white"), (r.innerText = "Enhorabuena! Gracias por confiar en Chocoletra!"))
                                 : r &&
-                                  "paymentProcess" === t[0] &&
-                                  "error" === t[1] &&
-                                  (r.classList.add("stripeErrorHiddeP"), (r.style.backgroundColor = "red"), (r.style.color = "white"), (r.innerText = "Ops! Algo salio mal con el pago!")),
+                                "paymentProcess" === t[0] &&
+                                "error" === t[1] &&
+                                (r.classList.add("stripeErrorHiddeP"), (r.style.backgroundColor = "red"), (r.style.color = "white"), (r.innerText = "Ops! Algo salio mal con el pago!")),
                                 setTimeout(function () {
                                     location.replace(ajax_variables.plgPage), (r.innerText = ""), r.classList.remove("stripeErrorHiddeP");
                                 }, 7500);
@@ -516,12 +525,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -547,12 +556,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -581,12 +590,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -615,12 +624,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -653,12 +662,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -686,12 +695,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -737,7 +746,7 @@
                                             if (Array.isArray(e) || (n = D(e))) {
                                                 n && (e = n);
                                                 var r = 0,
-                                                    o = function () {};
+                                                    o = function () { };
                                                 return {
                                                     s: o,
                                                     n: function () {
@@ -775,7 +784,7 @@
                                         };
                                     })(t);
                                 try {
-                                    for (a.s(); !(r = a.n()).done; ) {
+                                    for (a.s(); !(r = a.n()).done;) {
                                         var i = r.value;
                                         document.getElementsByName(i) && o.push(document.getElementsByName(i));
                                     }
@@ -804,44 +813,44 @@
                             r = document.getElementById(h[2]);
                         Number(this.solveQuiz()[0]) + Number(this.solveQuiz()[1]) === Number(this.solveQuiz()[2])
                             ? jQuery.ajax({
-                                  type: "post",
-                                  url: ajax_variables.ajax_url,
-                                  dataType: "text",
-                                  data: "action=reportForm&".concat(e),
-                                  error: function (e) {
-                                      console.error(e);
-                                  },
-                                  success: function (e) {
-                                      var o = 1 === Number(e.split(":")[1].replace("}", "")) || e.length < 20;
-                                      if (!o)
-                                          return (
-                                              console.error(e),
-                                              t.classList.add("responseActived"),
-                                              t.classList.add("responseBad"),
-                                              (n.innerText = "🤮 Lo sentimos, algo ha salido mal."),
-                                              void setTimeout(function () {
-                                                  t.classList.remove("responseActived"), t.classList.remove("responseBad");
-                                              }, 6e3)
-                                          );
-                                      if (o) {
-                                          var a = document.getElementsByClassName(g[0])[0];
-                                          return (
-                                              t.classList.add("responseActived"),
-                                              t.classList.add("responseOk"),
-                                              (n.innerText = "🥈 Gracias por reportarnos el error."),
-                                              void setTimeout(function () {
-                                                  t.classList.remove("responseActived"), t.classList.remove("responseOk"), r.reset(), a.click();
-                                              }, 6e3)
-                                          );
-                                      }
-                                  },
-                              })
+                                type: "post",
+                                url: ajax_variables.ajax_url,
+                                dataType: "text",
+                                data: "action=reportForm&".concat(e),
+                                error: function (e) {
+                                    console.error(e);
+                                },
+                                success: function (e) {
+                                    var o = 1 === Number(e.split(":")[1].replace("}", "")) || e.length < 20;
+                                    if (!o)
+                                        return (
+                                            console.error(e),
+                                            t.classList.add("responseActived"),
+                                            t.classList.add("responseBad"),
+                                            (n.innerText = "🤮 Lo sentimos, algo ha salido mal."),
+                                            void setTimeout(function () {
+                                                t.classList.remove("responseActived"), t.classList.remove("responseBad");
+                                            }, 6e3)
+                                        );
+                                    if (o) {
+                                        var a = document.getElementsByClassName(g[0])[0];
+                                        return (
+                                            t.classList.add("responseActived"),
+                                            t.classList.add("responseOk"),
+                                            (n.innerText = "🥈 Gracias por reportarnos el error."),
+                                            void setTimeout(function () {
+                                                t.classList.remove("responseActived"), t.classList.remove("responseOk"), r.reset(), a.click();
+                                            }, 6e3)
+                                        );
+                                    }
+                                },
+                            })
                             : (t.classList.add("responseActived"),
-                              t.classList.add("responseBad"),
-                              (n.innerText = "🤮 Lo sentimos, Quiz incorrecto."),
-                              setTimeout(function () {
-                                  t.classList.remove("responseActived"), t.classList.remove("responseBad");
-                              }, 6e3));
+                                t.classList.add("responseBad"),
+                                (n.innerText = "🤮 Lo sentimos, Quiz incorrecto."),
+                                setTimeout(function () {
+                                    t.classList.remove("responseActived"), t.classList.remove("responseBad");
+                                }, 6e3));
                     },
                 },
                 {
@@ -850,9 +859,9 @@
                         var e,
                             t =
                                 (3,
-                                (function (e) {
-                                    if (Array.isArray(e)) return e;
-                                })((e = w)) ||
+                                    (function (e) {
+                                        if (Array.isArray(e)) return e;
+                                    })((e = w)) ||
                                     (function (e, t) {
                                         var n = null == e ? null : ("undefined" != typeof Symbol && e[Symbol.iterator]) || e["@@iterator"];
                                         if (null != n) {
@@ -903,12 +912,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -945,12 +954,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );
@@ -973,12 +982,12 @@
                     },
                 },
             ]) &&
-                (function (e, t) {
-                    for (var n = 0; n < t.length; n++) {
-                        var r = t[n];
-                        (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                    }
-                })(t.prototype, n),
+            (function (e, t) {
+                for (var n = 0; n < t.length; n++) {
+                    var r = t[n];
+                    (r.enumerable = r.enumerable || !1), (r.configurable = !0), "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+                }
+            })(t.prototype, n),
             Object.defineProperty(t, "prototype", { writable: !1 }),
             e
         );

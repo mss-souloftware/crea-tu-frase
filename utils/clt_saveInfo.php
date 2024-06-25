@@ -27,13 +27,10 @@ function confirmAllIsReady()
     if (isset($_POST[$key])) {
       $confirm_error[$key] = $_POST[$key];
     } else {
-      // var_dump($_POST);
-      // return 'Todos los datos son necesarios!';
       $confirm_error = true;
     }
   }
 
-  // return saveDataInDatabase($confirm_error);
   return $confirm_error === true ? 'Todos los datos son necesarios!' : saveDataInDatabase($confirm_error);
 }
 
@@ -49,52 +46,32 @@ function confirmViolationOfSequirity($incomingfrase)
 
 function saveDataInDatabase($datos)
 {
-
   $sanitizeData = array();
 
   foreach ($datos as $info => $val) {
     switch ($info) {
       case 'chocofrase':
-        $sanitizeData[$info] = confirmViolationOfSequirity($datos[$info]);
+        $chocofraseArray = json_decode(stripslashes($datos[$info]), true);
+        foreach ($chocofraseArray as $index => $frase) {
+          $chocofraseArray[$index] = confirmViolationOfSequirity($frase);
+        }
+        $sanitizeData[$info] = json_encode($chocofraseArray);
         break;
       case 'name':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'email':
-        $sanitizeData[$info] = sanitize_email($datos[$info]);
-        break;
       case 'tel':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'cp':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'price':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'city':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'address':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'province':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'message':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'date':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'express':
-        $sanitizeData[$info] = sanitize_file_name($datos[$info]);
-        break;
       case 'uoi':
         $sanitizeData[$info] = sanitize_file_name($datos[$info]);
         break;
       default:
-        # code...
         break;
     }
   }
@@ -105,23 +82,37 @@ function saveDataInDatabase($datos)
     $result = $wpdb->query($wpdb->prepare(
       "INSERT INTO $tablename ( `frase`,`precio`,`nombre`,`email`,`telefono`,`cp`,`ciudad`,`province`,`message`,`direccion`,`nonce`,`fechaEntrega`,`express`,`uoi`) 
      VALUES ( 
-              '" . $sanitizeData['chocofrase'] . "',
-              '" . $sanitizeData['price'] . "',
-              '" . $sanitizeData['name'] . "',
-              '" . $sanitizeData['email'] . "',
-              '" . $sanitizeData['tel'] . "',
-              '" . $sanitizeData['cp'] . "',
-              '" . $sanitizeData['city'] . "',
-              '" . $sanitizeData['province'] . "',
-              '" . $sanitizeData['message'] . "',
-              '" . $sanitizeData['address'] . "',
-              '" . $_POST['nonce'] . "',
-              '" . $sanitizeData['date'] . "',
-              '" . $sanitizeData['express'] . "',
-              '" . $sanitizeData['uoi'] . "'
-               )"
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s,
+              %s
+               )",
+      $sanitizeData['chocofrase'],
+      $sanitizeData['price'],
+      $sanitizeData['name'],
+      $sanitizeData['email'],
+      $sanitizeData['tel'],
+      $sanitizeData['cp'],
+      $sanitizeData['city'],
+      $sanitizeData['province'],
+      $sanitizeData['message'],
+      $sanitizeData['address'],
+      $_POST['nonce'],
+      $sanitizeData['date'],
+      $sanitizeData['express'],
+      $sanitizeData['uoi']
     ));
-  } catch (\Throwable $erro) {
+  } catch (\Throwable $error) {
     $result = array("Status" => $error);
   }
 
