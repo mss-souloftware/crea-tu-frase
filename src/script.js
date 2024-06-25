@@ -87,16 +87,42 @@
 
         $("#continuarBTN").on('click', function () {
             $('.priceCounter').text($("#counter").text());
+        });
 
+        $("#ctf_form").on("submit", function () {
             const mainText = [$('#getText').val()];
+            const fullName = $("#fname").val();
+            const email = $("#email").val();
+            const tel = $("#chocoTel").val();
+            const postal = $("#cp").val();
+            const city = $("#city").val();
+            const province = $("#province").val();
+            const address = $("#address").val();
+            let picDate = $("#picDate").val();
+            const message = $("#message").val();
+
+            if (!picDate) {
+                picDate = new Date().toISOString();
+            }
+
             $('.fraseInput').each(function () {
                 mainText.push($(this).val());
             });
 
             const cookieData = {
                 mainText: mainText,
-                timestamp: new Date().toISOString(),
+                fname: fullName,
+                email: email,
+                tel: tel,
+                postal: postal,
+                city: city,
+                province: province,
+                address: address,
+                picDate: picDate,
+                experss: new Date().toISOString(),
+                message: message,
             };
+
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
             setCookie('chocoletraOrderData', cookieValue, 7);
 
@@ -119,7 +145,7 @@
                     }
                 });
             });
-        });
+        })
 
         function setCookie(name, value, days) {
             const date = new Date();
@@ -127,11 +153,25 @@
             const expires = "expires=" + date.toUTCString();
             document.cookie = name + "=" + value + ";" + expires + ";path=/";
         }
+
+        $('#ctf_form .shippingPanel>.expressShipping').on('click', function () {
+            $('#ctf_form .shippingPanel>div').removeClass('selected');
+            $('#ctf_form .shippingPanel .standardShipping').hide();
+            $('#ctf_form .shippingPanel .shippingExpress').show();
+            $(this).addClass('selected');
+        })
+
+        $('#ctf_form .shippingPanel>.normalShipping').on('click', function () {
+            $('#ctf_form .shippingPanel>div').removeClass('selected');
+            $('#ctf_form .shippingPanel .standardShipping').show();
+            $('#ctf_form .shippingPanel .shippingExpress').hide();
+            $(this).addClass('selected');
+        })
     });
 
     $(document).ready(function () {
 
-        var current_fs, next_fs, previous_fs; //fieldsets
+        var current_fs, next_fs, previous_fs;
         var opacity;
         var current = 1;
         var steps = $("fieldset").length;

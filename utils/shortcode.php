@@ -11,10 +11,7 @@ require_once ('confirmPayment/paymentfinish.php');
 require_once ('confirmPayment/closeprocess.php');
 require_once ('report/reportProblem.php');
 
-
-// Check if the 'chocol_cookie' exists in the $_COOKIE array
 if (isset($_COOKIE['chocol_cookie'])) {
-    // Retrieve the option using the value from the cookie
     $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
     $getCookieOUILast = explode("_", $getCookieOUI);
     $lastCookieVal = end($getCookieOUILast);
@@ -24,7 +21,6 @@ if (isset($_COOKIE['chocol_cookie'])) {
     $lastCookieVal = null;
 }
 
-// Check if the payment parameter is set in the URL and equals true
 if (isset($_GET['payment']) && $_GET['payment'] == true) {
     if (isset($_GET['payerID'])) {
         $payerID = $_GET['payerID'];
@@ -36,7 +32,6 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
         if ($result) {
             $update_query = $wpdb->prepare("UPDATE $tablename SET pagoRealizado = 1 WHERE uoi = %s", $payerID);
             $wpdb->query($update_query);
-            // echo "Row updated successfully.";
         }
     }
     ?>
@@ -102,13 +97,13 @@ function chocoletras_shortCode()
                                 if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
                                     echo ' class="active"';
                                 }
-                                ?> id="personal"><strong>Shiping</strong></li>
+                                ?> id="personal"><strong>Envío</strong></li>
                                 <li <?php
                                 if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
                                     echo ' class="active"';
                                 }
-                                ?> id="payment"><strong>Payment</strong></li>
-                                <li id="confirm"><strong>Finish</strong></li>
+                                ?> id="payment"><strong>Pagos</strong></li>
+                                <li id="confirm"><strong>Finalizar</strong></li>
                             </ul>
                             <fieldset <?php
                             if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
@@ -165,18 +160,18 @@ function chocoletras_shortCode()
                                             </h2>
                                         </div>
                                     </div>
-                                    <input type="text" name="name" id="" placeholder="Nombre Completo" required />
-                                    <input type="email" name="email" id="" placeholder="Email del comprador" required />
+                                    <input type="text" name="name" id="fname" placeholder="Nombre Completo" required />
+                                    <input type="email" name="email" id="email" placeholder="Email del comprador" required />
                                     <div class="twiceField">
                                         <input type="tel" name="tel" id="chocoTel" placeholder="Tel&#233;fono" minlength="9"
                                             required />
-                                        <input type="number" name="cp" id="" placeholder="C&#243;digo postal" />
+                                        <input type="number" name="cp" id="cp" placeholder="C&#243;digo postal" />
                                     </div>
                                     <div class="twiceField">
-                                        <input type="text" name="city" id="" placeholder="Ciudad" />
-                                        <input type="text" name="province" id="" placeholder="Provincia" />
+                                        <input type="text" name="city" id="city" placeholder="Ciudad" />
+                                        <input type="text" name="province" id="province" placeholder="Provincia" />
                                     </div>
-                                    <input type="text" name="address" id="" placeholder="Direccion de entrega" required />
+                                    <input type="text" name="address" id="address" placeholder="Direccion de entrega" required />
                                     <div class="shippingPanel">
                                         <div class="normalShipping selected">
                                             <p>Envío Normal</p>
@@ -206,26 +201,29 @@ function chocoletras_shortCode()
                                             </p>
                                             <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
                                         </div>
+                                        <div class="shippingExpress" style="display: none;">
+                                            <p>Envío Express! ( 24h-48h! días laborables ) por €15</p>
+                                        </div>
                                         <?php /*
-                           $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                           $getCookieOUILast = explode("_", $getCookieOUI);
-                           $lastCookieVal = end($getCookieOUILast);
-                           function uniqueOrderNum(int $lengthURN = 10): string
-                           {
-                               $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                               $randomOrderNum = '';
-                               for ($i = 0; $i < $lengthURN; $i++) {
-                                   $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
-                               }
-                               return $randomOrderNum;
-                           }
+                                        $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                                        $getCookieOUILast = explode("_", $getCookieOUI);
+                                        $lastCookieVal = end($getCookieOUILast);
+                                        function uniqueOrderNum(int $lengthURN = 10): string
+                                        {
+                                            $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                            $randomOrderNum = '';
+                                            for ($i = 0; $i < $lengthURN; $i++) {
+                                                $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
+                                            }
+                                            return $randomOrderNum;
+                                        }
 
-                           $finalUON = uniqueOrderNum();
-                           */ ?>
+                                        $finalUON = uniqueOrderNum();
+                                        */ ?>
                                         <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
                                             ?>" placeholder="Unique Order ID">
                                     </div>
-                                    <textarea name="message" placeholder="Agregue su comentario aquí."></textarea>
+                                    <textarea name="message" id="message" placeholder="Agregue su comentario aquí."></textarea>
                                     <div class="termCondition">
                                         <input type="checkbox" name="term" id="TermAndCond" required>
                                         <label for="TermAndCond">
@@ -273,7 +271,7 @@ function chocoletras_shortCode()
                                         // echo '<pre>';
                                         // print_r($getOrderData);
                                         // echo '</pre>';
-
+                                    
 
                                         foreach ($getOrderData['mainText'] as $frase) {
                                             ?>
@@ -304,9 +302,9 @@ function chocoletras_shortCode()
                                                                     stroke="#fff" stroke-width="2" stroke-linecap="round"
                                                                     stroke-linejoin="round" />
                                                             </svg>
-                                                           <?php 
-                                                           $date = substr($getOrderData['timestamp'], 0, 10);
-                                                           echo $date; ?>
+                                                            <?php
+                                                            $date = substr($getOrderData['picDate'], 0, 10);
+                                                            echo $date; ?>
                                                         </div>
                                                         <div class="deliveryDate">
 
@@ -324,8 +322,8 @@ function chocoletras_shortCode()
                                     </div>
                                 </div>
                                 <input type="button" name="next" class="next action-button" value="Submit" />
-                                <input type="button" name="previous" class="previous action-button-previous"
-                                    value="Previous" />
+                                <!-- <input type="button" name="previous" class="previous action-button-previous" -->
+                                    <!-- value="Previous" /> -->
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
@@ -423,7 +421,6 @@ function chocoletras_shortCode()
                 </div>
             </div>
         </div>
-
     </section>
 
     <?php

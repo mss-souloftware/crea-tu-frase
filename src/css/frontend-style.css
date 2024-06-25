@@ -341,6 +341,7 @@
     border-radius: 8px;
     padding: 10px;
     text-align: center;
+    cursor: pointer;
 }
 
 #ctf_form .shippingPanel>div.selected {
@@ -352,10 +353,23 @@
     fill: #fff;
 }
 
-#ctf_form .shippingPanel .standardShipping {
+#ctf_form .shippingPanel .standardShipping,
+#ctf_form .shippingPanel .shippingExpress {
     width: 100%;
 }
 
+#ctf_form .shippingPanel .shippingExpress {
+    color: #fff;
+    border: 1px solid #000;
+    background: #000;
+    border-radius: 8px;
+    padding: 20px 15px;
+    margin: 20px 0;
+}
+
+#ctf_form .shippingPanel .shippingExpress p {
+    margin: 0;
+}
 
 #ctf_form .expressShipping .expressBox input {
     width: 30px;
