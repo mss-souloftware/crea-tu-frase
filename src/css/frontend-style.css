@@ -317,8 +317,45 @@
 #ctf_form .expressShipping .expressBox {
     display: flex;
     align-items: center;
-    width: 75%;
+    width: 100%;
+    justify-content: center;
 }
+
+#ctf_form .shippingPanel {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    gap: 0 10px;
+}
+
+#ctf_form .shippingPanel>div {
+    width: calc(50% - 10px);
+}
+
+#ctf_form .shippingPanel>.normalShipping,
+#ctf_form .shippingPanel>.expressShipping {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+#ctf_form .shippingPanel>div.selected {
+    background: #000;
+    color: #fff;
+}
+
+#ctf_form .shippingPanel>div.selected svg {
+    fill: #fff;
+}
+
+#ctf_form .shippingPanel .standardShipping {
+    width: 100%;
+}
+
 
 #ctf_form .expressShipping .expressBox input {
     width: 30px;
