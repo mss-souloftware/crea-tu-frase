@@ -109,7 +109,7 @@
         }
 
         $("#continuarBTN").on('click', function () {
-            $('.priceCounter').text($("#counter").text());
+            $('.priceCounter').text($(".chocoletrasPlg__wrapperCode-dataUser-form-input-price").val());
 
             $(".typewriterInner").each(function (index) {
                 const element = $(this)[0]; // Get the DOM element
@@ -142,8 +142,9 @@
         });
 
         $("#ctf_form").on("submit", function () {
-
+            console.log('submition');
             const mainText = [$('#getText').val()];
+            const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
             const fullName = $("#fname").val();
             const email = $("#email").val();
             const tel = $("#chocoTel").val();
@@ -152,6 +153,7 @@
             const province = $("#province").val();
             const address = $("#address").val();
             let picDate = $("#picDate").val();
+            const shippingType = $("#ExpressActivator").val();
             const message = $("#message").val();
 
             if (!picDate) {
@@ -164,6 +166,7 @@
 
             const cookieData = {
                 mainText: mainText,
+                priceTotal: priceTotal,
                 fname: fullName,
                 email: email,
                 tel: tel,
@@ -172,6 +175,7 @@
                 province: province,
                 address: address,
                 picDate: picDate,
+                shippingType: shippingType,
                 experss: new Date().toISOString(),
                 message: message,
                 screenshots: screenshotPaths
@@ -188,19 +192,42 @@
             document.cookie = name + "=" + value + ";" + expires + ";path=/";
         }
 
+        let currentShippingMethod = 'normal';
         $('#ctf_form .shippingPanel>.expressShipping').on('click', function () {
-            $('#ctf_form .shippingPanel>div').removeClass('selected');
-            $('#ctf_form .shippingPanel .standardShipping').hide();
-            $('#ctf_form .shippingPanel .shippingExpress').show();
-            $(this).addClass('selected');
-        })
+            if (currentShippingMethod !== 'express') {
+                $('#ctf_form .shippingPanel>div').removeClass('selected');
+                $('#ctf_form .shippingPanel .standardShipping').hide();
+                $('#ctf_form .shippingPanel .shippingExpress').show();
+                $(this).addClass('selected');
+
+                $("#ExpressActivator").val('on');
+                currentShippingMethod = 'express';
+
+                let getPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+                let totalPrice = Number(getPrice) + 15;
+                $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice);
+
+                $('.priceCounter').text(totalPrice);
+            }
+        });
 
         $('#ctf_form .shippingPanel>.normalShipping').on('click', function () {
-            $('#ctf_form .shippingPanel>div').removeClass('selected');
-            $('#ctf_form .shippingPanel .standardShipping').show();
-            $('#ctf_form .shippingPanel .shippingExpress').hide();
-            $(this).addClass('selected');
-        })
+            if (currentShippingMethod !== 'normal') {
+                $('#ctf_form .shippingPanel>div').removeClass('selected');
+                $('#ctf_form .shippingPanel .standardShipping').show();
+                $('#ctf_form .shippingPanel .shippingExpress').hide();
+                $(this).addClass('selected');
+
+                $("#ExpressActivator").val('off');
+                currentShippingMethod = 'normal';
+
+                let getPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+                let totalPrice = Number(getPrice) - 15;
+                $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice);
+                $('.priceCounter').text(totalPrice);
+            }
+        });
+
     });
 
     $(document).ready(function () {

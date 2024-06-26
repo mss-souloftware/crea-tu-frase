@@ -161,7 +161,8 @@ function chocoletras_shortCode()
                                         </div>
                                     </div>
                                     <input type="text" name="name" id="fname" placeholder="Nombre Completo" required />
-                                    <input type="email" name="email" id="email" placeholder="Email del comprador" required />
+                                    <input type="email" name="email" id="email" placeholder="Email del comprador"
+                                        required />
                                     <div class="twiceField">
                                         <input type="tel" name="tel" id="chocoTel" placeholder="Tel&#233;fono" minlength="9"
                                             required />
@@ -171,7 +172,8 @@ function chocoletras_shortCode()
                                         <input type="text" name="city" id="city" placeholder="Ciudad" />
                                         <input type="text" name="province" id="province" placeholder="Provincia" />
                                     </div>
-                                    <input type="text" name="address" id="address" placeholder="Direccion de entrega" required />
+                                    <input type="text" name="address" id="address" placeholder="Direccion de entrega"
+                                        required />
                                     <div class="shippingPanel">
                                         <div class="normalShipping selected">
                                             <p>Envío Normal</p>
@@ -205,25 +207,26 @@ function chocoletras_shortCode()
                                             <p>Envío Express! ( 24h-48h! días laborables ) por €15</p>
                                         </div>
                                         <?php /*
-                                        $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                                        $getCookieOUILast = explode("_", $getCookieOUI);
-                                        $lastCookieVal = end($getCookieOUILast);
-                                        function uniqueOrderNum(int $lengthURN = 10): string
-                                        {
-                                            $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                                            $randomOrderNum = '';
-                                            for ($i = 0; $i < $lengthURN; $i++) {
-                                                $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
-                                            }
-                                            return $randomOrderNum;
+                                    $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                                    $getCookieOUILast = explode("_", $getCookieOUI);
+                                    $lastCookieVal = end($getCookieOUILast);
+                                    function uniqueOrderNum(int $lengthURN = 10): string
+                                    {
+                                        $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                        $randomOrderNum = '';
+                                        for ($i = 0; $i < $lengthURN; $i++) {
+                                            $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
                                         }
+                                        return $randomOrderNum;
+                                    }
 
-                                        $finalUON = uniqueOrderNum();
-                                        */ ?>
+                                    $finalUON = uniqueOrderNum();
+                                    */ ?>
                                         <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
                                             ?>" placeholder="Unique Order ID">
                                     </div>
-                                    <textarea name="message" id="message" placeholder="Agregue su comentario aquí."></textarea>
+                                    <textarea name="message" id="message"
+                                        placeholder="Agregue su comentario aquí."></textarea>
                                     <div class="termCondition">
                                         <input type="checkbox" name="term" id="TermAndCond" required>
                                         <label for="TermAndCond">
@@ -249,6 +252,13 @@ function chocoletras_shortCode()
                                 echo ' style="display: block; opacity: 1;"';
                             }
                             ?>>
+                                <?php
+                                $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
+
+                                // echo '<pre>';
+                                // print_r($getOrderData);
+                                // echo '</pre>';
+                                ?>
                                 <div class="form-card">
                                     <div class="row">
                                         <div class="col-7">
@@ -256,22 +266,14 @@ function chocoletras_shortCode()
                                         </div>
                                         <div class="col-5">
                                             <h2 class="steps">
-                                                <pre id="<?php echo _e('actual') ?>">0</pre>
-                                                <b id="<?php echo _e('counter') ?>">
-                                                    <?php echo get_option('gastoMinimo') + get_option('precEnvio'); ?>
-                                                </b>
+                                                <b class="priceCounter"><?php echo $getOrderData['priceTotal']; ?></b>
                                                 €
                                             </h2>
                                         </div>
                                     </div>
                                     <div class="ordersPanel">
-                                        <?php
-                                        $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
 
-                                        // echo '<pre>';
-                                        // print_r($getOrderData);
-                                        // echo '</pre>';
-                                    
+                                        <?php
                                         $scCounter = 0;
                                         foreach ($getOrderData['mainText'] as $frase) {
                                             $screenshotUrl = isset($getOrderData['screenshots'][$scCounter]) ? $getOrderData['screenshots'][$scCounter] : '';
@@ -287,8 +289,7 @@ function chocoletras_shortCode()
                                                     </svg>
                                                 </div>
                                                 <div class="orderThumb">
-                                                    <img src="<?php echo get_site_url() . $screenshotUrl; ?>"
-                                                        alt="">
+                                                    <img src="<?php echo get_site_url() . $screenshotUrl; ?>" alt="">
                                                 </div>
                                                 <div class="orderData">
                                                     <p>Frase: <?php echo $frase; ?></p>
@@ -319,29 +320,12 @@ function chocoletras_shortCode()
                                                     </div>
                                                 </div>
                                             </div>
-                                        <?php $scCounter ++;
-                                            } ?>
+                                            <?php $scCounter++;
+                                        } ?>
                                     </div>
-                                </div>
-                                <input type="button" name="next" class="next action-button" value="Submit" />
-                                <!-- <input type="button" name="previous" class="previous action-button-previous" -->
-                                    <!-- value="Previous" /> -->
-                            </fieldset>
-                            <fieldset>
-                                <div class="form-card">
-                                    <div class="row">
-                                        <div class="col-7">
-                                            <h2 class="fs-title">Método De Pago</h2>
-                                        </div>
-                                        <div class="col-5">
-                                            <h2 class="steps">
-                                                <pre id="<?php echo _e('actual') ?>">0</pre>
-                                                <b id="<?php echo _e('counter') ?>">
-                                                    <?php echo get_option('gastoMinimo') + get_option('precEnvio'); ?>
-                                                </b>
-                                                €
-                                            </h2>
-                                        </div>
+
+                                    <div class="lineBreaker">
+                                        <span>Aceptamos Pagos</span>
                                     </div>
 
                                     <div class="paymentPanel">
@@ -410,6 +394,29 @@ function chocoletras_shortCode()
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <input type="button" name="next" class="next action-button" value="Submit" />
+                                <!-- <input type="button" name="previous" class="previous action-button-previous"
+                                    value="Previous" /> -->
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-card">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h2 class="fs-title">Método De Pago</h2>
+                                        </div>
+                                        <div class="col-5">
+                                            <h2 class="steps">
+                                                <pre id="<?php echo _e('actual') ?>">0</pre>
+                                                <b id="<?php echo _e('counter') ?>">
+                                                    <?php echo get_option('gastoMinimo') + get_option('precEnvio'); ?>
+                                                </b>
+                                                €
+                                            </h2>
+                                        </div>
+                                    </div>
+
+
 
                                 </div>
                                 <input type="button" name="next" class="next action-button" value="Pay Now" />
