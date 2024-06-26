@@ -84,21 +84,25 @@
         });
 
         let screenshotPaths = [];
-        function saveScreenshot(imgData, filename, callback) {
+        let screenshotData = [];
+
+        function saveScreenshots(screenshots, callback) {
             $.ajax({
                 type: "POST",
                 url: "/wordpress/wp-content/plugins/crea-tu-frase/utils/save_screenshot.php",
                 data: {
-                    imgBase64: imgData,
-                    filename: filename
+                    screenshots: screenshots
                 },
                 success: function (response) {
-                    console.log("Screenshot saved successfully as " + filename);
-                    screenshotPaths.push('/wp-content/uploads/order/' + filename);
+                    console.log("Screenshots saved successfully.");
+                    const data = JSON.parse(response);
+                    if (data.status === 'success') {
+                        screenshotPaths = data.filepaths;
+                    }
                     callback(null, response);
                 },
                 error: function (error) {
-                    console.error("Error saving screenshot:", error);
+                    console.error("Error saving screenshots:", error);
                     callback(error);
                 }
             });
@@ -106,34 +110,39 @@
 
         $("#continuarBTN").on('click', function () {
             $('.priceCounter').text($("#counter").text());
-        });
-
-        $("#ctf_form").on("submit", function () {
 
             $(".typewriterInner").each(function (index) {
                 const element = $(this)[0]; // Get the DOM element
                 const timestamp = new Date().getTime();
                 const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.png';
-                const filename = `screenshot_${new Date().getTime()}_${index}.png`;
 
                 html2canvas(element, {
                     scale: 3, // Increase the scale for better resolution (adjust as needed)
                     useCORS: true
                 }).then(canvas => {
                     const imgData = canvas.toDataURL('image/png');
-
-                    // Save the screenshot
-                    saveScreenshot(imgData, filename, uniqueFilename, function (error, response) {
-                        if (!error) {
-                            console.log("Screenshot for element " + index + " saved successfully as " + uniqueFilename);
-                        }
+                    screenshotData.push({
+                        imgBase64: imgData,
+                        filename: uniqueFilename
                     });
+
+                    // If this is the last element, send the AJAX request
+                    if (screenshotData.length === $(".typewriterInner").length) {
+                        saveScreenshots(screenshotData, function (error, response) {
+                            if (!error) {
+                                console.log("All screenshots saved successfully.");
+                            }
+                        });
+                    }
                 }).catch(error => {
                     console.error("Error capturing screenshot for element " + index, error);
                 });
             });
 
-            
+        });
+
+        $("#ctf_form").on("submit", function () {
+
             const mainText = [$('#getText').val()];
             const fullName = $("#fname").val();
             const email = $("#email").val();

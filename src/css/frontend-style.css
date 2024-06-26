@@ -486,7 +486,7 @@
 .ordersPanel .orderDetails {
     position: relative;
     display: flex;
-    align-items: self-start;
+    align-items: stretch;
     border: 1px solid #D1D5DB;
     border-radius: 8px;
     padding: 10px;
@@ -496,9 +496,18 @@
 .ordersPanel .orderDetails .orderThumb {
     width: 30%;
     margin-right: 10px;
+    overflow: hidden;
+    min-width: 123px;
 }
 
-.ordersPanel .orderDetails .orderData {
+.ordersPanel .orderDetails .orderThumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+s .ordersPanel .orderDetails .orderData {
     width: 70%;
 }
 

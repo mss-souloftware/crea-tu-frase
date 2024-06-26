@@ -272,8 +272,9 @@ function chocoletras_shortCode()
                                         // print_r($getOrderData);
                                         // echo '</pre>';
                                     
-
+                                        $scCounter = 0;
                                         foreach ($getOrderData['mainText'] as $frase) {
+                                            $screenshotUrl = isset($getOrderData['screenshots'][$scCounter]) ? $getOrderData['screenshots'][$scCounter] : '';
                                             ?>
 
                                             <div class="orderDetails">
@@ -286,7 +287,7 @@ function chocoletras_shortCode()
                                                     </svg>
                                                 </div>
                                                 <div class="orderThumb">
-                                                    <img src="<?php echo plugin_dir_url(__DIR__) . "img/orders/dummy.png"; ?>"
+                                                    <img src="<?php echo get_site_url() . $screenshotUrl; ?>"
                                                         alt="">
                                                 </div>
                                                 <div class="orderData">
@@ -318,7 +319,8 @@ function chocoletras_shortCode()
                                                     </div>
                                                 </div>
                                             </div>
-                                        <?php } ?>
+                                        <?php $scCounter ++;
+                                            } ?>
                                     </div>
                                 </div>
                                 <input type="button" name="next" class="next action-button" value="Submit" />
