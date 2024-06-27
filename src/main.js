@@ -22,6 +22,49 @@
         g = ["reportAproblem_wrapper_triguer", "reportClosedApplyOpacity", "reportAproblem_wrapper", "reportAproblem", "reportClosed"],
         h = ["reportAproblem_wrapper_response", "reportAproblem_wrapper_response_span", "reportFormId"],
         w = ["ramdomNumberOne", "ramdomNumberTwo", "ramdomNumberResults"];
+
+
+    // function calculateTotalPrice() {
+    //     let totalPrice = 0;
+    //     let totalCount = 0;
+
+    //     // Calculate the price for #getText field
+    //     const getTextValue = jQuery('#getText').val();
+    //     if (getTextValue) {
+    //         const { price, count } = E(getTextValue);
+    //         totalPrice += parseFloat(price);
+    //         totalCount += parseInt(count);
+    //     }
+
+    //     // Calculate the price for .fraseInput fields
+    //     jQuery('.fraseInput').each(function () {
+    //         const value = jQuery(this).val();
+    //         const { price, count } = E(value);
+    //         totalPrice += parseFloat(price);
+    //         totalCount += parseInt(count);
+    //     });
+
+    //     const minPrice = parseFloat(ajax_variables.gastoMinimo);
+    //     const shippingCost = parseFloat(ajax_variables.precEnvio);
+
+    //     if (totalPrice > minPrice) {
+    //         totalPrice += shippingCost;
+    //     } else {
+    //         totalPrice = minPrice + shippingCost;
+    //     }
+
+    //     jQuery('#ctf_form #counter').text(totalPrice.toFixed(1));
+    //     jQuery('#actual').text(totalCount);
+    //     jQuery('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice.toFixed(1));
+    // }
+
+    // jQuery('#getText').on('keyup', function () {
+    //     calculateTotalPrice();
+    // })
+    // jQuery('.form-card .frasePanel .closeBtnTyper').click(function () {
+    //     calculateTotalPrice();
+    //     alert();
+    // })
     document.getElementById("itemsEmaiBtn");
     var E = function (e) {
         var t = ajax_variables.precCoraz,
@@ -82,14 +125,8 @@
                 {
                     key: "init",
                     value: function () {
-                        e.addEventListener("keyup", function (e) {
-                            var r, o;
-                            e.target.value = ((o = /[<>\[\]=/*@#$`|\\^;:(")'}{]/g), (r = e.target.value.toString().replace(/\s/g, "♥")), 1 == o.test(r) && (r = r.replace(o, "").toUpperCase()), r.toUpperCase());
-                            var i =
-                                parseFloat(E(e.target.value).price) > ajax_variables.gastoMinimo
-                                    ? parseFloat(E(e.target.value).price) + parseFloat(ajax_variables.precEnvio)
-                                    : parseFloat(ajax_variables.gastoMinimo) + parseFloat(ajax_variables.precEnvio);
-                            (t.innerText = i.toString().substr(0, 5)), (n.innerText = E(e.target.value).count), (a.value = t.innerText);
+                        document.addEventListener("keyup", function (e) {
+                            // calculateTotalPrice();
                         });
                     },
                 },
@@ -104,6 +141,7 @@
             r
         );
     })();
+
     const x = (function () {
         function t() {
             !(function (e, t) {
