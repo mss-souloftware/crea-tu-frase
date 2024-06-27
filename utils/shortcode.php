@@ -222,7 +222,7 @@ function chocoletras_shortCode()
                                             <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
                                         </div>
                                         <div class="shippingExpress" style="display: none;">
-                                            <p>Envío Express! ( 24h-48h! días laborables ) por €15</p>
+                                            <p>Envío Express! ( 24h-48h! días laborables ) por <?php echo _e('€' . get_option('expressShiping')) ?></p>
                                         </div>
                                         <?php /*
                                $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
@@ -267,6 +267,7 @@ function chocoletras_shortCode()
                                         name="chocofrase" readonly>
                                     <input class="chocoletrasPlg__wrapperCode-dataUser-form-input-price" type="hidden"
                                         name="price" readonly>
+                                    <input id="expressShipingPrice" type="hidden" value="<?php echo get_option('expressShiping')?>" readonly>
                                     <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
                             </fieldset>
                             <fieldset <?php
@@ -447,7 +448,7 @@ function chocoletras_shortCode()
                                         upto date with our discounts and offer!
                                     </p>
                                     <div class="termCondition">
-                                        <input type="checkbox" name="term" id="newsletterCLP" required>
+                                        <input type="checkbox" name="newsCLP" id="newsletterCLP">
                                         <label for="newsletterCLP">
                                             Subscribe to our newsletter.
                                         </label>

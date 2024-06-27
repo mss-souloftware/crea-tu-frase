@@ -36,7 +36,7 @@ function submenuOutput(){
     <tr>
       <td> <div> <input type="number" maxlength="10" name="conditionalSubmit_precCorazon" value="<?php 
       echo get_option('precCoraz') ? get_option('precCoraz') : ''; ?>">  </div></td>
-      <td><?php echo ('Coloque el precio por cada ♥'); ?></td>
+      <td><?php echo ('Coloque el precio por cada ♥ Y ✯'); ?></td>
     </tr>
     <tr>
       <td> <div> <input type="number" maxlength="10" name="conditionalSubmit_precEnvio" value="<?php 

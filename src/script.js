@@ -242,6 +242,18 @@
             setCookie('chocoletraOrderData', cookieValue);
         })
 
+
+        function removeCookie(name) {
+            document.cookie = name + '=; Max-Age=0; path=/;';
+        }
+
+        jQuery(document).ready(function () {
+            jQuery("#cancelProcessPaiment").on('click', function () {
+                removeCookie('chocoletraOrderData');
+            });
+        });
+
+
         function setCookie(name, value, days) {
             const date = new Date();
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -261,7 +273,7 @@
                 currentShippingMethod = 'express';
 
                 let getPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
-                let totalPrice = Number(getPrice) + 15;
+                let totalPrice = Number(getPrice) + Number($("#expressShipingPrice").val());
                 $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice);
 
                 $('.priceCounter').text(totalPrice);
@@ -279,7 +291,7 @@
                 currentShippingMethod = 'normal';
 
                 let getPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
-                let totalPrice = Number(getPrice) - 15;
+                let totalPrice = Number(getPrice) - Number($("#expressShipingPrice").val());
                 $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice);
                 $('.priceCounter').text(totalPrice);
             }
