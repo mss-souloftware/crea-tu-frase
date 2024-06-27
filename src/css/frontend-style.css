@@ -283,12 +283,25 @@
     padding: 5px 15px 5px 10px;
     border-radius: 30px;
     color: #fff;
-    cursor: pointer;
+    cursor: default;
     transition: all 0.3s linear;
 }
 
-#addNewFrase:hover {
+#addNewFrase:not(:disabled):hover {
     background: #000;
+    cursor: pointer;
+}
+
+.form-card .frasePanel {
+    position: relative;
+}
+
+.form-card .frasePanel .closeBtnTyper {
+    position: absolute;
+    right: -10px;
+    top: -12px;
+    background: #fff;
+    cursor: pointer;
 }
 
 #addNewFrase img {
@@ -481,6 +494,20 @@
     top: 15px;
     left: 18px;
     transform: rotate(310deg);
+}
+
+.swithcerBtnGroup #cancelProcessPaiment.action-button-previous:before {
+    display: none;
+}
+
+#ctf_form #cancelProcessPaiment.action-button-previous {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#ctf_form #cancelProcessPaiment.action-button-previous:hover svg path {
+    stroke: #000;
 }
 
 .ordersPanel .orderDetails {
