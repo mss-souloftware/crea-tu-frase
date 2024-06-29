@@ -693,6 +693,7 @@
                                 r = document.getElementById(b[3]);
                             t.addEventListener("change", function (t) {
                                 var o = new Date().getDay();
+                                console.log('click');
                                 (6 !== o && 0 !== o) || (alert("😓 No es posible realizar envíos expre0ss en Sabados y Domingos"), (t.currentTarget.checked = !1)),
                                     t.currentTarget.checked ? ((e.value = "on"), n.classList.add("showDatePannel"), (r.value = "")) : ((e.value = "off"), n.classList.remove("showDatePannel"));
                             });

@@ -240,6 +240,9 @@
 
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
             setCookie('chocoletraOrderData', cookieValue);
+
+            let finalPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+            $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(finalPrice);
         })
 
 

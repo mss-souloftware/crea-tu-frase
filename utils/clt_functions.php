@@ -126,8 +126,8 @@ add_action('admin_menu', 'clt_adminMenu');
 function clt_adminMenu()
 {
   add_menu_page(
-    'Chocoletras Admin',
-    'Chocoletras',
+    'Todas las órdenes',
+    'Pedidos',
     'install_plugins',
     'clt_amin',
     'chocoletraMenu_ftn',
@@ -141,8 +141,8 @@ function addSubmenuChocoletras()
 {
   add_submenu_page(
     'clt_amin',
-    'Opciones Generales',
-    'Opciones',
+    'Todos los ajustes',
+    'Ajustes',
     'install_plugins',
     'set_options',
     'submenuOutput',
@@ -150,47 +150,47 @@ function addSubmenuChocoletras()
   );
 }
 
-add_action('admin_menu', 'addSubmenuStrypeKeys');
-function addSubmenuStrypeKeys()
-{
-  add_submenu_page(
-    'clt_amin',
-    'Stripe setUp',
-    'Stripe Keys',
-    'install_plugins',
-    'set_stripe_keys',
-    'stripeOptions',
-    2
-  );
-}
+// add_action('admin_menu', 'addSubmenuStrypeKeys');
+// function addSubmenuStrypeKeys()
+// {
+//   add_submenu_page(
+//     'clt_amin',
+//     'Stripe setUp',
+//     'Stripe Keys',
+//     'install_plugins',
+//     'set_stripe_keys',
+//     'stripeOptions',
+//     2
+//   );
+// }
 
-add_action('admin_menu', 'addSubmenuEmailOptions');
-function addSubmenuEmailOptions()
-{
-  add_submenu_page(
-    'clt_amin',
-    'Email setUp',
-    'email Items',
-    'install_plugins',
-    'set_email_items',
-    'emailItemsOutput',
-    2
-  );
-}
+// add_action('admin_menu', 'addSubmenuEmailOptions');
+// function addSubmenuEmailOptions()
+// {
+//   add_submenu_page(
+//     'clt_amin',
+//     'Email setUp',
+//     'email Items',
+//     'install_plugins',
+//     'set_email_items',
+//     'emailItemsOutput',
+//     2
+//   );
+// }
 
-add_action('admin_menu', 'listOfReportProblems');
-function listOfReportProblems()
-{
-  add_submenu_page(
-    'clt_amin',
-    'Error Reports',
-    'Reportes',
-    'install_plugins',
-    'set_report_errors',
-    'reportsPage',
-    2
-  );
-}
+// add_action('admin_menu', 'listOfReportProblems');
+// function listOfReportProblems()
+// {
+//   add_submenu_page(
+//     'clt_amin',
+//     'Error Reports',
+//     'Reportes',
+//     'install_plugins',
+//     'set_report_errors',
+//     'reportsPage',
+//     2
+//   );
+// }
 
 // ACTIIVATION PLUGIN FUNCTION
 

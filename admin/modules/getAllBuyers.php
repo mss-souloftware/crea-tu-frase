@@ -25,7 +25,7 @@ function chocoletraMenu_ftn(){
   $elementsPagination = $payment->paginationElements();
     ?>
       <div class="AdministracionVentas">
-          <h2>Administracion de ventas</h2>
+          <h2>Todos los detalles de los pedidos</h2>
           <section class="AdministracionVentas-table">
             <div class="AdministracionVentas-table-thead">
               <ul>
