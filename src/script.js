@@ -312,8 +312,23 @@
         setProgressBar(current);
 
         $("#picDate").flatpickr({
-            minDate: "today"
+            minDate: "today", // Sets the minimum date to today
+            maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Sets the maximum date to the last day of the current month
+            disable: [
+                function (date) {
+                    return (date.getDay() === 0); // Disable Sundays
+                },
+                function (date) {
+                    var month = date.getMonth();
+                    var dayOfWeek = date.getDay();
+
+                    return (month === 5 || month === 6 || month === 7 || month === 8) && dayOfWeek === 1; // Disable specific days in months 5-8
+                }
+            ]
         });
+
+
+
 
 
         $(".next").click(function () {

@@ -396,8 +396,8 @@
 }
 
 .ChocoletrasBackendOpciones {
-    width: 500px;
-    max-width: 350px
+    width: 100%;
+    max-width: 800px;
 }
 
 .ChocoletrasBackendOpciones thead tr {
@@ -415,7 +415,8 @@
 }
 
 .ChocoletrasBackendOpciones tbody tr td:first-child {
-    width: 30%
+    width: 50%;
+    font-size: 16px;
 }
 
 .ChocoletrasBackendOpciones tbody tr td:first-child div input,
@@ -425,7 +426,7 @@
 }
 
 .ChocoletrasBackendOpciones tbody tr td:nth-child(2) {
-    width: 70%;
+    width: 50%;
     padding-left: 20px
 }
 
@@ -781,23 +782,25 @@
 }
 
 .AdministracionVentas-table-thead {
-    background: #fff;
+    background: #000000;
     border: 1px solid #d4cbcb;
     font-size: 14px;
-    color: #0073aa
+    color: #fff;
+    margin: 0 0 10px 0;
+    padding: 10px 0;
 }
 
 .AdministracionVentas-table-tbody_id,
 .AdministracionVentas-table-thead_id {
-    width: 4%;
-    min-width: 30px;
+    width: 1%;
+    min-width: 15px;
     margin: 0;
     padding: 0
 }
 
 .AdministracionVentas-table-thead-frase {
-    width: 35%;
-    min-width: 300px
+    width: 12%;
+    min-width: 100px;
 }
 
 .AdministracionVentas-table-tbody_precio,
@@ -810,7 +813,7 @@
 .AdministracionVentas-table-tbody_payment,
 .AdministracionVentas-table-thead_fecha,
 .AdministracionVentas-table-thead_payment {
-    width: 8%;
+    width: 10%;
     min-width: 120px
 }
 
@@ -818,8 +821,13 @@
 .AdministracionVentas-table-tbody_proceso,
 .AdministracionVentas-table-thead_enviado,
 .AdministracionVentas-table-thead_proceso {
-    width: 7%;
+    width: 10%;
     min-width: 100px
+}
+
+.AdministracionVentas-table-thead_frasTotal,
+.AdministracionVentas-table-tbody_enviado {
+    width: 8%;
 }
 
 .AdministracionVentas-table-thead ul {
@@ -861,12 +869,19 @@
 }
 
 .AdministracionVentas-table-tbody ul:nth-child(odd) {
-    background: #f5f3f3
+    background: #fff;
+    border: 1px solid #D4CBCB;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.AdministracionVentas-table-tbody ul:nth-child(odd)>li:not(:first-child) {
+    cursor: default;
 }
 
 .AdministracionVentas-table-tbody-frase {
-    width: 35%;
-    min-width: 300px;
+    width: 12%;
+    min-width: 100px;
     color: #0073aa
 }
 
@@ -890,7 +905,7 @@
     display: flex;
     flex-direction: column;
     margin-right: 35px;
-    width: 25%
+    width: 100%
 }
 
 .AdministracionVentas-table-tbody_hidenInfo-sections span,
@@ -958,11 +973,14 @@
 
 .AdministracionVentas__pagination a button {
     padding: 5px 10px;
-    border-radius: 0;
     background: #000;
     border: 0;
     color: #fff;
-    cursor: pointer
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    font-size: 16px;
+    border-radius: 100px;
 }
 
 .AdministracionVentas__pagination a button:disabled {
@@ -981,7 +999,34 @@
 
 .openpannel {
     height: unset !important;
-    padding: 15px
+    padding: 15px;
+    border: 1px solid #D4CBCB;
+    border-top: none;
+}
+
+.AdministracionVentas-table-tbody_payment span,
+.AdministracionVentas-table-tbody_express span {
+    display: inline-block;
+    text-align: center;
+    padding: 3px 12px;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.AdministracionVentas-table-tbody_payment .notPaid {
+    background: #ff4d4d;
+}
+
+.AdministracionVentas-table-tbody_payment .paid {
+    background: #00b300;
+}
+
+.AdministracionVentas-table-tbody_express .express {
+    background: #6666ff;
+}
+
+.AdministracionVentas-table-tbody_express .normal {
+    background: #00cc99;
 }
 
 @keyframes reload {
@@ -1097,4 +1142,14 @@ label {
     margin-bottom: 15px;
     height: 50px;
     border-radius: 5px;
+}
+
+.AdministracionVentas-table-tbody_hidenInfo>div {
+    width: 33.33%;
+}
+
+.AdministracionVentas-table-tbody_hidenInfo>div>span {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
 }

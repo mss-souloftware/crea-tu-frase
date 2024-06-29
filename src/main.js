@@ -270,7 +270,14 @@
                             document.getElementsByName(v[11])[0].value || (t = "message=No Mensaje");
                             var l = o
                                 .filter(function (t) {
-                                    if ("date" == t[0].name && "" == t[0].value) return (t[0].value = "2000-01-01");
+                                    if ("date" == t[0].name && "" == t[0].value) {
+                                        var currentDate = new Date();
+                                        var year = currentDate.getFullYear();
+                                        var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                                        var day = currentDate.getDate().toString().padStart(2, '0');
+                                        t[0].value = year + '-' + month + '-' + day;
+                                    }
+
                                     if (("express" == t[0].name && "on" == t[0].value && (r = !0), "price" == t[0].name && r)) {
                                         var n = E(e.value).price,
                                             o = ajax_variables.express,
