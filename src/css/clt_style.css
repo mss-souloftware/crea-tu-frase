@@ -1153,3 +1153,9 @@ label {
     margin-bottom: 10px;
     font-size: 14px;
 }
+
+#calendarSettingsStyling select {
+    height: 150px;
+    width: 100%;
+    overflow: auto;
+}

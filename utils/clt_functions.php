@@ -14,6 +14,7 @@ require_once plugin_dir_path(__FILE__) . 'clt_saveInfo.php';
 require_once plugin_dir_path(__FILE__) . '../admin/outputBackend.php';
 require_once plugin_dir_path(__FILE__) . '../admin/statuschange/setStatus.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/submenu.php';
+require_once plugin_dir_path(__FILE__) . '../admin/calander/calander.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/itemsEmail.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/reportsPage.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/stripe.php';
@@ -30,16 +31,57 @@ require_once plugin_dir_path(__FILE__) . './report/deletteReport.php';
 
 function clt_admin_style()
 {
+  wp_enqueue_style('faltpickrForPluginBackend', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', array(), false);
+  wp_enqueue_script('flatpcikrScriptForBackend', 'https://cdn.jsdelivr.net/npm/flatpickr', array(), '1.0.0', true);
   wp_enqueue_style('backendStyleForClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
   wp_enqueue_script('backendScript', plugins_url('../src/clt_script.js', __FILE__), array(), '1.0.0', true);
-  wp_localize_script('backendScript', 'ajax_variables', array(
-    'ajax_url' => admin_url('admin-ajax.php'),
-    'nonce' => wp_create_nonce('my-ajax-nonce'),
-    'action' => 'proceso'
-  )
+  wp_enqueue_script('backendCustomScript', plugins_url('../src/b_script.js', __FILE__), array('jquery', 'flatpcikrScriptForBackend'), '1.0.0', true);
+
+  wp_localize_script(
+    'backendCustomScript',
+    'calendarSettings',
+    array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'nonce' => wp_create_nonce('calendar_settings_nonce')
+    )
+  );
+
+  wp_localize_script(
+    'backendScript',
+    'ajax_variables',
+    array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'nonce' => wp_create_nonce('my-ajax-nonce'),
+      'action' => 'proceso'
+    )
   );
 }
 add_action('admin_enqueue_scripts', 'clt_admin_style');
+
+
+add_action('wp_ajax_get_calendar_settings', 'get_calendar_settings');
+add_action('wp_ajax_nopriv_get_calendar_settings', 'get_calendar_settings');
+
+function get_calendar_settings() {
+    $disable_dates = get_option('disable_dates', []);
+    $disable_days = get_option('disable_days', []);
+    $disable_days_range = get_option('disable_days_range', '');
+    $disable_months_days = get_option('disable_months_days', ['months' => [], 'days' => []]);
+
+    // Convert array to comma-separated string
+    $disable_dates_string = implode(',', $disable_dates);
+
+    $response = array(
+        'disable_dates' => $disable_dates_string,
+        'disable_days' => $disable_days,
+        'disable_days_range' => $disable_days_range,
+        'disable_months_days' => $disable_months_days,
+    );
+
+    wp_send_json($response);
+}
+
+
 
 function chocoletrasInsertScripts()
 {
@@ -55,21 +97,24 @@ function chocoletrasInsertScripts()
   wp_enqueue_script('screencaptureOrder', 'https://cdn.jsdelivr.net/npm/html2canvas@1.3.2/dist/html2canvas.min.js', array(), '1.0.0', true);
   wp_enqueue_script('scriptForFrontend', plugins_url('../src/script.js', __FILE__), array(), '1.0.0', true);
 
-  wp_localize_script('chocoletrasScript', 'ajax_variables', array(
-    'ajax_url' => admin_url('admin-ajax.php'),
-    'nonce' => wp_create_nonce('my-ajax-nonce'),
-    'action' => 'event-list',
-    'plgPage' => get_option('pluginPage'),
-    'stripe' => isset($_COOKIE['stripeLoaded']) ? true : false,
-    'publicKy' => get_option("publishablekey"),
-    'precLetra' => get_option('precLetra'),
-    'precCoraz' => get_option('precCoraz'),
-    'precEnvio' => get_option('precEnvio'),
-    'maxCaracteres' => get_option('maxCaracteres'),
-    'gastoMinimo' => get_option('gastoMinimo'),
-    'express' => get_option('expressShiping'),
-    'pluginUrl' => plugin_dir_url(__DIR__),
-  )
+  wp_localize_script(
+    'chocoletrasScript',
+    'ajax_variables',
+    array(
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'nonce' => wp_create_nonce('my-ajax-nonce'),
+      'action' => 'event-list',
+      'plgPage' => get_option('pluginPage'),
+      'stripe' => isset($_COOKIE['stripeLoaded']) ? true : false,
+      'publicKy' => get_option("publishablekey"),
+      'precLetra' => get_option('precLetra'),
+      'precCoraz' => get_option('precCoraz'),
+      'precEnvio' => get_option('precEnvio'),
+      'maxCaracteres' => get_option('maxCaracteres'),
+      'gastoMinimo' => get_option('gastoMinimo'),
+      'express' => get_option('expressShiping'),
+      'pluginUrl' => plugin_dir_url(__DIR__),
+    )
   );
 }
 add_action('wp_enqueue_scripts', 'chocoletrasInsertScripts');
@@ -148,7 +193,17 @@ function addSubmenuChocoletras()
     'submenuOutput',
     2
   );
+  add_submenu_page(
+    'clt_amin', // Parent slug
+    'Calendario', // Page title
+    'Calendario', // Menu title
+    'manage_options',
+    'calendar_settings',
+    'calanderOutput',
+    3
+  );
 }
+
 
 // add_action('admin_menu', 'addSubmenuStrypeKeys');
 // function addSubmenuStrypeKeys()

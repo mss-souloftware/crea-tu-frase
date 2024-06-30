@@ -311,26 +311,6 @@
 
         setProgressBar(current);
 
-        $("#picDate").flatpickr({
-            minDate: "today", // Sets the minimum date to today
-            maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), // Sets the maximum date to the last day of the current month
-            disable: [
-                function (date) {
-                    return (date.getDay() === 0); // Disable Sundays
-                },
-                function (date) {
-                    var month = date.getMonth();
-                    var dayOfWeek = date.getDay();
-
-                    return (month === 5 || month === 6 || month === 7 || month === 8) && dayOfWeek === 1; // Disable specific days in months 5-8
-                }
-            ]
-        });
-
-
-
-
-
         $(".next").click(function () {
             current_fs = $(this).parents('fieldset');
             next_fs = $(this).parents('fieldset').next();
@@ -396,5 +376,71 @@
         })
 
     });
+
+
+    jQuery(document).ready(function ($) {
+        // Make AJAX request to retrieve calendar settings
+        $.ajax({
+            url: ajax_variables.ajax_url,
+            method: 'POST',
+            data: {
+                action: 'get_calendar_settings'
+            },
+            success: function (response) {
+                console.log(response); // Debugging: Log the response to ensure it's correct
+    
+                var disableDays = response.disable_days || [];
+                var disableDatesString = response.disable_dates || '';
+                var disableMonthsDays = response.disable_months_days || { months: [], days: [] };
+    
+                // Split the disableDates string into an array of individual dates
+                var disableDates = disableDatesString.split(',').map(function(date) {
+                    return date.trim();
+                });
+    
+                console.log("Disable Days:", disableDays); // Log disable days
+                console.log("Disable Dates:", disableDates); // Log disable dates
+                console.log("Disable Months and Days:", disableMonthsDays); // Log disable months and days
+    
+                // Initialize Flatpickr with disabled days and dates
+                $("#picDate").flatpickr({
+                    minDate: "today",
+                    defaultDate: "today",
+                    dateFormat: "Y-m-d",
+                    disable: [
+                        // Disable specific days
+                        function (date) {
+                            return disableDays.includes(date.getDay().toString());
+                        },
+                        // Disable specific dates
+                        function (date) {
+                            var formattedDate = flatpickr.formatDate(date, "Y-m-d");
+                            return disableDates.includes(formattedDate);
+                        },
+                        // Disable specific days in selected months
+                        function (date) {
+                            var month = date.getMonth();
+                            var day = date.getDay();
+                            if (disableMonthsDays.months.includes(month.toString()) && disableMonthsDays.days.includes(day.toString())) {
+                                return true;
+                            }
+                            return false;
+                        }
+                    ],
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    });
+    
+
+
+
+
+
+
+
 
 }(jQuery));
