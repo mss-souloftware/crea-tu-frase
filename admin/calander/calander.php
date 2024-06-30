@@ -48,7 +48,7 @@
                     <th scope="row">Deshabilitar días específicos para todos los meses/años</th>
                     <td>
                         <select name="disable_days[]" multiple>
-                            <option value="0" <?php echo in_array("0", $disable_days) ? 'selected' : ''; ?>>Sunday</option>
+                            <option value="0" <?php echo in_array("0", $disable_days) ? 'selected' : ''; ?>>git a</option>
                             <option value="1" <?php echo in_array("1", $disable_days) ? 'selected' : ''; ?>>Monday</option>
                             <option value="2" <?php echo in_array("2", $disable_days) ? 'selected' : ''; ?>>Tuesday</option>
                             <option value="3" <?php echo in_array("3", $disable_days) ? 'selected' : ''; ?>>Wednesday</option>

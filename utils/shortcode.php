@@ -165,7 +165,7 @@ function chocoletras_shortCode()
                                 echo ' style="display: none; opacity: 0;"';
                             }
                             ?>>
-                            <fieldset style="display: block; opacity: 1;">
+                            <fieldset>
                                 <div class="form-card">
                                     <div class="row">
                                         <div class="col-7">

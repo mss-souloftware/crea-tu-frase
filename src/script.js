@@ -378,8 +378,8 @@
     });
 
 
-    jQuery(document).ready(function ($) {
-        // Make AJAX request to retrieve calendar settings
+    $(document).ready(function ($) {
+
         $.ajax({
             url: ajax_variables.ajax_url,
             method: 'POST',
@@ -387,28 +387,25 @@
                 action: 'get_calendar_settings'
             },
             success: function (response) {
-                console.log(response); // Debugging: Log the response to ensure it's correct
-    
+                // console.log(response
+
                 var disableDays = response.disable_days || [];
                 var disableDatesString = response.disable_dates || '';
                 var disableMonthsDays = response.disable_months_days || { months: [], days: [] };
-    
-                // Split the disableDates string into an array of individual dates
-                var disableDates = disableDatesString.split(',').map(function(date) {
+
+                var disableDates = disableDatesString.split(',').map(function (date) {
                     return date.trim();
                 });
-    
-                console.log("Disable Days:", disableDays); // Log disable days
-                console.log("Disable Dates:", disableDates); // Log disable dates
-                console.log("Disable Months and Days:", disableMonthsDays); // Log disable months and days
-    
-                // Initialize Flatpickr with disabled days and dates
+
+                // console.log("Disable Days:", disableDays); 
+                // console.log("Disable Dates:", disableDates); 
+                // console.log("Disable Months and Days:", disableMonthsDays);
+
                 $("#picDate").flatpickr({
                     minDate: "today",
                     defaultDate: "today",
                     dateFormat: "Y-m-d",
                     disable: [
-                        // Disable specific days
                         function (date) {
                             return disableDays.includes(date.getDay().toString());
                         },
@@ -417,7 +414,6 @@
                             var formattedDate = flatpickr.formatDate(date, "Y-m-d");
                             return disableDates.includes(formattedDate);
                         },
-                        // Disable specific days in selected months
                         function (date) {
                             var month = date.getMonth();
                             var day = date.getDay();
@@ -434,7 +430,7 @@
             }
         });
     });
-    
+
 
 
 
