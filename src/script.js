@@ -198,74 +198,52 @@
 
         });
 
-        $(document).ready(function () {
-            $("#ctf_form").on("submit", function (event) {
-                event.preventDefault();  // Prevent the default form submission
-        
-                console.log('submitting');
-                const mainText = [$('#getText').val()];
-                const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
-                const fullName = $("#fname").val();
-                const email = $("#email").val();
-                const tel = $("#chocoTel").val();
-                const postal = $("#cp").val();
-                const city = $("#city").val();
-                const province = $("#province").val();
-                const address = $("#address").val();
-                let picDate = $("#picDate").val();
-                const shippingType = $("#ExpressActivator").val();
-                const message = $("#message").val();
-        
-                if (!picDate) {
-                    picDate = new Date().toISOString();
-                }
-        
-                $('.fraseInput').each(function () {
-                    mainText.push($(this).val());
-                });
-        
-                const formData = {
-                    action: 'responseForm',
-                    mainText: JSON.stringify(mainText),
-                    priceTotal: priceTotal,
-                    fname: fullName,
-                    email: email,
-                    tel: tel,
-                    postal: postal,
-                    city: city,
-                    province: province,
-                    address: address,
-                    picDate: picDate,
-                    shippingType: shippingType,
-                    experss: new Date().toISOString(),
-                    message: message,
-                    nonce: ajax_variables.nonce
-                };
-        
-                console.log('formData:', formData); // Log the form data for debugging
-        
-                $.ajax({
-                    type: "POST",
-                    url: ajax_variables.ajax_url,
-                    data: formData,
-                    success: function (response) {
-                        console.log(response);
-                        if (response.Status === true) {
-                            alert("Data submitted successfully");
-                        } else {
-                            alert("Error submitting data");
-                        }
-                    },
-                    error: function (error) {
-                        console.error("Error:", error);
-                        alert("An error occurred while submitting data");
-                    }
-                });
+        $("#ctf_form").on("submit", function () {
+            console.log('submition');
+            const mainText = [$('#getText').val()];
+            const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+            const fullName = $("#fname").val();
+            const email = $("#email").val();
+            const tel = $("#chocoTel").val();
+            const postal = $("#cp").val();
+            const city = $("#city").val();
+            const province = $("#province").val();
+            const address = $("#address").val();
+            let picDate = $("#picDate").val();
+            const shippingType = $("#ExpressActivator").val();
+            const message = $("#message").val();
+
+            if (!picDate) {
+                picDate = new Date().toISOString();
+            }
+
+            $('.fraseInput').each(function () {
+                mainText.push($(this).val());
             });
-        });
-        
 
+            const cookieData = {
+                mainText: mainText,
+                priceTotal: priceTotal,
+                fname: fullName,
+                email: email,
+                tel: tel,
+                postal: postal,
+                city: city,
+                province: province,
+                address: address,
+                picDate: picDate,
+                shippingType: shippingType,
+                experss: new Date().toISOString(),
+                message: message,
+                screenshots: screenshotPaths
+            };
 
+            const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
+            setCookie('chocoletraOrderData', cookieValue);
+
+            let finalPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+            $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(finalPrice);
+        })
 
 
         function removeCookie(name) {
@@ -400,7 +378,8 @@
     });
 
 
-    jQuery(document).ready(function ($) {
+    $(document).ready(function ($) {
+
         $.ajax({
             url: ajax_variables.ajax_url,
             method: 'POST',
@@ -408,7 +387,7 @@
                 action: 'get_calendar_settings'
             },
             success: function (response) {
-                // console.log('AJAX Response:', response); // Debugging line
+                // console.log(response
 
                 var disableDays = response.disable_days || [];
                 var disableDatesString = response.disable_dates || '';
@@ -418,6 +397,10 @@
                     return date.trim();
                 });
 
+                // console.log("Disable Days:", disableDays); 
+                // console.log("Disable Dates:", disableDates); 
+                // console.log("Disable Months and Days:", disableMonthsDays);
+
                 $("#picDate").flatpickr({
                     minDate: "today",
                     defaultDate: "today",
@@ -426,6 +409,7 @@
                         function (date) {
                             return disableDays.includes(date.getDay().toString());
                         },
+                        // Disable specific dates
                         function (date) {
                             var formattedDate = flatpickr.formatDate(date, "Y-m-d");
                             return disableDates.includes(formattedDate);
@@ -446,7 +430,6 @@
             }
         });
     });
-
 
 
 

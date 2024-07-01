@@ -172,7 +172,7 @@ function clt_adminMenu()
 {
   add_menu_page(
     'Todas las órdenes',
-    'Chocoletras',
+    'Pedidos',
     'install_plugins',
     'clt_amin',
     'chocoletraMenu_ftn',

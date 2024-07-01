@@ -319,6 +319,7 @@
                                     console.error(e);
                                 },
                                 success: function (e) {
+                                    console.log("".concat(l, "&nonce=").concat(ajax_variables.nonce, "&").concat(t));
                                     console.info("JSON.parse(response).Datos.Status ", e);
                                     try {
                                         JSON.parse(e).Datos.Status ? j("processEnd", JSON.parse(e).Datos.amount, JSON.parse(e).Datos.cookie, JSON.parse(e).Datos.nonce, ajax_variables.haveNonce) : alert(JSON.parse(e).Datos);
