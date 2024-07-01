@@ -198,52 +198,74 @@
 
         });
 
-        $("#ctf_form").on("submit", function () {
-            console.log('submition');
-            const mainText = [$('#getText').val()];
-            const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
-            const fullName = $("#fname").val();
-            const email = $("#email").val();
-            const tel = $("#chocoTel").val();
-            const postal = $("#cp").val();
-            const city = $("#city").val();
-            const province = $("#province").val();
-            const address = $("#address").val();
-            let picDate = $("#picDate").val();
-            const shippingType = $("#ExpressActivator").val();
-            const message = $("#message").val();
-
-            if (!picDate) {
-                picDate = new Date().toISOString();
-            }
-
-            $('.fraseInput').each(function () {
-                mainText.push($(this).val());
+        $(document).ready(function () {
+            $("#ctf_form").on("submit", function (event) {
+                event.preventDefault();  // Prevent the default form submission
+        
+                console.log('submitting');
+                const mainText = [$('#getText').val()];
+                const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+                const fullName = $("#fname").val();
+                const email = $("#email").val();
+                const tel = $("#chocoTel").val();
+                const postal = $("#cp").val();
+                const city = $("#city").val();
+                const province = $("#province").val();
+                const address = $("#address").val();
+                let picDate = $("#picDate").val();
+                const shippingType = $("#ExpressActivator").val();
+                const message = $("#message").val();
+        
+                if (!picDate) {
+                    picDate = new Date().toISOString();
+                }
+        
+                $('.fraseInput').each(function () {
+                    mainText.push($(this).val());
+                });
+        
+                const formData = {
+                    action: 'responseForm',
+                    mainText: JSON.stringify(mainText),
+                    priceTotal: priceTotal,
+                    fname: fullName,
+                    email: email,
+                    tel: tel,
+                    postal: postal,
+                    city: city,
+                    province: province,
+                    address: address,
+                    picDate: picDate,
+                    shippingType: shippingType,
+                    experss: new Date().toISOString(),
+                    message: message,
+                    nonce: ajax_variables.nonce
+                };
+        
+                console.log('formData:', formData); // Log the form data for debugging
+        
+                $.ajax({
+                    type: "POST",
+                    url: ajax_variables.ajax_url,
+                    data: formData,
+                    success: function (response) {
+                        console.log(response);
+                        if (response.Status === true) {
+                            alert("Data submitted successfully");
+                        } else {
+                            alert("Error submitting data");
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error:", error);
+                        alert("An error occurred while submitting data");
+                    }
+                });
             });
+        });
+        
 
-            const cookieData = {
-                mainText: mainText,
-                priceTotal: priceTotal,
-                fname: fullName,
-                email: email,
-                tel: tel,
-                postal: postal,
-                city: city,
-                province: province,
-                address: address,
-                picDate: picDate,
-                shippingType: shippingType,
-                experss: new Date().toISOString(),
-                message: message,
-                screenshots: screenshotPaths
-            };
 
-            const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
-            setCookie('chocoletraOrderData', cookieValue);
-
-            let finalPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
-            $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(finalPrice);
-        })
 
 
         function removeCookie(name) {
@@ -387,15 +409,15 @@
             },
             success: function (response) {
                 // console.log('AJAX Response:', response); // Debugging line
-    
+
                 var disableDays = response.disable_days || [];
                 var disableDatesString = response.disable_dates || '';
                 var disableMonthsDays = response.disable_months_days || { months: [], days: [] };
-    
+
                 var disableDates = disableDatesString.split(',').map(function (date) {
                     return date.trim();
                 });
-    
+
                 $("#picDate").flatpickr({
                     minDate: "today",
                     defaultDate: "today",
@@ -424,7 +446,7 @@
             }
         });
     });
-    
+
 
 
 

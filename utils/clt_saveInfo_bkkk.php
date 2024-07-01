@@ -10,7 +10,7 @@
 */  
   
 function responseForm() { 
-    $arr = array('Datos' => confirmAllIsReady() );
+    $arr = array('Datos' =>   () );
 
     echo json_encode($arr); 
     exit;

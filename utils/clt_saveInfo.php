@@ -13,7 +13,7 @@
 function responseForm()
 {
   $arr = array('Datos' => confirmAllIsReady());
-
+  echo'<script>alert();</script>';
   echo json_encode($arr);
   exit;
 }

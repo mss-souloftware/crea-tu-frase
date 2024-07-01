@@ -155,7 +155,7 @@ function chocoletras_shortCode()
                                                 placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
                                         </div>
                                     </div>
-                                    <button id="addNewFrase" disabled>
+                                    <button type="button" id="addNewFrase" disabled>
                                         <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>"> Nueva frase
                                     </button>
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
@@ -165,7 +165,7 @@ function chocoletras_shortCode()
                                 echo ' style="display: none; opacity: 0;"';
                             }
                             ?>>
-                            <fieldset>
+                            <fieldset style="display: block; opacity: 1;">
                                 <div class="form-card">
                                     <div class="row">
                                         <div class="col-7">
