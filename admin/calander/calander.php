@@ -6,7 +6,7 @@
  * 
  */
 
- function calanderOutput() {
+function calanderOutput() {
     if (isset($_POST['calendar_settings_nonce']) && wp_verify_nonce($_POST['calendar_settings_nonce'], 'save_calendar_settings')) {
         if (isset($_POST['disable_dates'])) {
             update_option('disable_dates', array_map('sanitize_text_field', $_POST['disable_dates']));
@@ -14,41 +14,48 @@
         if (isset($_POST['disable_days'])) {
             update_option('disable_days', array_map('sanitize_text_field', $_POST['disable_days']));
         }
-        if (isset($_POST['disable_days_range'])) {
-            update_option('disable_days_range', sanitize_text_field($_POST['disable_days_range']));
-        }
         if (isset($_POST['disable_months_days'])) {
-            update_option('disable_months_days', array_map('sanitize_text_field', $_POST['disable_months_days']));
+            update_option('disable_months_days', [
+                'months' => array_map('sanitize_text_field', $_POST['disable_months_days']['months']),
+                'days' => array_map('sanitize_text_field', $_POST['disable_months_days']['days'])
+            ]);
         }
     }
 
     $disable_dates = get_option('disable_dates', []);
     $disable_days = get_option('disable_days', []);
-    $disable_days_range = get_option('disable_days_range', '');
     $disable_months_days = get_option('disable_months_days', ['months' => [], 'days' => []]);
+
+    // Ensure that disable_months_days is an array with 'months' and 'days' keys
+    if (!is_array($disable_months_days)) {
+        $disable_months_days = ['months' => [], 'days' => []];
+    } else {
+        if (!isset($disable_months_days['months']) || !is_array($disable_months_days['months'])) {
+            $disable_months_days['months'] = [];
+        }
+        if (!isset($disable_months_days['days']) || !is_array($disable_months_days['days'])) {
+            $disable_months_days['days'] = [];
+        }
+    }
+
     ?>
+
     <div class="wrap">
-        <h2>Configurar los ajustes del calendario</h2>
+        <h2>Configure Calendar Settings</h2>
         <form method="post" action="" id="calendarSettingsStyling">
             <?php wp_nonce_field('save_calendar_settings', 'calendar_settings_nonce'); ?>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row">Deshabilitar fechas específicas</th>
+                    <th scope="row">Deshabilitar múltiples fechas</th>
                     <td>
                         <input type="text" name="disable_dates[]" value="<?php echo esc_attr(implode(',', $disable_dates)); ?>" placeholder="Select dates" id="disable_dates" />
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Desactivar días dentro del rango</th>
-                    <td>
-                        <input type="text" name="disable_days_range" value="<?php echo esc_attr($disable_days_range); ?>" placeholder="Select range and days" id="disable_days_range" />
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row">Deshabilitar días específicos para todos los meses/años</th>
+                    <th scope="row">Deshabilitar varios días con todos los Meses/Años</th>
                     <td>
                         <select name="disable_days[]" multiple>
-                            <option value="0" <?php echo in_array("0", $disable_days) ? 'selected' : ''; ?>>git a</option>
+                            <option value="0" <?php echo in_array("0", $disable_days) ? 'selected' : ''; ?>>Sunday</option>
                             <option value="1" <?php echo in_array("1", $disable_days) ? 'selected' : ''; ?>>Monday</option>
                             <option value="2" <?php echo in_array("2", $disable_days) ? 'selected' : ''; ?>>Tuesday</option>
                             <option value="3" <?php echo in_array("3", $disable_days) ? 'selected' : ''; ?>>Wednesday</option>

@@ -85,7 +85,7 @@ function get_calendar_settings() {
 
 function chocoletrasInsertScripts()
 {
-  wp_enqueue_script('chocoletrasScript', plugins_url('../src/main.js', __FILE__), array(), '1.0.0', true);
+  // wp_enqueue_script('chocoletrasScript', plugins_url('../src/main.js', __FILE__), array(), '1.0.0', true);
   wp_enqueue_style('pluginStylesClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
 
   wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
@@ -98,7 +98,7 @@ function chocoletrasInsertScripts()
   wp_enqueue_script('scriptForFrontend', plugins_url('../src/script.js', __FILE__), array(), '1.0.0', true);
 
   wp_localize_script(
-    'chocoletrasScript',
+    'scriptForFrontend',
     'ajax_variables',
     array(
       'ajax_url' => admin_url('admin-ajax.php'),
@@ -172,7 +172,7 @@ function clt_adminMenu()
 {
   add_menu_page(
     'Todas las órdenes',
-    'Pedidos',
+    'Chocoletras',
     'install_plugins',
     'clt_amin',
     'chocoletraMenu_ftn',

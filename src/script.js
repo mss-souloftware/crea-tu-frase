@@ -378,8 +378,7 @@
     });
 
 
-    $(document).ready(function ($) {
-
+    jQuery(document).ready(function ($) {
         $.ajax({
             url: ajax_variables.ajax_url,
             method: 'POST',
@@ -387,20 +386,16 @@
                 action: 'get_calendar_settings'
             },
             success: function (response) {
-                // console.log(response
-
+                // console.log('AJAX Response:', response); // Debugging line
+    
                 var disableDays = response.disable_days || [];
                 var disableDatesString = response.disable_dates || '';
                 var disableMonthsDays = response.disable_months_days || { months: [], days: [] };
-
+    
                 var disableDates = disableDatesString.split(',').map(function (date) {
                     return date.trim();
                 });
-
-                // console.log("Disable Days:", disableDays); 
-                // console.log("Disable Dates:", disableDates); 
-                // console.log("Disable Months and Days:", disableMonthsDays);
-
+    
                 $("#picDate").flatpickr({
                     minDate: "today",
                     defaultDate: "today",
@@ -409,7 +404,6 @@
                         function (date) {
                             return disableDays.includes(date.getDay().toString());
                         },
-                        // Disable specific dates
                         function (date) {
                             var formattedDate = flatpickr.formatDate(date, "Y-m-d");
                             return disableDates.includes(formattedDate);
@@ -430,6 +424,7 @@
             }
         });
     });
+    
 
 
 
