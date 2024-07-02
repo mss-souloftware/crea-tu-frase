@@ -37,7 +37,7 @@ function chocoletraMenu_ftn()
           <li class="AdministracionVentas-table-thead_enviado"><?php echo esc_html('Teléfono'); ?></li>
           <li class="AdministracionVentas-table-thead_fecha"><?php echo esc_html('Fecha'); ?></li>
           <li class="AdministracionVentas-table-thead_precio"><?php echo esc_html('Precio'); ?></li>
-          <li class="AdministracionVentas-table-thead_payment"><?php echo esc_html('Pagado'); ?></li>
+          <li class="AdministracionVentas-table-thead_payment"><?php echo esc_html('Pagar Con'); ?></li>
           <li class="AdministracionVentas-table-thead_frasTotal"><?php echo esc_html('Frase total'); ?></li>
           <li class="AdministracionVentas-table-thead_proceso"><?php echo esc_html('Estado'); ?></li>
           <li class="AdministracionVentas-table-thead_proceso"><?php echo esc_html('Fecha de Entrega'); ?></li>
@@ -47,9 +47,9 @@ function chocoletraMenu_ftn()
       <div class="AdministracionVentas-table-tbody">
         <?php
         foreach ($allusers as $value) {
-          echo '<pre>';
-          print_r($value);
-          echo '</pre>';
+          // echo '<pre>';
+          // print_r($value);
+          // echo '</pre>';
           $payment = $value->pagoRealizado == 0 ? 'No Pagado' : 'Pagado';
           $paymentClass = $value->pagoRealizado == 0 ? 'notPaid' : 'paid';
           $proceso = $value->enProceso == 0 ? '...' : 'Procesando';
@@ -71,7 +71,7 @@ function chocoletraMenu_ftn()
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fecha . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_precio">' . $value->precio . '€</li>';
           echo '<li class="AdministracionVentas-table-tbody_payment"><span class="' . $paymentClass . '">' . $payment . '</span></li>';
-          echo '<li class="AdministracionVentas-table-tbody_enviado">' . $fraseCount . '</li>';
+          echo '<li class="AdministracionVentas-table-tbody_enviado">Bizum</li>';
           echo '<li class="AdministracionVentas-table-tbody_payment">' . $payment . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fechaEntrega . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_express"><span class="' . $expressStatus . '">' . $isExpress . '</span></li>';
@@ -83,7 +83,7 @@ function chocoletraMenu_ftn()
                 <span><b>Nombre: </b>' . $value->nombre . '</span>
                 <span><b>Email: </b>' . $value->email . '</span>
                 <span><b>Telefono: </b>' . $value->telefono . '</span>
-                <span><b>Frases: </b></span>';
+                <span><b>Frases: (' . $fraseCount . ')</b></span>';
           if (is_array($repareFrase)) {
             foreach ($repareFrase as $frase) {
               echo '<span>' . htmlspecialchars($frase) . '</span>';
@@ -92,6 +92,7 @@ function chocoletraMenu_ftn()
           if ($value->message != "") {
             echo getMessage($value->message);
           }
+          echo '<span><b>ID de pago:</b> ' . $value->uoi . '</span>';
           echo '</div>';
 
           echo '<div class="infoPanelInnn">

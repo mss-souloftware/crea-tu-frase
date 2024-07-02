@@ -107,24 +107,24 @@ function chocoletras_shortCode()
                             <!-- progressbar -->
                             <ul id="progressbar">
                                 <li <?php
-                                if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
+                                if (isset($_COOKIE['chocol_cookie'])) {
                                     echo ' class="active"';
                                 }
                                 ?> id="account"><strong>Frase</strong></li>
                                 <li <?php
-                                if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
+                                if (isset($_COOKIE['chocol_cookie'])) {
                                     echo ' class="active"';
                                 }
                                 ?> id="personal"><strong>Envío</strong></li>
                                 <li <?php
-                                if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
+                                if (isset($_COOKIE['chocol_cookie'])) {
                                     echo ' class="active"';
                                 }
                                 ?> id="payment"><strong>Pagos</strong></li>
                                 <li id="confirm"><strong>Finalizar</strong></li>
                             </ul>
                             <fieldset <?php
-                            if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
+                            if (isset($_COOKIE['chocol_cookie'])) {
                                 echo ' style="display: none; opacity: 0;"';
                             }
                             ?>>
@@ -161,11 +161,15 @@ function chocoletras_shortCode()
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
                                     class="next action-button" disabled>Continuar</button>
                             </fieldset <?php
-                            if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
+                            if (isset($_COOKIE['chocol_cookie'])) {
                                 echo ' style="display: none; opacity: 0;"';
                             }
                             ?>>
-                            <fieldset>
+                            <fieldset <?php
+                            if (isset($_COOKIE['chocol_cookie'])) {
+                                echo ' style="display: none; opacity: 0;"';
+                            }
+                            ?>
                                 <div class="form-card">
                                     <div class="row">
                                         <div class="col-7">
@@ -271,7 +275,7 @@ function chocoletras_shortCode()
                                     <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
                             </fieldset>
                             <fieldset <?php
-                            if (isset($_COOKIE['chocol_cookie']) && get_option($_COOKIE['chocol_cookie'])) {
+                            if (isset($_COOKIE['chocol_cookie'])) {
                                 echo ' style="display: block; opacity: 1;"';
                             }
                             ?>>
@@ -465,6 +469,84 @@ function chocoletras_shortCode()
                         <div class="chocoletrasPlg__wrapperCode-payment"></div>
                         <div class="chocoletrasPlg__wrapperCode-firstHead"></div>
                         <div class="chocoletrasPlg__wrapperCode-firstHead-dataUser"></div>
+                    </div>
+
+                    <div class="chocoletrasPlg__wrapperCode-payment-buttons-left">
+                        <?php
+
+                        function generateRandomOrderNumberRedsys(int $lengthRedsys = 10): string
+                        {
+                            $charactersRedsys = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            $randomStringRedsys = '';
+                            for ($i = 0; $i < $lengthRedsys; $i++) {
+                                $randomStringRedsys .= $charactersRedsys[rand(0, strlen($charactersRedsys) - 1)];
+                            }
+                            return $randomStringRedsys;
+                        }
+
+                        $orderNumberRedsys = generateRandomOrderNumberRedsys();
+
+                        function generateRandomOrderNumberBizum(int $lengthBizum = 10): string
+                        {
+                            $charactersBizum = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            $randomStringBizum = '';
+                            for ($i = 0; $i < $lengthBizum; $i++) {
+                                $randomStringBizum .= $charactersBizum[rand(0, strlen($charactersBizum) - 1)];
+                            }
+                            return $randomStringBizum;
+                        }
+
+                        $orderNumberBizum = generateRandomOrderNumberBizum();
+
+                        $redsysAPIwoo = WP_PLUGIN_DIR . '/redsyspur/apiRedsys/apiRedsysFinal.php';
+
+                        require_once ($redsysAPIwoo);
+                        // echo $lastCookieVal;
+                        $miObj = new RedsysAPI;
+
+
+                        // $amount = get_option($_COOKIE['chocol_cookie']);
+                        // $amount = $amount ? str_replace('.', '', $amount) : 'null';
+                    
+                        // $amount = $amount ? explode('_', $amount)[0] : 'null';
+                    
+
+                        $amount = $getOrderData['priceTotal'];
+                        $amount = $amount ? str_replace('.', '', $amount) : 'null';
+                        $amount = $amount ? explode('_', $amount)[0] : 'null';
+
+                        // Check the length of the amount
+                        if (strlen($amount) == 3) {
+                            // Add "0" at the end
+                            $amount = $amount . "0";
+                        } elseif (strlen($amount) == 2) {
+                            // Add "00" at the end
+                            $amount = $amount . "00";
+                        }
+
+                        $miObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
+                        $miObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRedsys);
+                        $miObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
+                        $miObj->setParameter("DS_MERCHANT_CURRENCY", "978");
+                        $miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
+                        $miObj->setParameter("DS_MERCHANT_TERMINAL", "001");
+                        $miObj->setParameter("DS_MERCHANT_MERCHANTURL", "https://chocoletra.com/crea-tu-frase/");
+                        $miObj->setParameter("DS_MERCHANT_URLOK", "https://chocoletra.com/gracias-chocoletra/?payment=true&payerID=" . $lastCookieVal);
+                        $miObj->setParameter("DS_MERCHANT_URLKO", "https://chocoletra.com/crea-tu-frase/");
+
+                        $params = $miObj->createMerchantParameters();
+                        // $claveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+                        $claveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+                        $firma = $miObj->createMerchantSignature($claveSHA256); ?>
+                        <form action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
+                            <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
+                            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
+                            <input type="hidden" name="Ds_Signature" value="<?php echo $firma; ?>" />
+                            <button type="submit"><span>
+                                    <?php echo _e('Pagar con Tarjeta '); ?>
+                                </span><img src="https://chocoletra.com/wp-content/uploads/2024/03/redsys-tarjetas.png"
+                                    alt="<?php echo _e('Chocoletra'); ?>"></button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -239,7 +239,7 @@
                 express: new Date().toISOString(),
                 message: message,
                 uoi: uoi,
-                screenshots: screenshotPaths // Make sure screenshotPaths is defined
+                screenshots: screenshotPaths
             };
 
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
@@ -268,24 +268,24 @@
                 url: ajax_variables.ajax_url,
                 data: dataToSend,
                 success: function (response) {
-                    console.log("Response from server: ", response);
-                    const parsedResponse = JSON.parse(response);
+                    // console.log("Response from server: ", response);
+                    // const parsedResponse = JSON.parse(response);
 
-                    if (parsedResponse.Datos.Status) {
-                        console.info("Process succeeded: ", parsedResponse.Datos);
-                    } else {
-                        console.error("Process failed: ", parsedResponse.Datos);
-                        alert(parsedResponse.Datos); 
-                    }
+                    // if (parsedResponse.Datos.Status) {
+                    //     console.info("Process succeeded: ", parsedResponse.Datos);
+                    // } else {
+                    //     console.error("Process failed: ", parsedResponse.Datos);
+                    // }
+                    setCookie('chocol_cookie', true);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
+                },
+                complete: function () {
+                    location.reload();
                 }
             });
         });
-
-
-
 
         function removeCookie(name) {
             document.cookie = name + '=; Max-Age=0; path=/;';
@@ -293,7 +293,21 @@
 
         jQuery(document).ready(function () {
             jQuery("#cancelProcessPaiment").on('click', function () {
-                removeCookie('chocoletraOrderData');
+
+                $.ajax({
+                    type: "post",
+                    url: ajax_variables.ajax_url,
+                    dataType: "json",
+                    data: "action=cancelProcess",
+                    error: function (e) {
+                        console.log(e);
+                    },
+                    success: function (e) {
+                        removeCookie('chocoletraOrderData');
+                        removeCookie('chocol_cookie');
+                        location.reload();
+                    },
+                });
             });
         });
 
