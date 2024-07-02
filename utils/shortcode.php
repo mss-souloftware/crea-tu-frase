@@ -160,16 +160,12 @@ function chocoletras_shortCode()
                                     </button>
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
                                     class="next action-button" disabled>Continuar</button>
-                            </fieldset <?php
+                            </fieldset>
+                            <fieldset style="display: block; opacity: 1;" <?php
                             if (isset($_COOKIE['chocol_cookie'])) {
                                 echo ' style="display: none; opacity: 0;"';
                             }
                             ?>>
-                            <fieldset <?php
-                            if (isset($_COOKIE['chocol_cookie'])) {
-                                echo ' style="display: none; opacity: 0;"';
-                            }
-                            ?>
                                 <div class="form-card">
                                     <div class="row">
                                         <div class="col-7">
@@ -226,29 +222,37 @@ function chocoletras_shortCode()
                                             <input type="date" name="date" id="picDate" placeholder="Fecha de entrega" />
                                         </div>
                                         <div class="shippingExpress" style="display: none;">
-                                            <p>Envío Express! ( 24h-48h! días laborables ) por <?php echo _e('€' . get_option('expressShiping')) ?></p>
+                                            <p>Envío Express! ( 24h-48h! días laborables ) por
+                                                <?php echo _e('€' . get_option('expressShiping')) ?></p>
                                         </div>
                                         <?php /*
-                               $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                               $getCookieOUILast = explode("_", $getCookieOUI);
-                               $lastCookieVal = end($getCookieOUILast); */
-                               function uniqueOrderNum(int $lengthURN = 10): string
-                               {
-                                   $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                                   $randomOrderNum = '';
-                                   for ($i = 0; $i < $lengthURN; $i++) {
-                                       $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
-                                   }
-                                   return $randomOrderNum;
-                               }
+                              $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                              $getCookieOUILast = explode("_", $getCookieOUI);
+                              $lastCookieVal = end($getCookieOUILast); */
+                                        function uniqueOrderNum(int $lengthURN = 10): string
+                                        {
+                                            $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                                            $randomOrderNum = '';
+                                            for ($i = 0; $i < $lengthURN; $i++) {
+                                                $randomOrderNum .= $uniqueOrderNumber[rand(0, strlen($uniqueOrderNumber) - 1)];
+                                            }
+                                            return $randomOrderNum;
+                                        }
 
-                               $finalUON = uniqueOrderNum();
-                               ?>
-                                        <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php echo $finalUON; 
-                                            ?>" placeholder="Unique Order ID">
+                                        $finalUON = uniqueOrderNum();
+                                        ?>
+                                        <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php echo $finalUON;
+                                        ?>" placeholder="Unique Order ID">
                                     </div>
                                     <textarea name="message" id="message"
                                         placeholder="Agregue su comentario aquí."></textarea>
+
+                                    <div class="couponSection">
+                                        <input type="text" name="name" id="coupon"
+                                            placeholder="Ingresa tu código de cupón aquí" required />
+                                        <button type="button">Apply</button>
+                                    </div>
+
                                     <div class="termCondition">
                                         <input type="checkbox" name="term" id="TermAndCond" required>
                                         <label for="TermAndCond">
@@ -271,7 +275,8 @@ function chocoletras_shortCode()
                                         name="chocofrase" readonly>
                                     <input class="chocoletrasPlg__wrapperCode-dataUser-form-input-price" type="hidden"
                                         name="price" readonly>
-                                    <input id="expressShipingPrice" type="hidden" value="<?php echo get_option('expressShiping')?>" readonly>
+                                    <input id="expressShipingPrice" type="hidden"
+                                        value="<?php echo get_option('expressShiping') ?>" readonly>
                                     <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
                             </fieldset>
                             <fieldset <?php
@@ -308,12 +313,12 @@ function chocoletras_shortCode()
 
                                             <div class="orderDetails">
                                                 <?php /*    
-                                                               <div class="closeBtn" id="cancelProcessPaiment">
-                                                                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                       <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#E64C3C" />
-                                                                   </svg>
-                                                               </div>
-                                                               */ ?>
+                                                                  <div class="closeBtn" id="cancelProcessPaiment">
+                                                                      <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                          <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#E64C3C" />
+                                                                      </svg>
+                                                                  </div>
+                                                                  */ ?>
                                                 <div class="orderThumb">
                                                     <img src="<?php echo get_site_url() . $screenshotUrl; ?>" alt="">
                                                 </div>

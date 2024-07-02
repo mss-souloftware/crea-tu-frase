@@ -92,7 +92,7 @@ function chocoletraMenu_ftn()
           if ($value->message != "") {
             echo getMessage($value->message);
           }
-          echo '<span><b>ID de pago:</b> ' . $value->uoi . '</span>';
+          echo '<span><b>Solicitar ID:</b> ' . $value->uoi . '</span>';
           echo '</div>';
 
           echo '<div class="infoPanelInnn">

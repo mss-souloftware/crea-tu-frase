@@ -488,6 +488,36 @@
 
 
 
+    jQuery(document).ready(function ($) {
+        $('.couponSection button').on('click', function () {
+            var coupon = $('#coupon').val();
+
+            if (coupon === '') {
+                alert('Please enter a coupon code');
+                return;
+            }
+
+            $.ajax({
+                url: ajax_variables.ajax_urlgit, // You can also use ajax_variables.ajax_url if you have defined it
+                type: 'POST',
+                data: {
+                    action: 'validate_coupon',
+                    coupon: coupon
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.data.message);
+                        // You can also handle the discount value here, e.g., apply it to the total price
+                    } else {
+                        alert(response.data.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while validating the coupon');
+                }
+            });
+        });
+    });
 
 
 

@@ -15,6 +15,7 @@ require_once plugin_dir_path(__FILE__) . '../admin/outputBackend.php';
 require_once plugin_dir_path(__FILE__) . '../admin/statuschange/setStatus.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/submenu.php';
 require_once plugin_dir_path(__FILE__) . '../admin/calander/calander.php';
+require_once plugin_dir_path(__FILE__) . '../admin/coupons/coupons.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/itemsEmail.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/reportsPage.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/stripe.php';
@@ -62,23 +63,24 @@ add_action('admin_enqueue_scripts', 'clt_admin_style');
 add_action('wp_ajax_get_calendar_settings', 'get_calendar_settings');
 add_action('wp_ajax_nopriv_get_calendar_settings', 'get_calendar_settings');
 
-function get_calendar_settings() {
-    $disable_dates = get_option('disable_dates', []);
-    $disable_days = get_option('disable_days', []);
-    $disable_days_range = get_option('disable_days_range', '');
-    $disable_months_days = get_option('disable_months_days', ['months' => [], 'days' => []]);
+function get_calendar_settings()
+{
+  $disable_dates = get_option('disable_dates', []);
+  $disable_days = get_option('disable_days', []);
+  $disable_days_range = get_option('disable_days_range', '');
+  $disable_months_days = get_option('disable_months_days', ['months' => [], 'days' => []]);
 
-    // Convert array to comma-separated string
-    $disable_dates_string = implode(',', $disable_dates);
+  // Convert array to comma-separated string
+  $disable_dates_string = implode(',', $disable_dates);
 
-    $response = array(
-        'disable_dates' => $disable_dates_string,
-        'disable_days' => $disable_days,
-        'disable_days_range' => $disable_days_range,
-        'disable_months_days' => $disable_months_days,
-    );
+  $response = array(
+    'disable_dates' => $disable_dates_string,
+    'disable_days' => $disable_days,
+    'disable_days_range' => $disable_days_range,
+    'disable_months_days' => $disable_months_days,
+  );
 
-    wp_send_json($response);
+  wp_send_json($response);
 }
 
 
@@ -118,6 +120,44 @@ function chocoletrasInsertScripts()
   );
 }
 add_action('wp_enqueue_scripts', 'chocoletrasInsertScripts');
+
+
+// Register AJAX actions
+function register_coupon_ajax()
+{
+  add_action('wp_ajax_validate_coupon', 'validate_coupon');
+  add_action('wp_ajax_nopriv_validate_coupon', 'validate_coupon');
+}
+add_action('init', 'register_coupon_ajax');
+
+// Validate Coupon Function
+function validate_coupon()
+{
+  if (!isset($_POST['coupon']) || empty($_POST['coupon'])) {
+    wp_send_json_error(['message' => 'Coupon code is required']);
+  }
+
+  $coupon_code = sanitize_text_field($_POST['coupon']);
+  $coupons = get_option('coupons', []);
+
+  foreach ($coupons as $coupon) {
+    if ($coupon['name'] === $coupon_code) {
+      // Check if the coupon has expired
+      if (!empty($coupon['expiration']) && strtotime($coupon['expiration']) < time()) {
+        wp_send_json_error(['message' => 'This coupon has expired']);
+      }
+
+      // Check usage limit (you can implement your own logic here)
+      // For simplicity, let's assume the usage limit check is passed
+
+      wp_send_json_success(['message' => 'Coupon is valid', 'discount' => $coupon['value'], 'type' => $coupon['type']]);
+    }
+  }
+
+  wp_send_json_error(['message' => 'Invalid coupon code']);
+}
+
+
 
 // vincule data script to php file //
 add_action('wp_ajax_nopriv_test_action', 'responseForm');
@@ -201,6 +241,15 @@ function addSubmenuChocoletras()
     'calendar_settings',
     'calanderOutput',
     3
+  );
+  add_submenu_page(
+    'clt_amin', // Parent slug
+    'Cupones', // Page title
+    'Cupones', // Menu title
+    'manage_options',
+    'coupons_settings',
+    'coupon_settings_page',
+    4
   );
 }
 
