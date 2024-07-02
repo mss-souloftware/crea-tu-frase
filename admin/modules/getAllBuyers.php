@@ -47,9 +47,9 @@ function chocoletraMenu_ftn()
       <div class="AdministracionVentas-table-tbody">
         <?php
         foreach ($allusers as $value) {
-          // echo '<pre>';
-          // print_r($value);
-          // echo '</pre>';
+          echo '<pre>';
+          print_r($value);
+          echo '</pre>';
           $payment = $value->pagoRealizado == 0 ? 'No Pagado' : 'Pagado';
           $paymentClass = $value->pagoRealizado == 0 ? 'notPaid' : 'paid';
           $proceso = $value->enProceso == 0 ? '...' : 'Procesando';

@@ -198,8 +198,10 @@
 
         });
 
-        $("#ctf_form").on("submit", function () {
-            console.log('submition');
+        $("#ctf_form").on("submit", function (event) {
+            event.preventDefault();
+
+            console.log('submission');
             const mainText = [$('#getText').val()];
             const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
             const fullName = $("#fname").val();
@@ -212,9 +214,10 @@
             let picDate = $("#picDate").val();
             const shippingType = $("#ExpressActivator").val();
             const message = $("#message").val();
+            const uoi = $("#uniqueOrderID").val();
 
             if (!picDate) {
-                picDate = new Date().toISOString();
+                picDate = new Date().toISOString().slice(0, 10);
             }
 
             $('.fraseInput').each(function () {
@@ -233,17 +236,55 @@
                 address: address,
                 picDate: picDate,
                 shippingType: shippingType,
-                experss: new Date().toISOString(),
+                express: new Date().toISOString(),
                 message: message,
-                screenshots: screenshotPaths
+                uoi: uoi,
+                screenshots: screenshotPaths // Make sure screenshotPaths is defined
             };
 
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
             setCookie('chocoletraOrderData', cookieValue);
 
-            let finalPrice = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
-            $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(finalPrice);
-        })
+            const dataToSend = {
+                action: 'test_action',
+                mainText: JSON.stringify(mainText),
+                priceTotal: priceTotal,
+                fname: fullName,
+                email: email,
+                tel: tel,
+                postal: postal,
+                city: city,
+                province: province,
+                address: address,
+                message: message,
+                uoi: uoi,
+                picDate: picDate,
+                shippingType: shippingType,
+                nonce: ajax_variables.nonce
+            };
+
+            $.ajax({
+                type: "POST",
+                url: ajax_variables.ajax_url,
+                data: dataToSend,
+                success: function (response) {
+                    console.log("Response from server: ", response);
+                    const parsedResponse = JSON.parse(response);
+
+                    if (parsedResponse.Datos.Status) {
+                        console.info("Process succeeded: ", parsedResponse.Datos);
+                    } else {
+                        console.error("Process failed: ", parsedResponse.Datos);
+                        alert(parsedResponse.Datos); 
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX request failed: ", status, error);
+                }
+            });
+        });
+
+
 
 
         function removeCookie(name) {

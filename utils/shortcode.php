@@ -227,7 +227,7 @@ function chocoletras_shortCode()
                                         <?php /*
                                $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
                                $getCookieOUILast = explode("_", $getCookieOUI);
-                               $lastCookieVal = end($getCookieOUILast);
+                               $lastCookieVal = end($getCookieOUILast); */
                                function uniqueOrderNum(int $lengthURN = 10): string
                                {
                                    $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -239,8 +239,8 @@ function chocoletras_shortCode()
                                }
 
                                $finalUON = uniqueOrderNum();
-                               */ ?>
-                                        <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php // echo $finalUON; 
+                               ?>
+                                        <input type="hidden" name="uoi" id="uniqueOrderID" value="<?php echo $finalUON; 
                                             ?>" placeholder="Unique Order ID">
                                     </div>
                                     <textarea name="message" id="message"

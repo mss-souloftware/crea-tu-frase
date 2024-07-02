@@ -320,6 +320,7 @@
                                 },
                                 success: function (e) {
                                     console.info("JSON.parse(response).Datos.Status ", e);
+                                    debugger
                                     try {
                                         JSON.parse(e).Datos.Status ? j("processEnd", JSON.parse(e).Datos.amount, JSON.parse(e).Datos.cookie, JSON.parse(e).Datos.nonce, ajax_variables.haveNonce) : alert(JSON.parse(e).Datos);
                                     } catch (e) {
