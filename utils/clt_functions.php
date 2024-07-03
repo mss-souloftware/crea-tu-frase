@@ -140,17 +140,30 @@ function validate_coupon()
   $coupon_code = sanitize_text_field($_POST['coupon']);
   $coupons = get_option('coupons', []);
 
-  foreach ($coupons as $coupon) {
+  foreach ($coupons as &$coupon) {
     if ($coupon['name'] === $coupon_code) {
       // Check if the coupon has expired
       if (!empty($coupon['expiration']) && strtotime($coupon['expiration']) < time()) {
         wp_send_json_error(['message' => 'This coupon has expired']);
       }
 
-      // Check usage limit (you can implement your own logic here)
-      // For simplicity, let's assume the usage limit check is passed
+      // Check usage limit
+      if (isset($coupon['usage_limit']) && $coupon['usage_count'] >= $coupon['usage_limit']) {
+        wp_send_json_error(['message' => 'This coupon has reached its usage limit']);
+      }
 
-      wp_send_json_success(['message' => 'Coupon is valid', 'discount' => $coupon['value'], 'type' => $coupon['type']]);
+      // If valid, increment usage count
+      $coupon['usage_count'] += 1;
+      update_option('coupons', $coupons); // Update the option with the new usage count
+
+      $remaining_usage = $coupon['usage_limit'] - $coupon['usage_count'];
+
+      wp_send_json_success([
+        'message' => 'Coupon is valid',
+        'discount' => $coupon['value'],
+        'type' => $coupon['type'],
+        'remaining_usage' => $remaining_usage
+      ]);
     }
   }
 

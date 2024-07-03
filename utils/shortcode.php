@@ -161,7 +161,7 @@ function chocoletras_shortCode()
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
                                     class="next action-button" disabled>Continuar</button>
                             </fieldset>
-                            <fieldset style="display: block; opacity: 1;" <?php
+                            <fieldset <?php
                             if (isset($_COOKIE['chocol_cookie'])) {
                                 echo ' style="display: none; opacity: 0;"';
                             }
@@ -248,9 +248,12 @@ function chocoletras_shortCode()
                                         placeholder="Agregue su comentario aquí."></textarea>
 
                                     <div class="couponSection">
-                                        <input type="text" name="name" id="coupon"
-                                            placeholder="Ingresa tu código de cupón aquí" required />
-                                        <button type="button">Apply</button>
+                                        <p>Haga clic para usar el cupón</p>
+                                        <div class="couponSectionInner">
+                                            <input type="text" name="name" id="coupon"
+                                                placeholder="Ingresa tu código de cupón aquí" />
+                                            <button type="button" id="couponApply">Apply</button>
+                                        </div>
                                     </div>
 
                                     <div class="termCondition">

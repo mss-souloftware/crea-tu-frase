@@ -103,6 +103,7 @@ function chocoletraMenu_ftn()
                 <span><b>Codigo Postal: </b>' . $value->cp . '</span>
                 <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
                 <span><b>Pagado: </b>Bizum</span>
+                <span><b>Cupón: </b>SUFI10</span>
                 </div>';
 
           echo '<div class="infoPanelInnn">

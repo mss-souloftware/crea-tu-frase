@@ -489,35 +489,54 @@
 
 
     jQuery(document).ready(function ($) {
-        $('.couponSection button').on('click', function () {
-            var coupon = $('#coupon').val();
+        $('#couponApply').click(function () {
+            var couponCode = $('#coupon').val();
 
-            if (coupon === '') {
-                alert('Please enter a coupon code');
+            if (couponCode === '') {
+                alert('Please enter a coupon code.');
                 return;
             }
 
             $.ajax({
-                url: ajax_variables.ajax_urlgit, // You can also use ajax_variables.ajax_url if you have defined it
-                type: 'POST',
+                url: ajax_variables.ajax_url,
+                method: 'POST',
                 data: {
                     action: 'validate_coupon',
-                    coupon: coupon
+                    coupon: couponCode
                 },
                 success: function (response) {
                     if (response.success) {
-                        alert(response.data.message);
-                        // You can also handle the discount value here, e.g., apply it to the total price
+                        // alert('Coupon is valid. Discount: ' + response.data.discount + ' ' + response.data.type + '. Remaining uses: ' + response.data.remaining_usage);
+                        if (response.data.type === 'fixed') {
+                            let priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+                            let afterDiscount = Number(priceTotal) - response.data.discount;
+                            $('.priceCounter').text(afterDiscount);
+                            $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(afterDiscount);
+                        } else if (response.data.type === 'percentage') {
+                            let priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
+                            let discountValue = (Number(priceTotal) * response.data.discount) / 100;
+                            let afterDiscount = Number(priceTotal) - discountValue;
+                            $('.priceCounter').text(afterDiscount.toFixed(2));
+                            $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(afterDiscount.toFixed(2));
+                        } else {
+                            console.log('Unknown discount type');
+                        }
+
                     } else {
-                        alert(response.data.message);
+                        alert('Error: ' + response.data.message);
                     }
                 },
-                error: function () {
-                    alert('An error occurred while validating the coupon');
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
                 }
             });
         });
+
+        $(".couponSection p").on('click', function () {
+            $(this).parents('.couponSection').toggleClass('open');
+        })
     });
+
 
 
 
