@@ -1,4 +1,5 @@
 (function ($) {
+    let loader = $(".chocoletrasPlg-spiner");
     $(document).ready(function () {
         const keyMap = {
             48: '0.png', 49: '1.png', 50: '2.png', 51: '3.png', 52: '4.png', 53: '5.png',
@@ -200,7 +201,7 @@
 
         $("#ctf_form").on("submit", function (event) {
             event.preventDefault();
-
+            loader.css('height', '100%');
             console.log('submission');
             const mainText = [$('#getText').val()];
             const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
@@ -268,6 +269,7 @@
                 url: ajax_variables.ajax_url,
                 data: dataToSend,
                 success: function (response) {
+                    loader.css('height', '0%');
                     // console.log("Response from server: ", response);
                     // const parsedResponse = JSON.parse(response);
 
@@ -293,7 +295,7 @@
 
         jQuery(document).ready(function () {
             jQuery("#cancelProcessPaiment").on('click', function () {
-
+                loader.css('height', '100%');
                 $.ajax({
                     type: "post",
                     url: ajax_variables.ajax_url,
@@ -305,6 +307,8 @@
                     success: function (e) {
                         removeCookie('chocoletraOrderData');
                         removeCookie('chocol_cookie');
+                        removeCookie('coupon');
+                        loader.css('height', '0%');
                         location.reload();
                     },
                 });
@@ -355,9 +359,7 @@
             }
         });
 
-    });
 
-    $(document).ready(function () {
 
         var current_fs, next_fs, previous_fs;
         var opacity;
@@ -430,10 +432,7 @@
             return false;
         })
 
-    });
 
-
-    $(document).ready(function ($) {
 
         $.ajax({
             url: ajax_variables.ajax_url,
@@ -484,12 +483,14 @@
                 console.error('AJAX Error:', status, error);
             }
         });
-    });
 
 
-
-    jQuery(document).ready(function ($) {
+        let couponCondition = false;
         $('#couponApply').click(function () {
+            if (couponCondition) {
+                alert('You already use a coupon before In this Order.')
+                return;
+            }
             var couponCode = $('#coupon').val();
 
             if (couponCode === '') {
@@ -507,6 +508,7 @@
                 success: function (response) {
                     if (response.success) {
                         // alert('Coupon is valid. Discount: ' + response.data.discount + ' ' + response.data.type + '. Remaining uses: ' + response.data.remaining_usage);
+                        couponCondition = true;
                         if (response.data.type === 'fixed') {
                             let priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
                             let afterDiscount = Number(priceTotal) - response.data.discount;
@@ -536,11 +538,6 @@
             $(this).parents('.couponSection').toggleClass('open');
         })
     });
-
-
-
-
-
 
 
 }(jQuery));

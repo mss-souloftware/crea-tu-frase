@@ -79,11 +79,6 @@ function chocoletras_shortCode()
     ?>
 
     <section id="chocoletrasPlg" class="ctf_plugin_main">
-        <div class="chocoletrasPlg-spiner">
-            <img src="<?php echo plugins_url('../img/logospiner.gif', __FILE__); ?>" alt="<?php echo _e('Chocoletras'); ?>">
-            <div class="chocoletrasPlg-spiner-ring">
-            </div>
-        </div>
         <div class="container-fluid">
             <div class="row justify-content-between">
 
