@@ -57,7 +57,7 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
         document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
         console.log("Payment True");
     </script>
-    <?php
+    <?php /*
     require_once ('finishprocess/finishProcessStripe.php');
     $finishProcessStripeResult = finishProcessTripe();
     if (
@@ -69,7 +69,7 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
             location.reload();
         </script>
         <?php
-    }
+    } */
 }
 
 
@@ -371,14 +371,6 @@ function chocoletras_shortCode()
 
                                     <div class="paymentPanel">
                                         <div class="paymentCard">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/paypal.png"; ?>" alt="">
                                             </div>
@@ -388,6 +380,14 @@ function chocoletras_shortCode()
                                         </div>
 
                                         <div class="paymentCard">
+                                        <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/redsys.png"; ?>" alt="">
                                             </div>
@@ -538,9 +538,9 @@ function chocoletras_shortCode()
                         $miObj->setParameter("DS_MERCHANT_CURRENCY", "978");
                         $miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
                         $miObj->setParameter("DS_MERCHANT_TERMINAL", "001");
-                        $miObj->setParameter("DS_MERCHANT_MERCHANTURL", "https://chocoletra.com/crea-tu-frase/");
-                        $miObj->setParameter("DS_MERCHANT_URLOK", "https://chocoletra.com/gracias-chocoletra/?payment=true&payerID=" . $lastCookieVal);
-                        $miObj->setParameter("DS_MERCHANT_URLKO", "https://chocoletra.com/crea-tu-frase/");
+                        $miObj->setParameter("DS_MERCHANT_MERCHANTURL", "http://localhost/wordpress/sample-page/");
+                        $miObj->setParameter("DS_MERCHANT_URLOK", "http://localhost/wordpress/sample-page/?payment=true&payerID=" . $getOrderData['uoi']);
+                        $miObj->setParameter("DS_MERCHANT_URLKO", "http://localhost/wordpress/sample-page/");
 
                         $params = $miObj->createMerchantParameters();
                         // $claveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
