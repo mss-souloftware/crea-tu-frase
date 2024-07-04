@@ -294,6 +294,33 @@
         }
 
         jQuery(document).ready(function () {
+            let selectedGatway = null;
+            $(".paymentPanel .paymentCard").on('click', function () {
+                $(".paymentPanel .paymentCard").removeClass('active');
+                $(this).addClass("active");
+                selectedGatway = $(this).attr("data-gatway")
+                console.log(selectedGatway);
+                return selectedGatway;
+            })
+
+            $("#proceedPayment").on('click', function () {
+                if (selectedGatway === 'paypal') {
+                    $("#paypayPal").submit();
+                } else if (selectedGatway === 'redsys') {
+                    $("#payRedsys").submit();
+                } else if (selectedGatway === 'bizum') {
+                    $("#payBizum").submit();
+                } else if (selectedGatway === 'google') {
+                    $("#payGoogle").submit();
+                } else if (selectedGatway === 'apple') {
+                    $("#payApple").submit();
+                } else if (selectedGatway === 'cashapp') {
+                    $("#payCashapp").submit();
+                } else {
+                    alert("Select any of the payment first!");
+                }
+            })
+
             jQuery("#cancelProcessPaiment").on('click', function () {
                 loader.css('height', '100%');
                 $.ajax({
@@ -538,6 +565,25 @@
             $(this).parents('.couponSection').toggleClass('open');
         })
     });
+
+    function getQueryParam(param) {
+        let urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    if (getQueryParam("payment") === "true") {
+        var counter = 10;
+        var interval = setInterval(function () {
+            counter--;
+            $("#countdownRedirect").text(counter);
+            if (counter <= 0) {
+                clearInterval(interval);
+                window.location.href = "http://localhost/wordpress/sample-page/";
+            }
+        }, 1000);
+    } else {
+        $("span").hide();
+    }
 
 
 }(jQuery));

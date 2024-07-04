@@ -55,21 +55,22 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
     ?>
     <script>
         document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
+        document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
         console.log("Payment True");
     </script>
-    <?php /*
-    require_once ('finishprocess/finishProcessStripe.php');
-    $finishProcessStripeResult = finishProcessTripe();
-    if (
-        $finishProcessStripeResult->payment_status == "paid" &&
-        paymentfinish($finishProcessStripeResult->customer) === 1
-    ) { ?>
-        <script>
-            document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
-            location.reload();
-        </script>
-        <?php
-    } */
+<?php /*
+require_once ('finishprocess/finishProcessStripe.php');
+$finishProcessStripeResult = finishProcessTripe();
+if (
+$finishProcessStripeResult->payment_status == "paid" &&
+paymentfinish($finishProcessStripeResult->customer) === 1
+) { ?>
+<script>
+document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
+location.reload();
+</script>
+<?php
+} */
 }
 
 
@@ -116,7 +117,11 @@ function chocoletras_shortCode()
                                     echo ' class="active"';
                                 }
                                 ?> id="payment"><strong>Pagos</strong></li>
-                                <li id="confirm"><strong>Finalizar</strong></li>
+                                <li <?php
+                                if (isset($_GET['payment']) && $_GET['payment'] == true) {
+                                    echo ' class="active"';
+                                }
+                                ?> id="confirm"><strong>Finalizar</strong></li>
                             </ul>
                             <fieldset <?php
                             if (isset($_COOKIE['chocol_cookie'])) {
@@ -218,12 +223,13 @@ function chocoletras_shortCode()
                                         </div>
                                         <div class="shippingExpress" style="display: none;">
                                             <p>Envío Express! ( 24h-48h! días laborables ) por
-                                                <?php echo _e('€' . get_option('expressShiping')) ?></p>
+                                                <?php echo _e('€' . get_option('expressShiping')) ?>
+                                            </p>
                                         </div>
                                         <?php /*
-                              $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
-                              $getCookieOUILast = explode("_", $getCookieOUI);
-                              $lastCookieVal = end($getCookieOUILast); */
+                           $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
+                           $getCookieOUILast = explode("_", $getCookieOUI);
+                           $lastCookieVal = end($getCookieOUILast); */
                                         function uniqueOrderNum(int $lengthURN = 10): string
                                         {
                                             $uniqueOrderNumber = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -278,8 +284,13 @@ function chocoletras_shortCode()
                                     <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
                             </fieldset>
                             <fieldset <?php
-                            if (isset($_COOKIE['chocol_cookie'])) {
+
+                            if (isset($_GET['payment']) && $_GET['payment'] == true) {
+                                echo ' style="display: none; opacity: 0;"';
+                            } elseif (isset($_COOKIE['chocol_cookie'])) {
                                 echo ' style="display: block; opacity: 1;"';
+                            } else {
+                                echo '';
                             }
                             ?>>
                                 <?php
@@ -311,12 +322,12 @@ function chocoletras_shortCode()
 
                                             <div class="orderDetails">
                                                 <?php /*    
-                                                                  <div class="closeBtn" id="cancelProcessPaiment">
-                                                                      <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                          <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#E64C3C" />
-                                                                      </svg>
-                                                                  </div>
-                                                                  */ ?>
+                                                                           <div class="closeBtn" id="cancelProcessPaiment">
+                                                                               <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                   <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" fill="#E64C3C" />
+                                                                               </svg>
+                                                                           </div>
+                                                                           */ ?>
                                                 <div class="orderThumb">
                                                     <img src="<?php echo get_site_url() . $screenshotUrl; ?>" alt="">
                                                 </div>
@@ -365,7 +376,15 @@ function chocoletras_shortCode()
                                     </div>
 
                                     <div class="paymentPanel">
-                                        <div class="paymentCard">
+                                        <div class="paymentCard" data-gatway="paypal">
+                                            <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/paypal.png"; ?>" alt="">
                                             </div>
@@ -374,8 +393,8 @@ function chocoletras_shortCode()
                                             </div>
                                         </div>
 
-                                        <div class="paymentCard">
-                                        <div class="selected">
+                                        <div class="paymentCard" data-gatway="redsys">
+                                            <div class="selected">
                                                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -391,16 +410,40 @@ function chocoletras_shortCode()
                                             </div>
                                         </div>
 
-                                        <div class="paymentCard">
+                                        <div class="paymentCard" data-gatway="bizum">
+                                            <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/bizum.png"; ?>" alt="">
                                             </div>
                                             <div class="paymentData">
+                                                <div class="selected">
+                                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                            fill="#55C12D" />
+                                                    </svg>
+                                                </div>
                                                 Pagar Con Bizum
                                             </div>
                                         </div>
 
-                                        <div class="paymentCard">
+                                        <div class="paymentCard" data-gatway="google">
+                                            <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/google-pay.png"; ?>"
                                                     alt="">
@@ -410,7 +453,15 @@ function chocoletras_shortCode()
                                             </div>
                                         </div>
 
-                                        <div class="paymentCard">
+                                        <div class="paymentCard" data-gatway="apple">
+                                            <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/apple-pay.png"; ?>"
                                                     alt="">
@@ -420,7 +471,15 @@ function chocoletras_shortCode()
                                             </div>
                                         </div>
 
-                                        <div class="paymentCard">
+                                        <div class="paymentCard" data-gatway="cashapp">
+                                            <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
                                             <div class="paymentIcon">
                                                 <img src="<?php echo plugin_dir_url(__DIR__) . "img/cash-app.png"; ?>"
                                                     alt="">
@@ -443,28 +502,33 @@ function chocoletras_shortCode()
                                             </g>
                                         </svg>
                                     </div>
-                                    <input type="button" name="next" class="next action-button" value="Pay Now" />
+                                    <input id="proceedPayment" type="button" name="next" class="action-button"
+                                        value="Pay Now" />
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset <?php
+                            if (isset($_GET['payment']) && $_GET['payment'] == true) {
+                                echo ' style="display: block; opacity: 1;"';
+                            }
+                            ?>>
                                 <div class="thankYouCard">
-                                    <h3>Thank You For Your Order!</h3>
-                                    <img src="" alt="">
+                                    <h3>¡Gracias por su compra!</h3>
+                                    <div style="font-size:10vw;">🙌</div>
                                     <p>
-                                        Thank you for purchasing with Chocoletra please subscribe to our newsletter and stay
-                                        upto date with our discounts and offer!
+                                        Gracias por comprar con Chocolate, suscríbase a nuestro boletín y manténgase
+                                        actualizado con nuestros descuentos y ofertas.
                                     </p>
                                     <div class="termCondition">
                                         <input type="checkbox" name="newsCLP" id="newsletterCLP">
                                         <label for="newsletterCLP">
-                                            Subscribe to our newsletter.
+                                        Suscríbete a nuestro boletín.
                                         </label>
                                     </div>
 
-                                    <a href="#">Start New Order</a>
-                                    <a href="#">Visit Home</a>
+                                    <a class="newOrder" href="#">Iniciar nuevo pedido</a>
+                                    <a class="visitHome" href="#">Visitar Inicio</a>
 
-                                    <span>Redirecting to Shop page 10s</span>
+                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">10</i>s</span>
                                 </div>
                             </fieldset>
                         </form>
@@ -474,7 +538,7 @@ function chocoletras_shortCode()
                         <div class="chocoletrasPlg__wrapperCode-firstHead-dataUser"></div>
                     </div>
 
-                    <div class="chocoletrasPlg__wrapperCode-payment-buttons-left">
+                    <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
                         <?php
 
                         function generateRandomOrderNumberRedsys(int $lengthRedsys = 10): string
@@ -541,7 +605,7 @@ function chocoletras_shortCode()
                         // $claveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
                         $claveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
                         $firma = $miObj->createMerchantSignature($claveSHA256); ?>
-                        <form action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
+                        <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
                             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
                             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
                             <input type="hidden" name="Ds_Signature" value="<?php echo $firma; ?>" />

@@ -582,6 +582,7 @@ s .ordersPanel .orderDetails .orderData {
     padding: 10px;
     border-radius: 8px;
     text-align: center;
+    cursor: pointer;
 }
 
 .paymentPanel .paymentCard .paymentData {
@@ -606,6 +607,14 @@ s .ordersPanel .orderDetails .orderData {
     top: -8px;
     background: #fff;
     line-height: 1;
+}
+
+.paymentPanel .paymentCard:not(.active) .selected {
+    display: none;
+}
+
+.paymentPanel .paymentCard.active {
+    border: 1px solid #000;
 }
 
 .lineBreaker {
@@ -690,4 +699,59 @@ s .ordersPanel .orderDetails .orderData {
     margin-left: 10px;
     height: 52px;
     line-height: 0.4;
+}
+
+.thankYouCard h3,
+.thankYouCard p {
+    margin-bottom: 30px;
+    display: block;
+}
+
+.thankYouCard p {
+    margin-top: 30px;
+}
+
+.thankYouCard .termCondition {
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.thankYouCard .termCondition label {
+    font-size: 18px !important;
+}
+
+.thankYouCard a {
+    border: 1px solid #000;
+    display: block;
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 15px;
+    font-size: 18px;
+    color: #000;
+    text-decoration: none !important;
+    transition: all 0.3s linear;
+}
+
+.thankYouCard .newOrder {
+    background: #000;
+    color: #fff;
+}
+
+.thankYouCard .newOrder:hover {
+    background: #fff;
+    color: #000;
+}
+
+.thankYouCard .visitHome:hover {
+    background: #000;
+    color: #fff;
+}
+
+
+.chocoletrasPlg__wrapperCode-dataUser-form span {
+    font-size: 14px;
+    margin-top: 15px;
+    text-decoration: underline;
 }

@@ -37,8 +37,8 @@ function chocoletraMenu_ftn()
           <li class="AdministracionVentas-table-thead_enviado"><?php echo esc_html('Teléfono'); ?></li>
           <li class="AdministracionVentas-table-thead_fecha"><?php echo esc_html('Fecha'); ?></li>
           <li class="AdministracionVentas-table-thead_precio"><?php echo esc_html('Precio'); ?></li>
-          <li class="AdministracionVentas-table-thead_payment"><?php echo esc_html('Pagar Con'); ?></li>
-          <li class="AdministracionVentas-table-thead_frasTotal"><?php echo esc_html('Frase total'); ?></li>
+          <li class="AdministracionVentas-table-thead_payment"><?php echo esc_html('Estado de pago'); ?></li>
+          <li class="AdministracionVentas-table-thead_frasTotal"><?php echo esc_html('Pagar con'); ?></li>
           <li class="AdministracionVentas-table-thead_proceso"><?php echo esc_html('Estado'); ?></li>
           <li class="AdministracionVentas-table-thead_proceso"><?php echo esc_html('Fecha de Entrega'); ?></li>
           <li class="AdministracionVentas-table-thead_express"><?php echo esc_html('Envío'); ?></li>
@@ -71,8 +71,8 @@ function chocoletraMenu_ftn()
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fecha . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_precio">' . $value->precio . '€</li>';
           echo '<li class="AdministracionVentas-table-tbody_payment"><span class="' . $paymentClass . '">' . $payment . '</span></li>';
-          echo '<li class="AdministracionVentas-table-tbody_enviado">Bizum</li>';
-          echo '<li class="AdministracionVentas-table-tbody_payment">' . $payment . '</li>';
+          echo '<li class="AdministracionVentas-table-tbody_enviado">Redsys</li>';
+          echo '<li class="AdministracionVentas-table-tbody_payment">Proceso</li>';
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fechaEntrega . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_express"><span class="' . $expressStatus . '">' . $isExpress . '</span></li>';
           echo '</ul>';
@@ -92,17 +92,17 @@ function chocoletraMenu_ftn()
           if ($value->message != "") {
             echo getMessage($value->message);
           }
-          echo '<span><b>Solicitar ID:</b> ' . $value->uoi . '</span>';
           echo '</div>';
 
           echo '<div class="infoPanelInnn">
                 <h2>Detalles Envio</h2> 
+                <span><b>Solicitar ID:</b> ' . $value->uoi . '</span>
                 <span><b>Direccion: </b>' . $value->direccion . '</span>
                 <span><b>Ciudad: </b>' . $value->ciudad . '</span>
                 <span><b>Provincia: </b>' . $value->province . '</span>
                 <span><b>Codigo Postal: </b>' . $value->cp . '</span>
                 <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
-                <span><b>Pagado: </b>Bizum</span>
+                <span><b>Pagado: </b>Redsys</span>
                 <span><b>Cupón: </b>SUFI10</span>
                 </div>';
 
