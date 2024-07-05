@@ -152,7 +152,7 @@ function chocoletras_shortCode()
                                     <div class="fraseWrapper">
                                         <div class="frasePanel">
                                             <input id="<?php echo _e('getText') ?>" type="text"
-                                                placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" required>
+                                                placeholder="<?php echo _e('Escriba su frase aqu&iacute;..'); ?>" maxlength="<?php echo get_option('maxCaracteres'); ?>" required>
                                         </div>
                                     </div>
                                     <button type="button" id="addNewFrase" disabled>
