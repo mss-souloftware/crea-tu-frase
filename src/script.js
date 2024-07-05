@@ -2,28 +2,32 @@
     let loader = $(".chocoletrasPlg-spiner");
     $(document).ready(function () {
         const keyMap = {
-            48: '0.png', 49: '1.png', 50: '2.png', 51: '3.png', 52: '4.png', 53: '5.png',
-            54: '6.png', 55: '7.png', 56: '8.png', 57: '9.png', 32: { heart: 'heart.png', star: 'star.png' },
-            65: 'a.png', 66: 'b.png', 67: 'c.png', 68: 'd.png', 69: 'e.png', 70: 'f.png',
-            71: 'g.png', 72: 'h.png', 73: 'i.png', 74: 'j.png', 75: 'k.png', 76: 'l.png',
-            77: 'm.png', 78: 'n.png', 79: 'o.png', 80: 'p.png', 81: 'q.png', 82: 'r.png',
-            83: 's.png', 84: 't.png', 85: 'u.png', 86: 'v.png', 87: 'w.png', 88: 'x.png',
-            89: 'y.png', 90: 'z.png'
+            '0': '0.png', '1': '1.png', '2': '2.png', '3': '3.png', '4': '4.png', '5': '5.png',
+            '6': '6.png', '7': '7.png', '8': '8.png', '9': '9.png', ' ': { heart: 'heart.png', star: 'star.png' },
+            'A': 'a.png', 'B': 'b.png', 'C': 'c.png', 'D': 'd.png', 'E': 'e.png', 'F': 'f.png',
+            'G': 'g.png', 'H': 'h.png', 'I': 'i.png', 'J': 'j.png', 'K': 'k.png', 'L': 'l.png',
+            'M': 'm.png', 'N': 'n.png', 'O': 'o.png', 'P': 'p.png', 'Q': 'q.png', 'R': 'r.png',
+            'S': 's.png', 'T': 't.png', 'U': 'u.png', 'V': 'v.png', 'W': 'w.png', 'X': 'x.png',
+            'Y': 'y.png', 'Z': 'z.png', 
+            'Ñ': 'n1.png', 'ñ': 'n1.png', 'Ç': 'c1.png', 
+            '?': 'que.png', '¡': 'exclm1.png', 
+            '!': 'exclm.png', '¿': 'que1.png', 
+            ',': 'coma.png'
         };
-
+        
         function generateImages(text, $typewriterInner, spaceSymbol) {
             $typewriterInner.empty();
             const words = text.split(spaceSymbol);
             words.forEach((word, index) => {
                 const $wordDiv = $('<div>').addClass('word');
                 for (const char of word) {
-                    let keyCode;
+                    let imgFileName;
                     if (char === spaceSymbol) {
-                        keyCode = 32;
+                        imgFileName = keyMap[' '][$('#letras').val()];
                     } else {
-                        keyCode = char.toUpperCase().charCodeAt(0);
+                        imgFileName = keyMap[char.toUpperCase()] || keyMap[char];
                     }
-                    const imgFileName = typeof keyMap[keyCode] === 'object' ? keyMap[keyCode][$('#letras').val()] : keyMap[keyCode];
+        
                     if (imgFileName) {
                         const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${imgFileName}`;
                         const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
@@ -37,19 +41,19 @@
                 }
                 $typewriterInner.append($wordDiv);
                 if (index < words.length - 1) {
-                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${keyMap[32][$('#letras').val()]}`;
+                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${keyMap[' '][$('#letras').val()]}`;
                     const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
                     $typewriterInner.append($img);
                 }
             });
         }
-
+        
         function calculateTotalPrice() {
             let totalPrice = 0;
             let totalCount = 0;
             const pricePerCharacter = Number($("#precLetras").val());
             const pricePerSymbol = Number($("#precCoraz").val());
-
+        
             function calculatePrice(text) {
                 let price = 0;
                 let count = 0;
@@ -64,28 +68,28 @@
                 }
                 return { price: price, count: count };
             }
-
+        
             // Calculate the price for #getText field
             totalPrice += parseFloat(calculatePrice(jQuery('#getText').val()).price);
             totalCount += parseInt(calculatePrice(jQuery('#getText').val()).count);
-
+        
             // Calculate the price for .fraseInput fields
             jQuery('.fraseInput').each(function () {
                 const { price, count } = calculatePrice(jQuery(this).val());
                 totalPrice += parseFloat(price);
                 totalCount += parseInt(count);
             });
-
+        
             const minPrice = parseFloat(ajax_variables.gastoMinimo);
             const shippingCost = parseFloat(ajax_variables.precEnvio);
-
+        
             totalPrice = (totalPrice > minPrice) ? totalPrice + shippingCost : minPrice + shippingCost;
-
+        
             jQuery('#ctf_form #counter').text(totalPrice.toFixed(1));
             jQuery('#actual').text(totalCount);
             jQuery('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice.toFixed(1));
         }
-
+        
         function attachInputHandler($input, $typewriterInner) {
             $input.on('input', function () {
                 const selectedSymbol = $('#letras').val() === 'heart' ? '♥' : '✯';
@@ -96,8 +100,9 @@
                 calculateTotalPrice(); // Trigger price calculation on input change
             });
         }
-
+        
         attachInputHandler($('#getText'), $('#typewriter .typewriterInner'));
+        
 
         $("#ctf_form #getText").on("keyup", function (event) {
             console.log('Key code:', event.keyCode);
@@ -487,6 +492,7 @@
                     minDate: "today",
                     defaultDate: "today",
                     dateFormat: "Y-m-d",
+                    locale: "es",
                     disable: [
                         function (date) {
                             return disableDays.includes(date.getDay().toString());
