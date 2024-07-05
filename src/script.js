@@ -99,7 +99,8 @@
 
         attachInputHandler($('#getText'), $('#typewriter .typewriterInner'));
 
-        $("#ctf_form #getText").on("keyup", function () {
+        $("#ctf_form #getText").on("keyup", function (event) {
+            console.log('Key code:', event.keyCode);
             if ($.trim($(this).val()) !== "") {
                 $(".dummyImg").css('display', 'none');
                 $("#addNewFrase").removeAttr('disabled');

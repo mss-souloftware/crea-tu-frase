@@ -224,6 +224,7 @@ function chocoletras_shortCode()
                                         <div class="shippingExpress" style="display: none;">
                                             <p>Envío Express! ( 24h-48h! días laborables ) por
                                                 <?php echo _e('€' . get_option('expressShiping')) ?>
+                                                Más
                                             </p>
                                         </div>
                                         <?php /*
@@ -246,14 +247,14 @@ function chocoletras_shortCode()
                                         ?>" placeholder="Unique Order ID">
                                     </div>
                                     <textarea name="message" id="message"
-                                        placeholder="Agregue su comentario aquí."></textarea>
+                                        placeholder="O Añadir tarjeta dedicatoria*"></textarea>
 
                                     <div class="couponSection">
                                         <p>Haga clic para usar el cupón</p>
                                         <div class="couponSectionInner">
                                             <input type="text" name="name" id="coupon"
                                                 placeholder="Ingresa tu código de cupón aquí" />
-                                            <button type="button" id="couponApply">Apply</button>
+                                            <button type="button" id="couponApply">Aplicar</button>
                                         </div>
                                     </div>
 
@@ -503,7 +504,7 @@ function chocoletras_shortCode()
                                         </svg>
                                     </div>
                                     <input id="proceedPayment" type="button" name="next" class="action-button"
-                                        value="Pay Now" />
+                                        value="Pagar Ahora" />
                                 </div>
                             </fieldset>
                             <fieldset <?php

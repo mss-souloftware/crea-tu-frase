@@ -35,6 +35,10 @@
     display: none;
 }
 
+.form-card .steps {
+    font-size: 28px !important;
+}
+
 #ctf_form fieldset:not(:first-of-type) {
     display: none
 }
@@ -56,7 +60,8 @@
 }
 
 #ctf_form input:focus,
-#ctf_form textarea:focus {
+#ctf_form textarea:focus,
+#ctf_form select:focus {
     -moz-box-shadow: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
@@ -269,6 +274,7 @@
     color: #000;
     font-size: 16px;
     font-family: 'Lato';
+    height: 52px;
 }
 
 #ctf_form input:focus {
@@ -457,6 +463,8 @@
 
 #ctf_form select#letras {
     margin-top: 15px !important;
+    width: 100%;
+    background-color: #fff;
 }
 
 .swithcerBtnGroup {
