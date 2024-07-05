@@ -8,13 +8,13 @@
             'G': 'g.png', 'H': 'h.png', 'I': 'i.png', 'J': 'j.png', 'K': 'k.png', 'L': 'l.png',
             'M': 'm.png', 'N': 'n.png', 'O': 'o.png', 'P': 'p.png', 'Q': 'q.png', 'R': 'r.png',
             'S': 's.png', 'T': 't.png', 'U': 'u.png', 'V': 'v.png', 'W': 'w.png', 'X': 'x.png',
-            'Y': 'y.png', 'Z': 'z.png', 
-            'Ñ': 'n1.png', 'ñ': 'n1.png', 'Ç': 'c1.png', 
-            '?': 'que.png', '¡': 'exclm1.png', 
-            '!': 'exclm.png', '¿': 'que1.png', 
-            ',': 'coma.png'
+            'Y': 'y.png', 'Z': 'z.png',
+            'Ñ': 'n1.png', 'ñ': 'n1.png', 'Ç': 'c1.png',
+            '?': 'que.png', '¡': 'exclm1.png',
+            '!': 'exclm.png', '¿': 'que1.png',
+            ',': 'coma.png', '&': 'and.png'
         };
-        
+
         function generateImages(text, $typewriterInner, spaceSymbol) {
             $typewriterInner.empty();
             const words = text.split(spaceSymbol);
@@ -27,7 +27,7 @@
                     } else {
                         imgFileName = keyMap[char.toUpperCase()] || keyMap[char];
                     }
-        
+
                     if (imgFileName) {
                         const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${imgFileName}`;
                         const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
@@ -47,13 +47,13 @@
                 }
             });
         }
-        
+
         function calculateTotalPrice() {
             let totalPrice = 0;
             let totalCount = 0;
             const pricePerCharacter = Number($("#precLetras").val());
             const pricePerSymbol = Number($("#precCoraz").val());
-        
+
             function calculatePrice(text) {
                 let price = 0;
                 let count = 0;
@@ -68,41 +68,46 @@
                 }
                 return { price: price, count: count };
             }
-        
+
             // Calculate the price for #getText field
             totalPrice += parseFloat(calculatePrice(jQuery('#getText').val()).price);
             totalCount += parseInt(calculatePrice(jQuery('#getText').val()).count);
-        
+
             // Calculate the price for .fraseInput fields
             jQuery('.fraseInput').each(function () {
                 const { price, count } = calculatePrice(jQuery(this).val());
                 totalPrice += parseFloat(price);
                 totalCount += parseInt(count);
             });
-        
+
             const minPrice = parseFloat(ajax_variables.gastoMinimo);
             const shippingCost = parseFloat(ajax_variables.precEnvio);
-        
+
             totalPrice = (totalPrice > minPrice) ? totalPrice + shippingCost : minPrice + shippingCost;
-        
+
             jQuery('#ctf_form #counter').text(totalPrice.toFixed(1));
             jQuery('#actual').text(totalCount);
             jQuery('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice.toFixed(1));
         }
-        
+
         function attachInputHandler($input, $typewriterInner) {
-            $input.on('input', function () {
+            function updateText() {
                 const selectedSymbol = $('#letras').val() === 'heart' ? '♥' : '✯';
-                let inputText = $(this).val();
+                let inputText = $input.val();
+                inputText = inputText.replace(/♥|✯/g, selectedSymbol); // Replace all hearts and stars with the selected symbol
                 inputText = inputText.replace(/ /g, selectedSymbol).toUpperCase();
-                $(this).val(inputText);
+                $input.val(inputText);
                 generateImages(inputText, $typewriterInner, selectedSymbol);
                 calculateTotalPrice(); // Trigger price calculation on input change
-            });
+            }
+
+            $input.on('input', updateText);
+            $('#letras').on('change', updateText); // Update text when the select box changes
         }
-        
+
         attachInputHandler($('#getText'), $('#typewriter .typewriterInner'));
-        
+
+
 
         $("#ctf_form #getText").on("keyup", function (event) {
             console.log('Key code:', event.keyCode);
