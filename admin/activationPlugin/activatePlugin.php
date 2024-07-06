@@ -7,71 +7,69 @@
  * 
  */
 
-
-
 function createAllTables()
 {
-  global $wpdb;
   $errorClTables = "errorRegisterTables";
+  global $wpdb;
+
   if (get_option($errorClTables) != null) {
     return;
   } else {
     try {
-      global $wpdb;
       $table_report = $wpdb->prefix . "reportes_errores";
       $table_plugin = $wpdb->prefix . "chocoletras_plugin";
       $charset_collate = $wpdb->get_charset_collate();
 
-
       $createTableReport = "CREATE TABLE $table_report (
-              id int(50) NOT NULL AUTO_INCREMENT,
-              nombre varchar(150) NOT NULL, 
+                id int(11) NOT NULL AUTO_INCREMENT,
+                nombre varchar(150) NOT NULL, 
+                email varchar(150) NOT NULL,
+                reporte varchar(500) NOT NULL,
+                fecha timestamp NOT NULL DEFAULT current_timestamp(),
+                PRIMARY KEY  (id)
+              ) $charset_collate;";
+
+      $createTablePlugin = "CREATE TABLE $table_plugin  (
+              id int(11) NOT NULL AUTO_INCREMENT,
+              nombre varchar(150) NOT NULL,
+              frase varchar(150) NOT NULL,
               email varchar(150) NOT NULL,
-              reporte varchar(500) NOT NULL,
-              fecha timestamp NOT NULL DEFAULT current_timestamp(),
+              telefono varchar(150) NOT NULL,
+              cp varchar(50) NOT NULL,
+              ciudad varchar(150) NOT NULL,
+              province varchar(150) NOT NULL,
+              message varchar(550) NOT NULL,
+              direccion varchar(150) NOT NULL,
+              enProceso tinyint(1) NOT NULL DEFAULT 0,
+              enviado tinyint(1) NOT NULL DEFAULT 0,
+              pagoRealizado tinyint(1) NOT NULL DEFAULT 0,
+              fechaEntrega date NOT NULL,
+              id_venta varchar(150) NOT NULL DEFAULT 'null',
+              nonce varchar(50) NOT NULL,
+              fecha timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+              precio float NOT NULL,
+              express varchar(3) NOT NULL,
+              uoi varchar(150) NOT NULL,
+              coupon varchar(50) NOT NULL,
+              screens JSON NOT NULL,
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
-
-      $createTablePlugin = "CREATE TABLE $table_plugin  (
-    id int(50) NOT NULL AUTO_INCREMENT,
-    nombre varchar(150) NOT NULL,
-    frase varchar(150) NOT NULL,
-    email varchar(150) NOT NULL,
-    telefono int(150) NOT NULL,
-    cp int(50) NOT NULL,
-    ciudad varchar(150) NOT NULL,
-    province varchar(150) NOT NULL,
-    message varchar(550) NOT NULL,
-    direccion varchar(150) NOT NULL,
-    enProceso tinyint(1) NOT NULL DEFAULT 0,
-    enviado tinyint(1) NOT NULL DEFAULT 0,
-    pagoRealizado tinyint(1) NOT NULL DEFAULT 0,
-    fechaEntrega date NOT NULL,
-    id_venta varchar(150) NOT NULL DEFAULT 'null',
-    nonce varchar(50) NOT NULL,
-    fecha timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-    precio float NOT NULL,
-    express varchar(3) NOT NULL,
-    uoi varchar(150) NOT NULL,
-    PRIMARY KEY  (id)
-  ) $charset_collate;";
-
       require_once ABSPATH . "wp-admin/includes/upgrade.php";
-      dbDelta($createTablePlugin);
       dbDelta($createTableReport);
-    } catch (\Throwable $erro) {
-      return $error;
+      dbDelta($createTablePlugin);
+
+      update_option($errorClTables, true);
+    } catch (\Throwable $error) {
+      error_log($error->getMessage());
     }
-    add_option($errorClTables, true);
   }
 }
 
-
-
 function removeAllTables()
 {
-  $optionsToDelette = [
+  $errorClTables = "errorRegisterTables";
+  $optionsToDelete = [
     "precLetra",
     "precCoraz",
     "precEnvio",
@@ -93,24 +91,23 @@ function removeAllTables()
   global $wpdb;
   $table_report = $wpdb->prefix . "reportes_errores";
   $table_plugin = $wpdb->prefix . "chocoletras_plugin";
-  $charset_collate = $wpdb->get_charset_collate();
 
   try {
-
     $removal_report = "DROP TABLE IF EXISTS {$table_report}";
     $removal_pluginDatabase = "DROP TABLE IF EXISTS {$table_plugin}";
     $remResult = $wpdb->query($removal_report);
     $remResult2 = $wpdb->query($removal_pluginDatabase);
+    update_option($errorClTables, null);
 
-
-    foreach ($optionsToDelette as $options_value) {
+    foreach ($optionsToDelete as $options_value) {
       if (get_option($options_value)) {
         delete_option($options_value);
       }
     }
 
-    return  $remResult . "::" . $remResult2;
-  } catch (\Throwable $erro) {
-    return $erro;
+    return $remResult . "::" . $remResult2;
+  } catch (\Throwable $error) {
+    error_log($error->getMessage());
   }
+
 }

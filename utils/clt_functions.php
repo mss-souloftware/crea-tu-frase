@@ -282,19 +282,19 @@ function addSubmenuChocoletras()
 //   );
 // }
 
-// add_action('admin_menu', 'addSubmenuEmailOptions');
-// function addSubmenuEmailOptions()
-// {
-//   add_submenu_page(
-//     'clt_amin',
-//     'Email setUp',
-//     'email Items',
-//     'install_plugins',
-//     'set_email_items',
-//     'emailItemsOutput',
-//     2
-//   );
-// }
+add_action('admin_menu', 'addSubmenuEmailOptions');
+function addSubmenuEmailOptions()
+{
+  add_submenu_page(
+    'clt_amin',
+    'Correos electrónicos',
+    'Correos electrónicos',
+    'install_plugins',
+    'set_email_items',
+    'emailItemsOutput',
+    5
+  );
+}
 
 // add_action('admin_menu', 'listOfReportProblems');
 // function listOfReportProblems()

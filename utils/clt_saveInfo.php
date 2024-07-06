@@ -8,7 +8,8 @@
  */
 
 
-function responseForm() {
+function responseForm()
+{
     try {
         $response = array('Datos' => confirmAllIsReady());
         echo json_encode($response);
@@ -19,12 +20,13 @@ function responseForm() {
     }
 }
 
-function confirmAllIsReady() {
+function confirmAllIsReady()
+{
     setcookie('chocol_price', '', time() - 3600);
-    $getData = array('mainText', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi');
+    $getData = array('mainText', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon');
 
     $confirm_error = array();
- 
+
     foreach ($getData as $key) {
         if (isset($_POST[$key])) {
             $confirm_error[$key] = $_POST[$key];
@@ -36,7 +38,8 @@ function confirmAllIsReady() {
     return saveDataInDatabase($confirm_error);
 }
 
-function confirmViolationOfSequirity($incomingfrase) {
+function confirmViolationOfSequirity($incomingfrase)
+{
     $confirmSequirity = preg_match('/[$^\*\(\)=\{\]\{\{\<\>\:\;]/', $incomingfrase);
     if ($confirmSequirity > 0) {
         throw new Exception('Invalid characters in frase');
@@ -45,7 +48,8 @@ function confirmViolationOfSequirity($incomingfrase) {
     }
 }
 
-function saveDataInDatabase($datos) {
+function saveDataInDatabase($datos)
+{
     $sanitizeData = array();
 
     foreach ($datos as $info => $val) {
@@ -66,24 +70,27 @@ function saveDataInDatabase($datos) {
     global $wpdb;
     try {
         $tablename = $wpdb->prefix . 'chocoletras_plugin';
-        $result = $wpdb->query($wpdb->prepare(
-            "INSERT INTO $tablename (frase, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi) 
-             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            $sanitizeData['mainText'],
-            $sanitizeData['priceTotal'],
-            $sanitizeData['fname'],
-            $sanitizeData['email'],
-            $sanitizeData['tel'],
-            $sanitizeData['postal'],
-            $sanitizeData['city'],
-            $sanitizeData['province'],
-            $sanitizeData['message'],
-            $sanitizeData['address'],
-            $sanitizeData['nonce'],
-            $sanitizeData['picDate'],
-            $sanitizeData['shippingType'],
-            $sanitizeData['uoi']
-        ));
+        $result = $wpdb->query(
+            $wpdb->prepare(
+                "INSERT INTO $tablename (frase, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon) 
+             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                $sanitizeData['mainText'],
+                $sanitizeData['priceTotal'],
+                $sanitizeData['fname'],
+                $sanitizeData['email'],
+                $sanitizeData['tel'],
+                $sanitizeData['postal'],
+                $sanitizeData['city'],
+                $sanitizeData['province'],
+                $sanitizeData['message'],
+                $sanitizeData['address'],
+                $sanitizeData['nonce'],
+                $sanitizeData['picDate'],
+                $sanitizeData['shippingType'],
+                $sanitizeData['uoi'],
+                $sanitizeData['coupon']
+            )
+        );
     } catch (Exception $error) {
         throw new Exception("Database error: " . $error->getMessage());
     }
@@ -111,6 +118,7 @@ function saveDataInDatabase($datos) {
         "fcity" => $sanitizeData['city'],
         "faddress" => $sanitizeData['address'],
         "fuoi" => $sanitizeData['uoi'],
+        "fcoupon" => $sanitizeData['coupon'],
         "cookie" => $confirmSaveCookie
     ) : array("Status" => 400);
 }

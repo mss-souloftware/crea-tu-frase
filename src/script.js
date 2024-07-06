@@ -227,6 +227,7 @@
             const shippingType = $("#ExpressActivator").val();
             const message = $("#message").val();
             const uoi = $("#uniqueOrderID").val();
+            const coupon = $("#usedCoupon").val();
 
             if (!picDate) {
                 picDate = new Date().toISOString().slice(0, 10);
@@ -251,6 +252,7 @@
                 express: new Date().toISOString(),
                 message: message,
                 uoi: uoi,
+                coupon: coupon,
                 screenshots: screenshotPaths
             };
 
@@ -270,6 +272,7 @@
                 address: address,
                 message: message,
                 uoi: uoi,
+                coupon: coupon,
                 picDate: picDate,
                 shippingType: shippingType,
                 nonce: ajax_variables.nonce
@@ -345,7 +348,6 @@
                     success: function (e) {
                         removeCookie('chocoletraOrderData');
                         removeCookie('chocol_cookie');
-                        removeCookie('coupon');
                         loader.css('height', '0%');
                         location.reload();
                     },
@@ -546,7 +548,8 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        // alert('Coupon is valid. Discount: ' + response.data.discount + ' ' + response.data.type + '. Remaining uses: ' + response.data.remaining_usage);
+                        $("#usedCoupon").val(couponCode);
+                        alert('Coupon is valid. Discount: ' + response.data.discount + ' ' + response.data.type + '. Remaining uses: ' + response.data.remaining_usage);
                         couponCondition = true;
                         if (response.data.type === 'fixed') {
                             let priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();

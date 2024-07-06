@@ -89,22 +89,25 @@ function chocoletraMenu_ftn()
               echo '<span>' . htmlspecialchars($frase) . '</span>';
             }
           }
+          echo '<span><b>Mensaje:</b></span>';
           if ($value->message != "") {
             echo getMessage($value->message);
           }
           echo '</div>';
 
           echo '<div class="infoPanelInnn">
-                <h2>Detalles Envio</h2> 
-                <span><b>Solicitar ID:</b> ' . $value->uoi . '</span>
-                <span><b>Direccion: </b>' . $value->direccion . '</span>
-                <span><b>Ciudad: </b>' . $value->ciudad . '</span>
-                <span><b>Provincia: </b>' . $value->province . '</span>
-                <span><b>Codigo Postal: </b>' . $value->cp . '</span>
-                <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
-                <span><b>Pagado: </b>Redsys</span>
-                <span><b>Cupón: </b>SUFI10</span>
-                </div>';
+                  <h2>Detalles Envio</h2> 
+                  <span><b>Solicitar ID:</b> ' . $value->uoi . '</span>
+                  <span><b>Direccion: </b>' . $value->direccion . '</span>
+                  <span><b>Ciudad: </b>' . $value->ciudad . '</span>
+                  <span><b>Provincia: </b>' . $value->province . '</span>
+                  <span><b>Codigo Postal: </b>' . $value->cp . '</span>
+                  <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
+                  <span><b>Pagado: </b>Redsys</span>';
+                  if ($value->coupon) {
+                    echo '<span><b>Cupón: </b>' . $value->coupon . '</span>';
+                  }
+                echo '</div>';
 
           echo '<div class="infoPanelInnn">
           <h2>Estado del pedido</h2> ';

@@ -20,19 +20,19 @@
 
 .chocoletrasPlg-spiner img {
     display: block;
-    width: 25px;
+    width: 50px;
     position: absolute
 }
 
 .chocoletrasPlg-spiner-ring {
-    border: 8px solid #000;
+    border: 10px solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 35px;
-    border-top: 8px solid red;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border-top: 10px solid red;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-name: roeda;
