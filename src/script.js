@@ -592,9 +592,9 @@
                 clearInterval(interval);
                 window.location.href = "http://localhost/wordpress/sample-page/";
             }
-        }, 1000);
+        }, 2000);
     } else {
-        $("span").hide();
+        $(".thankYouCard span").hide();
     }
 
 

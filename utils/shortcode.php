@@ -514,7 +514,7 @@ function chocoletras_shortCode()
                             ?>>
                                 <div class="thankYouCard">
                                     <h3>¡Gracias por su compra!</h3>
-                                    <div style="font-size:10vw;">🙌</div>
+                                    <div style="font-size:10vw;">🙂</div>
                                     <p>
                                         Gracias por comprar con Chocolate, suscríbase a nuestro boletín y manténgase
                                         actualizado con nuestros descuentos y ofertas.
@@ -529,7 +529,7 @@ function chocoletras_shortCode()
                                     <a class="newOrder" href="#">Iniciar nuevo pedido</a>
                                     <a class="visitHome" href="#">Visitar Inicio</a>
 
-                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">10</i>s</span>
+                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">20</i>s</span>
                                 </div>
                             </fieldset>
                         </form>
@@ -616,6 +616,8 @@ function chocoletras_shortCode()
                                     alt="<?php echo _e('Chocoletra'); ?>"></button>
                         </form>
                     </div>
+
+                    <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a>
                 </div>
             </div>
         </div>
