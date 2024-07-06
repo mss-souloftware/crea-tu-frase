@@ -1160,3 +1160,10 @@ label {
     width: 100%;
     overflow: auto;
 }
+
+.copyrightPluginSet {
+    display: block;
+    width: 100%;
+    margin: 15px 0;
+    color: #000;
+}

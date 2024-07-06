@@ -99,19 +99,25 @@
                 $input.val(inputText);
                 generateImages(inputText, $typewriterInner, selectedSymbol);
                 calculateTotalPrice(); // Trigger price calculation on input change
+                checkInputs(); // Check inputs on change
             }
 
             $input.on('input', updateText);
-            $('#letras').on('change', updateText); // Update text when the select box changes
+            $('#letras').on('change', updateText);
         }
 
-        attachInputHandler($('#getText'), $('#typewriter .typewriterInner'));
+        function checkInputs() {
+            let allFilled = true;
+            if ($.trim($('#getText').val()) === "") {
+                allFilled = false;
+            }
+            $('.fraseInput').each(function () {
+                if ($.trim($(this).val()) === "") {
+                    allFilled = false;
+                }
+            });
 
-
-
-        $("#ctf_form #getText").on("keyup", function (event) {
-            console.log('Key code:', event.keyCode);
-            if ($.trim($(this).val()) !== "") {
+            if (allFilled) {
                 $(".dummyImg").css('display', 'none');
                 $("#addNewFrase").removeAttr('disabled');
                 $("#ctf_form .action-button").removeAttr('disabled');
@@ -120,6 +126,12 @@
                 $("#ctf_form .action-button").prop('disabled', true);
                 $("#addNewFrase").prop('disabled', true);
             }
+        }
+
+        attachInputHandler($('#getText'), $('#typewriter .typewriterInner'));
+
+        $("#ctf_form #getText").on("keyup", function () {
+            checkInputs();
         });
 
         let typewriterCounter = 1;
@@ -142,12 +154,13 @@
             $('#typewriter').append($newTypewriterInner);
             const $newInput = $newFrasePanel.find('.fraseInput');
             attachInputHandler($newInput, $newTypewriterInner);
-
+            checkInputs();
             // Attach click event handler to the close button
             $newFrasePanel.find('.closeBtnTyper').click(function () {
                 $newFrasePanel.remove(); // Remove the frase panel
                 $newTypewriterInner.remove(); // Remove the typewriter inner element
                 calculateTotalPrice(); // Recalculate the total price
+                checkInputs(); // Check inputs on remove
             });
         });
 
