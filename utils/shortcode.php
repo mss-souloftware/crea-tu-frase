@@ -530,7 +530,7 @@ function chocoletras_shortCode()
                                     <a class="newOrder" href="#">Iniciar nuevo pedido</a>
                                     <a class="visitHome" href="#">Visitar Inicio</a>
 
-                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">20</i>s</span>
+                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">60</i>s</span>
                                 </div>
                             </fieldset>
                         </form>

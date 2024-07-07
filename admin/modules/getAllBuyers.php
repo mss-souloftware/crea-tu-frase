@@ -54,7 +54,7 @@ function chocoletraMenu_ftn()
           $paymentClass = $value->pagoRealizado == 0 ? 'notPaid' : 'paid';
           $proceso = $value->enProceso == 0 ? '...' : 'Procesando';
           $enviado = $value->enviado == 0 ? '...' : 'Enviado';
-          $repareFrase = json_decode(str_replace('?', '♥', $value->frase), true);
+          $repareFrase = json_decode($value->frase, true);
           $isExpress = $value->express == "on" ? "Envío Express" : "Envío Normal";
           $expressStatus = $value->express == "on" ? "express" : "normal";
 

@@ -600,7 +600,7 @@
     }
 
     if (getQueryParam("payment") === "true") {
-        var counter = 10;
+        var counter = 60;
         var interval = setInterval(function () {
             counter--;
             $("#countdownRedirect").text(counter);
@@ -608,7 +608,7 @@
                 clearInterval(interval);
                 window.location.href = "http://localhost/wordpress/sample-page/";
             }
-        }, 2000);
+        }, 1000);
     } else {
         $(".thankYouCard span").hide();
     }
