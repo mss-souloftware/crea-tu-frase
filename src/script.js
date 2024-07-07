@@ -4,10 +4,10 @@
         const keyMap = {
             '0': '0.png', '1': '1.png', '2': '2.png', '3': '3.png', '4': '4.png', '5': '5.png',
             '6': '6.png', '7': '7.png', '8': '8.png', '9': '9.png', ' ': { heart: 'heart.png', star: 'star.png' },
-            'A': 'a.png', 'B': 'b.png', 'C': 'c.png', 'D': 'd.png', 'E': 'e.png', 'F': 'f.png',
-            'G': 'g.png', 'H': 'h.png', 'I': 'i.png', 'J': 'j.png', 'K': 'k.png', 'L': 'l.png',
-            'M': 'm.png', 'N': 'n.png', 'O': 'o.png', 'P': 'p.png', 'Q': 'q.png', 'R': 'r.png',
-            'S': 's.png', 'T': 't.png', 'U': 'u.png', 'V': 'v.png', 'W': 'w.png', 'X': 'x.png',
+            'A': 'a.png', 'Á': 'a.png', 'B': 'b.png', 'C': 'c.png', 'D': 'd.png', 'E': 'e.png', 'É': 'e.png', 'F': 'f.png',
+            'G': 'g.png', 'H': 'h.png', 'I': 'i.png', 'Í': 'i.png', 'J': 'j.png', 'K': 'k.png', 'L': 'l.png',
+            'M': 'm.png', 'N': 'n.png', 'O': 'o.png', 'Ó': 'o.png', 'P': 'p.png', 'Q': 'q.png', 'R': 'r.png',
+            'S': 's.png', 'T': 't.png', 'U': 'u.png', 'Ú': 'u.png', 'V': 'v.png', 'W': 'w.png', 'X': 'x.png',
             'Y': 'y.png', 'Z': 'z.png',
             'Ñ': 'n1.png', 'ñ': 'n1.png', 'Ç': 'c1.png',
             '?': 'que.png', '¡': 'exclm1.png',
@@ -600,7 +600,7 @@
     }
 
     if (getQueryParam("payment") === "true") {
-        var counter = 60;
+        var counter = 40;
         var interval = setInterval(function () {
             counter--;
             $("#countdownRedirect").text(counter);

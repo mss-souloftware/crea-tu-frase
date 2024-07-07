@@ -87,6 +87,7 @@ function chocoletras_shortCode()
                     <div id="typewriter">
                         <div class="typewriterInner"></div>
                         <img class="dummyImg" src="<?php echo plugin_dir_url(__DIR__) . "img/orders/dummy.png"; ?>" alt="">
+                        <!-- <img class="dummyImg" src="https://chocoletra.com/wp-content/uploads/2024/06/Crea-tu-frase-ahora.jpg" alt=""> -->
                     </div>
                 </div>
 
@@ -224,7 +225,7 @@ function chocoletras_shortCode()
                                         <div class="shippingExpress" style="display: none;">
                                             <p>Envío Express! ( 24h-48h! días laborables ) por
                                                 <?php echo _e('€' . get_option('expressShiping')) ?>
-                                                Más
+                                                más
                                             </p>
                                         </div>
                                         <?php /*
@@ -270,7 +271,7 @@ function chocoletras_shortCode()
                                         <!-- <input type="button" name="previous" class="previous action-button-previous" /> -->
                                         <div class="previous action-button-previous"></div>
                                         <!-- <input type="submit" name="next" class="next action-button" value="Next" /> -->
-                                        <input type="submit" name="next" class="action-button" value="Next" />
+                                        <input type="submit" name="next" class="action-button" value="Continuar" />
                                     </div>
                                     <input type="hidden" id="precLetras" value="<?php echo get_option('precLetra'); ?>"
                                         readonly>
@@ -378,22 +379,6 @@ function chocoletras_shortCode()
                                     </div>
 
                                     <div class="paymentPanel">
-                                        <div class="paymentCard" data-gatway="paypal">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/paypal.png"; ?>" alt="">
-                                            </div>
-                                            <div class="paymentData">
-                                                Pagar Con PayPal
-                                            </div>
-                                        </div>
 
                                         <div class="paymentCard" data-gatway="redsys">
                                             <div class="selected">
@@ -434,6 +419,23 @@ function chocoletras_shortCode()
                                                     </svg>
                                                 </div>
                                                 Pagar Con Bizum
+                                            </div>
+                                        </div>
+
+                                        <div class="paymentCard" data-gatway="paypal">
+                                            <div class="selected">
+                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                        fill="#55C12D" />
+                                                </svg>
+                                            </div>
+                                            <div class="paymentIcon">
+                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/paypal.png"; ?>" alt="">
+                                            </div>
+                                            <div class="paymentData">
+                                                Pagar Con PayPal
                                             </div>
                                         </div>
 
@@ -517,8 +519,8 @@ function chocoletras_shortCode()
                                     <h3>¡Gracias por su compra!</h3>
                                     <div style="font-size:10vw;">🙂</div>
                                     <p>
-                                        Gracias por comprar con Chocolate, suscríbase a nuestro boletín y manténgase
-                                        actualizado con nuestros descuentos y ofertas.
+                                        Gracias por comprar en Chocoletra, suscríbase a nuestro boletín y manténgase
+                                        actualizado con nuestros <br> descuentos y ofertas.
                                     </p>
                                     <div class="termCondition">
                                         <input type="checkbox" name="newsCLP" id="newsletterCLP">
@@ -530,7 +532,7 @@ function chocoletras_shortCode()
                                     <a class="newOrder" href="#">Iniciar nuevo pedido</a>
                                     <a class="visitHome" href="#">Visitar Inicio</a>
 
-                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">60</i>s</span>
+                                    <span>Redirigir a la página de la tienda <i id="countdownRedirect">40</i>s</span>
                                 </div>
                             </fieldset>
                         </form>
@@ -618,7 +620,7 @@ function chocoletras_shortCode()
                         </form>
                     </div>
 
-                    <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a>
+                    <!-- <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
                 </div>
             </div>
         </div>
