@@ -16,10 +16,14 @@
         };
 
         function generateImages(text, $typewriterInner, spaceSymbol) {
+            let chocoType = $("#chocoBase").val();
+            console.log('Current chocoType:', chocoType); // Debugging line
             $typewriterInner.empty();
             const words = text.split(spaceSymbol);
             words.forEach((word, index) => {
-                const $wordDiv = $('<div>').addClass('word');
+                let $wordDiv = $('<div>').addClass('word');
+                let imgCount = 0;
+
                 for (const char of word) {
                     let imgFileName;
                     if (char === spaceSymbol) {
@@ -29,23 +33,45 @@
                     }
 
                     if (imgFileName) {
-                        const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${imgFileName}`;
+                        const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${chocoType}/${imgFileName}`;
                         const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
+
+                        // Check if imgCount exceeds 15
+                        if (imgCount >= 15) {
+                            $typewriterInner.append($wordDiv);
+                            $wordDiv = $('<div>').addClass('word');
+                            imgCount = 0;
+                        }
+
                         $wordDiv.append($img);
+                        imgCount++;
                     }
                 }
-                if ($wordDiv.children().length > 10) {
-                    $wordDiv.children().css('max-width', '35px');
-                } else if (($wordDiv.children().length > 7)) {
-                    $wordDiv.children().css('max-width', '50px');
-                }
+
                 $typewriterInner.append($wordDiv);
+
                 if (index < words.length - 1) {
-                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${keyMap[' '][$('#letras').val()]}`;
+                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${chocoType}/${keyMap[' '][$('#letras').val()]}`;
                     const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
                     $typewriterInner.append($img);
                 }
             });
+
+            let maxChildCount = 0;
+            $('.typewriterInner .word').each(function () {
+                const childCount = $(this).children().length;
+                if (childCount > maxChildCount) {
+                    maxChildCount = childCount;
+                }
+            });
+
+            if (maxChildCount > 10) {
+                $('.typewriterInner .word').children().css('max-width', '35px');
+                $('.typewriterInner .letter-img').css('max-width', '35px');
+            } else if (maxChildCount > 7) {
+                $('.typewriterInner .word').children().css('max-width', '50px');
+                $('.typewriterInner .letter-img').css('max-width', '50px');
+            }
         }
 
         function calculateTotalPrice() {
@@ -107,13 +133,13 @@
         }
 
         function checkInputs() {
-            let allFilled = true;
-            if ($.trim($('#getText').val()) === "") {
-                allFilled = false;
+            let allFilled = false;
+            if ($.trim($('#getText').val()) !== "") {
+                allFilled = true;
             }
             $('.fraseInput').each(function () {
-                if ($.trim($(this).val()) === "") {
-                    allFilled = false;
+                if ($.trim($(this).val()) !== "") {
+                    allFilled = true;
                 }
             });
 

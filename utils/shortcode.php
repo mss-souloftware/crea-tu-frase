@@ -150,6 +150,12 @@ function chocoletras_shortCode()
                                         <option value="star" class="attached enabled">Estrella</option>
                                     </select>
 
+                                    <label class="fieldlabels">Tipo de chocolate</label>
+                                    <select id="chocoBase">
+                                        <option selected value="light" class="attached enabled">Chocolate Claro</option>
+                                        <option value="dark" class="attached enabled">Chocolate Negro</option>
+                                    </select>
+
                                     <div class="fraseWrapper">
                                         <div class="frasePanel">
                                             <input id="<?php echo _e('getText') ?>" type="text"
@@ -248,7 +254,7 @@ function chocoletras_shortCode()
                                         ?>" placeholder="Unique Order ID">
                                     </div>
                                     <textarea name="message" id="message"
-                                        placeholder="O Añadir tarjeta dedicatoria*"></textarea>
+                                        placeholder="Añadir tarjeta dedicatoria / observaciones"></textarea>
 
                                     <div class="couponSection">
                                         <p>Haga clic para usar el cupón</p>
