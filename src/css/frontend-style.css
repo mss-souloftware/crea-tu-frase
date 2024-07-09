@@ -240,6 +240,7 @@
     background: #F7F7F7;
     padding: 20px;
     border-radius: 8px;
+    height: 100%;
 }
 
 #typewriter .typewriterInner:not(:last-child) {
@@ -248,6 +249,8 @@
 
 #typewriter .dummyImg {
     max-width: 100%;
+    font-size: 3vw;
+    color: #000;
 }
 
 #typewriter .word {
@@ -542,7 +545,7 @@
     object-position: center;
 }
 
-s .ordersPanel .orderDetails .orderData {
+.ordersPanel .orderDetails .orderData {
     width: 70%;
 }
 
@@ -762,4 +765,32 @@ s .ordersPanel .orderDetails .orderData {
     font-size: 14px;
     margin-top: 15px;
     text-decoration: underline;
+}
+
+.typed-text {
+    color: #E64C3C;
+}
+
+.cursor {
+    display: inline-block;
+    width: 3px;
+    margin-left: 4px;
+    background: #E64C3C;
+}
+
+.cursor.blink {
+    animation: blink 0.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        background: #E64C3C;
+    }
+
+    40%,
+    50% {
+        background: transparent;
+    }
 }

@@ -193,6 +193,7 @@
 
         let screenshotPaths = [];
         let screenshotData = [];
+        let typewriterScreenshotPath = '';
 
         function saveScreenshots(screenshots, callback) {
             $.ajax({
@@ -205,7 +206,8 @@
                     console.log("Screenshots saved successfully.");
                     const data = JSON.parse(response);
                     if (data.status === 'success') {
-                        screenshotPaths = data.filepaths;
+                        screenshotPaths = data.filepaths.slice(1); // All paths except the first one
+                        typewriterScreenshotPath = data.filepaths[0]; // First path is for the #typewriter div
                     }
                     callback(null, response);
                 },
@@ -216,38 +218,62 @@
             });
         }
 
+        function takeScreenshot(element, filename, callback) {
+            html2canvas(element, {
+                scale: 1,
+                useCORS: true
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                callback(null, {
+                    imgBase64: imgData,
+                    filename: filename
+                });
+            }).catch(error => {
+                console.error("Error capturing screenshot of element", error);
+                callback(error);
+            });
+        }
+
         $("#continuarBTN").on('click', function () {
             $('.priceCounter').text($(".chocoletrasPlg__wrapperCode-dataUser-form-input-price").val());
 
-            $(".typewriterInner").each(function (index) {
-                const element = $(this)[0]; // Get the DOM element
-                const timestamp = new Date().getTime();
-                const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.png';
+            const elementsToCapture = $(".typewriterInner").toArray();
+            const typewriterElement = $("#typewriter")[0];
+            const timestamp = new Date().getTime();
 
-                html2canvas(element, {
-                    scale: 3, // Increase the scale for better resolution (adjust as needed)
-                    useCORS: true
-                }).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png');
-                    screenshotData.push({
-                        imgBase64: imgData,
-                        filename: uniqueFilename
-                    });
+            let captureCount = 0;
 
-                    // If this is the last element, send the AJAX request
-                    if (screenshotData.length === $(".typewriterInner").length) {
-                        saveScreenshots(screenshotData, function (error, response) {
+            // Take screenshot of #typewriter first
+            takeScreenshot(typewriterElement, 'typewriter_screenshot_' + timestamp + '.png', function (error, typewriterScreenshot) {
+                if (!error) {
+                    screenshotData.push(typewriterScreenshot);
+                    captureCount++;
+
+                    elementsToCapture.forEach((element, index) => {
+                        const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.png';
+
+                        takeScreenshot(element, uniqueFilename, function (error, screenshot) {
                             if (!error) {
-                                console.log("All screenshots saved successfully.");
+                                screenshotData.push(screenshot);
+                                captureCount++;
+
+                                // If all elements are processed, save all screenshots
+                                if (captureCount === elementsToCapture.length + 1) { // +1 for the #typewriter screenshot
+                                    saveScreenshots(screenshotData, function (error, response) {
+                                        if (!error) {
+                                            console.log("All screenshots saved successfully.");
+                                        }
+                                    });
+                                }
                             }
                         });
-                    }
-                }).catch(error => {
-                    console.error("Error capturing screenshot for element " + index, error);
-                });
+                    });
+                }
             });
-
         });
+
+
+
 
         $("#ctf_form").on("submit", function (event) {
             event.preventDefault();
@@ -292,7 +318,8 @@
                 message: message,
                 uoi: uoi,
                 coupon: coupon,
-                screenshots: screenshotPaths
+                screenshots: screenshotPaths,
+                productBanner: typewriterScreenshotPath,
             };
 
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
@@ -439,28 +466,27 @@
         });
 
 
-
-        var current_fs, next_fs, previous_fs;
-        var opacity;
-        var current = 1;
-        var steps = $("fieldset").length;
+        var current_fs, next_fs, previous_fs; // Fieldsets
+        var current = 1; // Current step
+        var steps = $("fieldset").length; // Number of fieldsets
 
         setProgressBar(current);
 
+        // Next button click
         $(".next").click(function () {
             current_fs = $(this).parents('fieldset');
             next_fs = $(this).parents('fieldset').next();
 
-            //Add Class Active
+            // Add Class Active
             $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
-            //show the next fieldset
+            // Show the next fieldset
             next_fs.show();
-            //hide the current fieldset with style
+            // Hide the current fieldset with style
             current_fs.animate({ opacity: 0 }, {
                 step: function (now) {
-                    // for making fielset appear animation
-                    opacity = 1 - now;
+                    // for making fieldset appear animation
+                    var opacity = 1 - now;
 
                     current_fs.css({
                         'display': 'none',
@@ -473,21 +499,22 @@
             setProgressBar(++current);
         });
 
+        // Previous button click
         $(".previous").click(function () {
             current_fs = $(this).parents('fieldset');
             previous_fs = $(this).parents('fieldset').prev();
 
-            //Remove class active
+            // Remove class active
             $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 
-            //show the previous fieldset
+            // Show the previous fieldset
             previous_fs.show();
 
-            //hide the current fieldset with style
+            // Hide the current fieldset with style
             current_fs.animate({ opacity: 0 }, {
                 step: function (now) {
-                    // for making fielset appear animation
-                    opacity = 1 - now;
+                    // for making fieldset appear animation
+                    var opacity = 1 - now;
 
                     current_fs.css({
                         'display': 'none',
@@ -500,12 +527,49 @@
             setProgressBar(--current);
         });
 
+        // Progress bar click
+        $("#progressbar li:first").click(function () {
+            var index = $(this).index();
+            if (index + 1 !== current) {
+                // Remove active class from all progress bar steps
+                $("#progressbar li").removeClass("active");
+
+                // Add active class to the clicked step and all previous steps
+                for (var i = 0; i <= index; i++) {
+                    $("#progressbar li").eq(i).addClass("active");
+                }
+
+                // Hide the current fieldset
+                current_fs = $("fieldset:visible");
+                current_fs.animate({ opacity: 0 }, {
+                    step: function (now) {
+                        var opacity = 1 - now;
+
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                    },
+                    duration: 500
+                });
+
+                // Show the corresponding fieldset
+                next_fs = $("fieldset").eq(index);
+                next_fs.show().css({ 'opacity': 0 }).animate({ opacity: 1 }, 500);
+
+                // Update the current step
+                current = index + 1;
+                setProgressBar(current);
+            }
+        });
+
         function setProgressBar(curStep) {
             var percent = parseFloat(100 / steps) * curStep;
             percent = percent.toFixed();
             $(".progress-bar")
                 .css("width", percent + "%")
         }
+
 
         $(".submit").click(function () {
             return false;
@@ -557,7 +621,34 @@
                             return false;
                         }
                     ],
+                    onChange: function (selectedDates, dateStr, instance) {
+                        var selectedDate = selectedDates[0];
+                        var selectedDay = selectedDate.getDay();
+                        var priceInput = document.querySelector(".chocoletrasPlg__wrapperCode-dataUser-form-input-price");
+                        var previousDate = instance._previousDate || null;
+                        var previousDay = previousDate ? previousDate.getDay() : null;
+
+                        if (priceInput) {
+                            var currentValue = parseFloat(priceInput.value) || 0;
+
+                            if (selectedDay === 6 && previousDay !== 6) {
+                                var finalValSat = currentValue + 5;
+                                priceInput.value = finalValSat;
+                                $('.priceCounter').text(finalValSat);
+                                $('#counter').text(finalValSat);
+                            } else if (selectedDay !== 6 && previousDay === 6) {
+                                var finalValNotSat = currentValue - 5;
+                                priceInput.value = finalValNotSat;
+                                $('.priceCounter').text(finalValNotSat);
+                                $('#counter').text(finalValNotSat);
+                            }
+
+                            instance._previousDate = selectedDate;
+                        }
+                    }
                 });
+
+
             },
             error: function (xhr, status, error) {
                 console.error('AJAX Error:', status, error);
@@ -639,5 +730,45 @@
         $(".thankYouCard span").hide();
     }
 
+
+    const typedText = document.querySelector(".typed-text");
+    const cursor = document.querySelector(".cursor");
+
+    const textArray = ["Frase", "Deseos", "Saludos"];
+
+    let textArrayIndex = 0;
+    let charIndex = 0;
+
+    const erase = () => {
+        if (charIndex > 0) {
+            cursor.classList.remove('blink');
+            typedText.textContent = textArray[textArrayIndex].slice(0, charIndex - 1);
+            charIndex--;
+            setTimeout(erase, 80);
+        } else {
+            cursor.classList.add('blink');
+            textArrayIndex++;
+            if (textArrayIndex > textArray.length - 1) {
+                textArrayIndex = 0;
+            }
+            setTimeout(type, 1000);
+        }
+    }
+
+    const type = () => {
+        if (charIndex <= textArray[textArrayIndex].length - 1) {
+            cursor.classList.remove('blink');
+            typedText.textContent += textArray[textArrayIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(type, 120);
+        } else {
+            cursor.classList.add('blink');
+            setTimeout(erase, 1000);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        type();
+    })
 
 }(jQuery));

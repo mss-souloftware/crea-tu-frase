@@ -26,12 +26,15 @@ function chocoletraMenu_ftn()
   $elementsPagination = $payment->paginationElements();
   ?>
   <div class="AdministracionVentas">
-    <h2>Todos los detalles de los pedidos</h2>
+    <div class="deleteWrapper">
+      <h2>Todos los detalles de los pedidos</h2>
+      <button type="button" id="deleteAll">Eliminar elegir productos</button>
+    </div>
     <section class="AdministracionVentas-table">
       <div class="AdministracionVentas-table-thead">
         <ul>
           <li class="AdministracionVentas-table-thead_id">
-            <input type="checkbox">
+            <input id="selectAll" type="checkbox">
           </li>
           <li class="AdministracionVentas-table-thead-frase"><?php echo esc_html('Nombre'); ?></li>
           <li class="AdministracionVentas-table-thead_enviado"><?php echo esc_html('Teléfono'); ?></li>
@@ -64,8 +67,8 @@ function chocoletraMenu_ftn()
             $fraseCount = 0;
           }
 
-          echo '<ul class="ssadad" id="openPannel_' . $value->id . '">';
-          echo '<li class="AdministracionVentas-table-tbody_id"><input type="checkbox"></li>';
+          echo '<ul id="openPannel_' . $value->id . '">';
+          echo '<li class="AdministracionVentas-table-tbody_id"><input id="' . $value->id . '" type="checkbox" value="' . $value->id . '"></li>';
           echo '<li class="AdministracionVentas-table-tbody-frase">' . $value->nombre . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_proceso">' . $value->telefono . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fecha . '</li>';
@@ -79,10 +82,11 @@ function chocoletraMenu_ftn()
           echo '<li id="infoPannel_' . $value->id . '" class="AdministracionVentas-table-tbody_hidenInfo"> ';
           // echo userdata($value);
           echo '<div class="infoPanelInnn">
-                <h2>Detalles Perfil</h2> 
+                <h2>Detalles Pedido</h2> 
                 <span><b>Nombre: </b>' . $value->nombre . '</span>
                 <span><b>Email: </b>' . $value->email . '</span>
                 <span><b>Telefono: </b>' . $value->telefono . '</span>
+                <span><b>Tipo de chocolate: </b>Chocolate Color</span>
                 <span><b>Frases: (' . $fraseCount . ')</b></span>';
           if (is_array($repareFrase)) {
             foreach ($repareFrase as $frase) {
@@ -104,10 +108,10 @@ function chocoletraMenu_ftn()
                   <span><b>Codigo Postal: </b>' . $value->cp . '</span>
                   <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
                   <span><b>Pagado: </b>Redsys</span>';
-                  if ($value->coupon) {
-                    echo '<span><b>Cupón: </b>' . $value->coupon . '</span>';
-                  }
-                echo '</div>';
+          if ($value->coupon) {
+            echo '<span><b>Cupón: </b>' . $value->coupon . '</span>';
+          }
+          echo '</div>';
 
           echo '<div class="infoPanelInnn">
           <h2>Estado del pedido</h2> ';

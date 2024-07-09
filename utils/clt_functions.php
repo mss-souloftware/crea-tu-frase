@@ -172,6 +172,30 @@ function validate_coupon()
 }
 
 
+function delete_rows_callback()
+{
+  if (isset($_POST['ids']) && is_array($_POST['ids'])) {
+    global $wpdb;
+    $ids = $_POST['ids'];
+    $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+    $table_name = $wpdb->prefix . 'chocoletras_plugin';
+
+    $query = "DELETE FROM $table_name WHERE id IN ($placeholders)";
+    $result = $wpdb->query($wpdb->prepare($query, $ids));
+
+    if ($result !== false) {
+      wp_send_json_success();
+    } else {
+      wp_send_json_error();
+    }
+  } else {
+    wp_send_json_error();
+  }
+}
+
+add_action('wp_ajax_delete_rows', 'delete_rows_callback');
+
+
 
 // vincule data script to php file //
 add_action('wp_ajax_nopriv_test_action', 'responseForm');

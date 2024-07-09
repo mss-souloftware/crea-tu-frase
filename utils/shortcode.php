@@ -86,8 +86,13 @@ function chocoletras_shortCode()
                 <div class="col-md-7 col-12 text-center mb-2">
                     <div id="typewriter">
                         <div class="typewriterInner"></div>
-                        <img class="dummyImg" src="<?php echo plugin_dir_url(__DIR__) . "img/orders/dummy.png"; ?>" alt="">
-                        <!-- <img class="dummyImg" src="https://chocoletra.com/wp-content/uploads/2024/06/Crea-tu-frase-ahora.jpg" alt=""> -->
+                        <?php
+                            if (isset($_COOKIE['chocoletraOrderData'])) {
+                                $getProductBanner = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true); ?>
+                                <img class="dummyImg" src="<?php echo site_url() . $getProductBanner['productBanner'];?>" alt="">
+                            <?php } else { ?>
+                                <p class="dummyImg">Crea Tu <span class="typed-text"></span><span class="cursor blink">&nbsp;</span></p>
+                        <?php } ?>
                     </div>
                 </div>
 
@@ -95,8 +100,7 @@ function chocoletras_shortCode()
                     <div class="chocoletrasPlg-spiner">
                         <img src="<?php echo plugins_url('../img/logospiner.gif', __FILE__); ?>"
                             alt="<?php echo _e('Chocoletras'); ?>">
-                        <div class="chocoletrasPlg-spiner-ring">
-                        </div>
+                        <div class="chocoletrasPlg-spiner-ring"></div>
                     </div>
                     <div class="card">
                         <form id="ctf_form" class="chocoletrasPlg__wrapperCode-dataUser-form" action="test_action">

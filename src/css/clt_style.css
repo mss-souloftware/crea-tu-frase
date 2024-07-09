@@ -1030,6 +1030,21 @@
     background: #00cc99;
 }
 
+.deleteWrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.deleteWrapper button {
+    background: #FF4D4D;
+    border: 0;
+    color: #fff;
+    padding: 10px 30px;
+    line-height: 1;
+    cursor: pointer;
+}
+
 @keyframes reload {
     from {
         transform: rotate(0)
