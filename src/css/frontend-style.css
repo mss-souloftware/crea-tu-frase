@@ -151,6 +151,7 @@
 }
 
 #progressbar {
+    margin: 0px;
     margin-bottom: 30px;
     overflow: hidden;
     color: lightgrey;
@@ -464,7 +465,8 @@
     color: #000;
 }
 
-#ctf_form select#letras {
+#ctf_form #letras,
+#ctf_form #chocoBase {
     margin-top: 15px !important;
     width: 100%;
     background-color: #fff;
@@ -793,4 +795,24 @@
     50% {
         background: transparent;
     }
+}
+
+#mainWrapperForm {
+    position: relative;
+}
+
+#mainWrapperForm #pricingTableBtn {
+    writing-mode: vertical-lr;
+    border: solid black 1px;
+    position: absolute;
+    right: -40px;
+    top: 0px;
+    bottom: 0;
+    margin: auto;
+    z-index: 1;
+    background: #000;
+    color: #fff;
+    padding: 5px;
+    height: 35%;
+    font-size: 18px;
 }
