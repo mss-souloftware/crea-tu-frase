@@ -111,7 +111,7 @@ function chocoletras_shortCode()
                                     <li>Prec. por ♥/✯:    <b><?php echo get_option('precCoraz'); ?>€</b></li>
                                     <li>Caracteres Maximo:    <b><?php echo get_option('maxCaracteres'); ?></b></li>
                                     <li>Gasto Minimo:    <b><?php echo get_option('gastoMinimo'); ?>€</b></li>
-                                    <li>Sábado Gastos de envío:    <b><?php echo get_option('precEnvio'); ?>€</b></li>
+                                    <li>Sábado Gastos de envío:    <b><?php echo get_option('saturdayShiping'); ?>€</b></li>
                                     <li>Gastos de envío normales:    <b><?php echo get_option('precEnvio'); ?>€</b></li>
                                     <li>Gastos de envío exprés:    <b><?php echo get_option('expressShiping'); ?>€</b></li>
                                 </ul>

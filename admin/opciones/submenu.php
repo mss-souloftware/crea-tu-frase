@@ -80,6 +80,13 @@ function submenuOutput()
           echo get_option('expressShiping') ? intval(get_option('expressShiping')) : ''; ?>"> </div>
         </td>
       </tr>
+      <tr>
+        <td><?php echo esc_html('Sábado Gastos de envío'); ?> </td>
+        <td>
+          <div> <input type="number" maxlength="150" name="saturdayShipinglSubmit_Page" value="<?php
+          echo get_option('saturdayShiping') ? intval(get_option('saturdayShiping')) : ''; ?>"> </div>
+        </td>
+      </tr>
       <tr class="ChocoletrasBackendOpciones-trSubmit">
         <td colspan="2">
           <div class="ChocoletrasBackendOpciones-submit"> <input type="submit" value="Enviar" id="conditionalSubmit">
