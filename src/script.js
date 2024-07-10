@@ -730,6 +730,9 @@
         $(".thankYouCard span").hide();
     }
 
+    $("#pricingTableBtn").on('click', function () {
+        $("#pricingTable").toggleClass('open');
+    })
 
     const typedText = document.querySelector(".typed-text");
     const cursor = document.querySelector(".cursor");

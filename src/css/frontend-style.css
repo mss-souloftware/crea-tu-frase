@@ -801,18 +801,45 @@
     position: relative;
 }
 
+#mainWrapperForm #pricingTable {
+    display: flex;
+    max-width: 330px;
+    background: #fff;
+    border: 1px solid #000;
+    position: absolute;
+    right: -40px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 200px;
+    box-shadow: 4px 4px 48px rgba(28, 51, 64, .1);
+    transition: all 0.3s linear;
+}
+
+#mainWrapperForm #pricingTable.open {
+    right: -284px;
+}
+
+#mainWrapperForm #pricingTable .pricingTableData {
+    text-align: initial !important;
+    display: flex;
+    padding: 15px;
+}
+
+#mainWrapperForm #pricingTable .pricingTableData ul {
+    padding: 0;
+    margin: auto;
+    list-style: none;
+}
+
 #mainWrapperForm #pricingTableBtn {
     writing-mode: vertical-lr;
     border: solid black 1px;
-    position: absolute;
-    right: -40px;
-    top: 0px;
-    bottom: 0;
-    margin: auto;
     z-index: 1;
     background: #000;
     color: #fff;
     padding: 5px;
-    height: 35%;
+    height: 100%;
     font-size: 18px;
+    cursor: pointer;
 }

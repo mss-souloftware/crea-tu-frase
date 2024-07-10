@@ -169,7 +169,7 @@ function chocoletras_shortCode()
                                             <pre><?php echo _e('Prec. por 🖤:  ') ?></pre>
                                         </td>
                                         <td><b>
-                                                <pre><?php echo get_option('precCoraz'); ?>€</pre>
+                                                <pre>   €</pre>
                                             </b></td>
                                     </tr>
                                     <tr>
