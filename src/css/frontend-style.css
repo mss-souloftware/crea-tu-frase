@@ -834,10 +834,9 @@
 
 #mainWrapperForm #pricingTableBtn {
     writing-mode: vertical-lr;
-    border: solid black 1px;
     z-index: 1;
-    background: #000;
-    color: #fff;
+    background: #fff;
+    color: #000;
     padding: 2px;
     height: 100%;
     font-size: 14px;
