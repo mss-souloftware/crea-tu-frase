@@ -52,6 +52,7 @@ function createAllTables()
               uoi varchar(150) NOT NULL,
               coupon varchar(50) NOT NULL,
               screens JSON NOT NULL,
+              payment varchar(50) NOT NULL,
               PRIMARY KEY  (id)
             ) $charset_collate;";
 

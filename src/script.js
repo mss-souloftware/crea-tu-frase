@@ -378,24 +378,48 @@
             $(".paymentPanel .paymentCard").on('click', function () {
                 $(".paymentPanel .paymentCard").removeClass('active');
                 $(this).addClass("active");
-                selectedGatway = $(this).attr("data-gatway")
-                console.log(selectedGatway);
+                var selectedGatway = $(this).attr("data-gatway");
+                var paymentMethod = "";
+
+                if (selectedGatway === 'paypal') {
+                    paymentMethod = "PayPal";
+                } else if (selectedGatway === 'redsys') {
+                    paymentMethod = "Redsys";
+                } else if (selectedGatway === 'bizum') {
+                    paymentMethod = "Bizum";
+                } else if (selectedGatway === 'google') {
+                    paymentMethod = "Google Pay";
+                } else if (selectedGatway === 'apple') {
+                    paymentMethod = "Apple Pay";
+                }
+
+                $("#selectedPayment").val(paymentMethod);
+                var cookieValue = getCookie("chocoletraOrderData");
+                if (cookieValue) {
+                    var orderData = JSON.parse(decodeURIComponent(cookieValue));
+                    orderData.payment = paymentMethod;
+                    setCookie("chocoletraOrderData", encodeURIComponent(JSON.stringify(orderData)), 7);
+                }
+                // console.log(orderData);
                 return selectedGatway;
-            })
+            });
 
             $("#proceedPayment").on('click', function () {
                 if (selectedGatway === 'paypal') {
                     $("#payPayPal").submit();
+                    $("#selectedPayment").val("PayPal");
                 } else if (selectedGatway === 'redsys') {
+                    $("#selectedPayment").val("Redsys");
                     $("#payRedsys").submit();
                 } else if (selectedGatway === 'bizum') {
+                    $("#selectedPayment").val("Bizum");
                     $("#payBizum").submit();
                 } else if (selectedGatway === 'google') {
+                    $("#selectedPayment").val("Google Pay");
                     $("#payGoogle").submit();
                 } else if (selectedGatway === 'apple') {
+                    $("#selectedPayment").val("Apple Pay");
                     $("#payApple").submit();
-                } else if (selectedGatway === 'cashapp') {
-                    $("#payCashapp").submit();
                 } else {
                     alert("Select any of the payment first!");
                 }
@@ -421,6 +445,11 @@
             });
         });
 
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
 
         function setCookie(name, value, days) {
             const date = new Date();

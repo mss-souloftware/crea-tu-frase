@@ -265,6 +265,7 @@ function chocoletras_shortCode()
                                         value="<?php echo get_option('expressShiping') ?>" readonly>
                                     <input id="ExpressActivator" type="hidden" name="express" value="off" readonly>
                                     <input id="usedCoupon" type="hidden" name="coupon" value="" readonly>
+                                    <input id="selectedPayment" type="hidden" name="paymentType" value="" readonly>
                             </fieldset>
                             <fieldset <?php
 

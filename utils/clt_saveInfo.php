@@ -23,7 +23,7 @@ function responseForm()
 function confirmAllIsReady()
 {
     setcookie('chocol_price', '', time() - 3600);
-    $getData = array('mainText', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon');
+    $getData = array('mainText', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon', 'payment');
 
     $confirm_error = array();
 
@@ -72,8 +72,8 @@ function saveDataInDatabase($datos)
         $tablename = $wpdb->prefix . 'chocoletras_plugin';
         $result = $wpdb->query(
             $wpdb->prepare(
-                "INSERT INTO $tablename (frase, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon) 
-             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                "INSERT INTO $tablename (frase, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon, payment) 
+             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s)",
                 $sanitizeData['mainText'],
                 $sanitizeData['priceTotal'],
                 $sanitizeData['fname'],
@@ -88,7 +88,8 @@ function saveDataInDatabase($datos)
                 $sanitizeData['picDate'],
                 $sanitizeData['shippingType'],
                 $sanitizeData['uoi'],
-                $sanitizeData['coupon']
+                $sanitizeData['coupon'],
+                $sanitizeData['payment'],
             )
         );
     } catch (Exception $error) {
@@ -119,6 +120,7 @@ function saveDataInDatabase($datos)
         "faddress" => $sanitizeData['address'],
         "fuoi" => $sanitizeData['uoi'],
         "fcoupon" => $sanitizeData['coupon'],
+        "fpayment" => $sanitizeData['payment'],
         "cookie" => $confirmSaveCookie
     ) : array("Status" => 400);
 }
