@@ -11,7 +11,7 @@ require_once ('confirmPayment/paymentfinish.php');
 require_once ('confirmPayment/closeprocess.php');
 require_once ('report/reportProblem.php');
 
-require_once ('payments/payments.php');
+require_once 'payments/payments.php';
 
 if (isset($_COOKIE['chocol_cookie'])) {
     $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
@@ -520,7 +520,7 @@ function chocoletras_shortCode()
                         <div class="chocoletrasPlg__wrapperCode-firstHead"></div>
                         <div class="chocoletrasPlg__wrapperCode-firstHead-dataUser"></div>
                     </div>
-                    <?php paymentFrontend();?>
+                    <?php  paymentFrontend();?>
                     <!-- <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
                 </div>
             </div>

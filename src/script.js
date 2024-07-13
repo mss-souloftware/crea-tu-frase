@@ -375,11 +375,12 @@
 
         jQuery(document).ready(function () {
             let selectedGatway = null;
+            let paymentMethod = "";
             $(".paymentPanel .paymentCard").on('click', function () {
                 $(".paymentPanel .paymentCard").removeClass('active');
                 $(this).addClass("active");
-                var selectedGatway = $(this).attr("data-gatway");
-                var paymentMethod = "";
+                selectedGatway = $(this).attr("data-gatway");
+                paymentMethod = "";
 
                 if (selectedGatway === 'paypal') {
                     paymentMethod = "PayPal";
@@ -392,19 +393,18 @@
                 } else if (selectedGatway === 'apple') {
                     paymentMethod = "Apple Pay";
                 }
-
                 $("#selectedPayment").val(paymentMethod);
-                var cookieValue = getCookie("chocoletraOrderData");
-                if (cookieValue) {
-                    var orderData = JSON.parse(decodeURIComponent(cookieValue));
-                    orderData.payment = paymentMethod;
-                    setCookie("chocoletraOrderData", encodeURIComponent(JSON.stringify(orderData)), 7);
-                }
-                // console.log(orderData);
+                removeCookie('paypamentType');
+                console.log(paymentMethod);
                 return selectedGatway;
             });
 
             $("#proceedPayment").on('click', function () {
+                console.log(selectedGatway,paymentMethod);
+                var cookieValue = getCookie("chocoletraOrderData");
+                if (cookieValue) {
+                    setCookie("paypamentType", paymentMethod);
+                }
                 if (selectedGatway === 'paypal') {
                     $("#payPayPal").submit();
                     $("#selectedPayment").val("PayPal");
@@ -423,7 +423,7 @@
                 } else {
                     alert("Select any of the payment first!");
                 }
-            })
+            });
 
             jQuery("#cancelProcessPaiment").on('click', function () {
                 loader.css('height', '100%');
@@ -438,6 +438,7 @@
                     success: function (e) {
                         removeCookie('chocoletraOrderData');
                         removeCookie('chocol_cookie');
+                        removeCookie('paypamentType');
                         loader.css('height', '0%');
                         location.reload();
                     },
