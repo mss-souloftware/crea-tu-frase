@@ -385,7 +385,7 @@
 
             $("#proceedPayment").on('click', function () {
                 if (selectedGatway === 'paypal') {
-                    $("#paypayPal").submit();
+                    $("#payPayPal").submit();
                 } else if (selectedGatway === 'redsys') {
                     $("#payRedsys").submit();
                 } else if (selectedGatway === 'bizum') {

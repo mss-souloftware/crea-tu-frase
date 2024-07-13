@@ -16,6 +16,7 @@ require_once plugin_dir_path(__FILE__) . '../admin/statuschange/setStatus.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/submenu.php';
 require_once plugin_dir_path(__FILE__) . '../admin/calander/calander.php';
 require_once plugin_dir_path(__FILE__) . '../admin/coupons/coupons.php';
+require_once plugin_dir_path(__FILE__) . '../admin/payments/payments.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/itemsEmail.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/reportsPage.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/stripe.php';
@@ -306,8 +307,8 @@ function addSubmenuChocoletras()
 //   );
 // }
 
-add_action('admin_menu', 'addSubmenuEmailOptions');
-function addSubmenuEmailOptions()
+add_action('admin_menu', 'addSubmenupaymentOutput');
+function addSubmenupaymentOutput()
 {
   add_submenu_page(
     'clt_amin',
@@ -315,8 +316,22 @@ function addSubmenuEmailOptions()
     'Correos electrónicos',
     'install_plugins',
     'set_email_items',
-    'emailItemsOutput',
+    'paymentOutput',
     5
+  );
+}
+
+add_action('admin_menu', 'addSubmenuEmailOptions');
+function addSubmenuEmailOptions()
+{
+  add_submenu_page(
+    'clt_amin',
+    'Ajustes Payment',
+    'Ajustes Payment',
+    'install_plugins',
+    'payment_settings',
+    'emailItemsOutput',
+    6
   );
 }
 

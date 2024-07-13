@@ -11,6 +11,8 @@ require_once ('confirmPayment/paymentfinish.php');
 require_once ('confirmPayment/closeprocess.php');
 require_once ('report/reportProblem.php');
 
+require_once ('payments/payments.php');
+
 if (isset($_COOKIE['chocol_cookie'])) {
     $getCookieOUI = get_option($_COOKIE['chocol_cookie']);
     $getCookieOUILast = explode("_", $getCookieOUI);
@@ -19,58 +21,6 @@ if (isset($_COOKIE['chocol_cookie'])) {
     $getCookieOUI = null;
     $getCookieOUILast = [];
     $lastCookieVal = null;
-}
-
-
-// PayPal Configuration
-define('PAYPAL_EMAIL', 'chocoletra2020@gmail.com');
-define('RETURN_URL', 'https://chocoletra.com/gracias-chocoletra/?payerID=' . $lastCookieVal);
-define('CANCEL_URL', 'https://chocoletra.com/crea-tu-frase/');
-define('NOTIFY_URL', 'https://chocoletra.com/gracias-chocoletra/?payerID=' . $lastCookieVal);
-define('PAYPAL_CURRENCY', 'EUR');
-define('SANDBOX', FALSE); // TRUE or FALSE 
-define('LOCAL_CERTIFICATE', FALSE); // TRUE or FALSE
-
-if (SANDBOX === TRUE) {
-    $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
-} else {
-    $paypal_url = "https://www.paypal.com/cgi-bin/webscr";
-}
-// PayPal IPN Data Validate URL
-define('PAYPAL_URL', $paypal_url);
-
-if (isset($_GET['payment']) && $_GET['payment'] == true) {
-    if (isset($_GET['payerID'])) {
-        $payerID = $_GET['payerID'];
-        global $wpdb;
-        $tablename = $wpdb->prefix . 'chocoletras_plugin';
-        $query = $wpdb->prepare("SELECT * FROM $tablename WHERE uoi = %s", $payerID);
-        $result = $wpdb->get_row($query);
-
-        if ($result) {
-            $update_query = $wpdb->prepare("UPDATE $tablename SET pagoRealizado = 1 WHERE uoi = %s", $payerID);
-            $wpdb->query($update_query);
-        }
-    }
-    ?>
-    <script>
-        document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
-        document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
-        console.log("Payment True");
-    </script>
-<?php /*
-require_once ('finishprocess/finishProcessStripe.php');
-$finishProcessStripeResult = finishProcessTripe();
-if (
-$finishProcessStripeResult->payment_status == "paid" &&
-paymentfinish($finishProcessStripeResult->customer) === 1
-) { ?>
-<script>
-document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
-location.reload();
-</script>
-<?php
-} */
 }
 
 
@@ -409,37 +359,10 @@ function chocoletras_shortCode()
                                     </div>
 
                                     <div class="paymentPanel">
-
-                                        <div class="paymentCard" data-gatway="redsys">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/redsys.png"; ?>" alt="">
-                                            </div>
-                                            <div class="paymentData">
-                                                Pagar Con Tarjeta
-                                            </div>
-                                        </div>
-
-                                        <div class="paymentCard" data-gatway="bizum">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/bizum.png"; ?>" alt="">
-                                            </div>
-                                            <div class="paymentData">
+                                        <?php $getRedsys = get_option('ctf_settings')['payment_methods']['redsys'];
+                                        if($getRedsys === 1){
+                                        ?>
+                                            <div class="paymentCard" data-gatway="redsys">
                                                 <div class="selected">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -448,80 +371,105 @@ function chocoletras_shortCode()
                                                             fill="#55C12D" />
                                                     </svg>
                                                 </div>
-                                                Pagar Con Bizum
+                                                <div class="paymentIcon">
+                                                    <img src="<?php echo plugin_dir_url(__DIR__) . "img/redsys.png"; ?>" alt="">
+                                                </div>
+                                                <div class="paymentData">
+                                                    Pagar Con Tarjeta
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php } ?>
+                                        <?php $getBizum = get_option('ctf_settings')['payment_methods']['bizum'];
+                                        if($getBizum === 1){
+                                        ?>
+                                            <div class="paymentCard" data-gatway="bizum">
+                                                <div class="selected">
+                                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                            fill="#55C12D" />
+                                                    </svg>
+                                                </div>
+                                                <div class="paymentIcon">
+                                                    <img src="<?php echo plugin_dir_url(__DIR__) . "img/bizum.png"; ?>" alt="">
+                                                </div>
+                                                <div class="paymentData">
+                                                    <div class="selected">
+                                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                                fill="#55C12D" />
+                                                        </svg>
+                                                    </div>
+                                                    Pagar Con Bizum
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                        <?php $getPaypPal = get_option('ctf_settings')['payment_methods']['paypal'];
+                                        if($getPaypPal === 1){
+                                        ?>
+                                            <div class="paymentCard" data-gatway="paypal">
+                                                <div class="selected">
+                                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                            fill="#55C12D" />
+                                                    </svg>
+                                                </div>
+                                                <div class="paymentIcon">
+                                                    <img src="<?php echo plugin_dir_url(__DIR__) . "img/paypal.png"; ?>" alt="">
+                                                </div>
+                                                <div class="paymentData">
+                                                    Pagar Con PayPal
+                                                </div>
+                                            </div>
+                                        <?php } ?>
 
-                                        <div class="paymentCard" data-gatway="paypal">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
+                                        <?php $getGooglepPay = get_option('ctf_settings')['payment_methods']['googlepay'];
+                                        if($getGooglepPay === 1){
+                                        ?>
+                                            <div class="paymentCard" data-gatway="google">
+                                                <div class="selected">
+                                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                            fill="#55C12D" />
+                                                    </svg>
+                                                </div>
+                                                <div class="paymentIcon">
+                                                    <img src="<?php echo plugin_dir_url(__DIR__) . "img/google-pay.png"; ?>"
+                                                        alt="">
+                                                </div>
+                                                <div class="paymentData">
+                                                    Pagar Con Google Pay
+                                                </div>
                                             </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/paypal.png"; ?>" alt="">
+                                        <?php } ?>
+                                        <?php $getApplePay = get_option('ctf_settings')['payment_methods']['applepay'];
+                                        if($getApplePay === 1){
+                                        ?>
+                                            <div class="paymentCard" data-gatway="apple">
+                                                <div class="selected">
+                                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
+                                                            fill="#55C12D" />
+                                                    </svg>
+                                                </div>
+                                                <div class="paymentIcon">
+                                                    <img src="<?php echo plugin_dir_url(__DIR__) . "img/apple-pay.png"; ?>"
+                                                        alt="">
+                                                </div>
+                                                <div class="paymentData">
+                                                    Pagar Con Apple Pay
+                                                </div>
                                             </div>
-                                            <div class="paymentData">
-                                                Pagar Con PayPal
-                                            </div>
-                                        </div>
-
-                                        <div class="paymentCard" data-gatway="google">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/google-pay.png"; ?>"
-                                                    alt="">
-                                            </div>
-                                            <div class="paymentData">
-                                                Pagar Con Google Pay
-                                            </div>
-                                        </div>
-
-                                        <div class="paymentCard" data-gatway="apple">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/apple-pay.png"; ?>"
-                                                    alt="">
-                                            </div>
-                                            <div class="paymentData">
-                                                Pagar Con Apple Pay
-                                            </div>
-                                        </div>
-
-                                        <div class="paymentCard" data-gatway="cashapp">
-                                            <div class="selected">
-                                                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM16.0303 8.96967C16.3232 9.26256 16.3232 9.73744 16.0303 10.0303L11.0303 15.0303C10.7374 15.3232 10.2626 15.3232 9.96967 15.0303L7.96967 13.0303C7.67678 12.7374 7.67678 12.2626 7.96967 11.9697C8.26256 11.6768 8.73744 11.6768 9.03033 11.9697L10.5 13.4393L12.7348 11.2045L14.9697 8.96967C15.2626 8.67678 15.7374 8.67678 16.0303 8.96967Z"
-                                                        fill="#55C12D" />
-                                                </svg>
-                                            </div>
-                                            <div class="paymentIcon">
-                                                <img src="<?php echo plugin_dir_url(__DIR__) . "img/cash-app.png"; ?>"
-                                                    alt="">
-                                            </div>
-                                            <div class="paymentData">
-                                                Pagar Con Cash App
-                                            </div>
-                                        </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
 
@@ -559,8 +507,8 @@ function chocoletras_shortCode()
                                         </label>
                                     </div>
 
-                                    <a class="newOrder" href="#">Iniciar nuevo pedido</a>
-                                    <a class="visitHome" href="#">Visitar Inicio</a>
+                                    <a class="newOrder" href="<?php echo get_option('ctf_settings')['plugin_page'];?>">Iniciar nuevo pedido</a>
+                                    <a class="visitHome" href="<?php echo site_url();?>">Visitar Inicio</a>
 
                                     <span>Redirigir a la página de la tienda <i id="countdownRedirect">40</i>s</span>
                                 </div>
@@ -571,85 +519,7 @@ function chocoletras_shortCode()
                         <div class="chocoletrasPlg__wrapperCode-firstHead"></div>
                         <div class="chocoletrasPlg__wrapperCode-firstHead-dataUser"></div>
                     </div>
-
-                    <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
-                        <?php
-
-                        function generateRandomOrderNumberRedsys(int $lengthRedsys = 10): string
-                        {
-                            $charactersRedsys = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                            $randomStringRedsys = '';
-                            for ($i = 0; $i < $lengthRedsys; $i++) {
-                                $randomStringRedsys .= $charactersRedsys[rand(0, strlen($charactersRedsys) - 1)];
-                            }
-                            return $randomStringRedsys;
-                        }
-
-                        $orderNumberRedsys = generateRandomOrderNumberRedsys();
-
-                        function generateRandomOrderNumberBizum(int $lengthBizum = 10): string
-                        {
-                            $charactersBizum = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                            $randomStringBizum = '';
-                            for ($i = 0; $i < $lengthBizum; $i++) {
-                                $randomStringBizum .= $charactersBizum[rand(0, strlen($charactersBizum) - 1)];
-                            }
-                            return $randomStringBizum;
-                        }
-
-                        $orderNumberBizum = generateRandomOrderNumberBizum();
-
-                        $redsysAPIwoo = WP_PLUGIN_DIR . '/redsyspur/apiRedsys/apiRedsysFinal.php';
-
-                        require_once ($redsysAPIwoo);
-                        // echo $lastCookieVal;
-                        $miObj = new RedsysAPI;
-
-
-                        // $amount = get_option($_COOKIE['chocol_cookie']);
-                        // $amount = $amount ? str_replace('.', '', $amount) : 'null';
-                    
-                        // $amount = $amount ? explode('_', $amount)[0] : 'null';
-                    
-
-                        $amount = $getOrderData['priceTotal'];
-                        $amount = $amount ? str_replace('.', '', $amount) : 'null';
-                        $amount = $amount ? explode('_', $amount)[0] : 'null';
-
-                        // Check the length of the amount
-                        if (strlen($amount) == 3) {
-                            // Add "0" at the end
-                            $amount = $amount . "0";
-                        } elseif (strlen($amount) == 2) {
-                            // Add "00" at the end
-                            $amount = $amount . "00";
-                        }
-
-                        $miObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
-                        $miObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRedsys);
-                        $miObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
-                        $miObj->setParameter("DS_MERCHANT_CURRENCY", "978");
-                        $miObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
-                        $miObj->setParameter("DS_MERCHANT_TERMINAL", "001");
-                        $miObj->setParameter("DS_MERCHANT_MERCHANTURL", "http://localhost/wordpress/sample-page/");
-                        $miObj->setParameter("DS_MERCHANT_URLOK", "http://localhost/wordpress/sample-page/?payment=true&payerID=" . $getOrderData['uoi']);
-                        $miObj->setParameter("DS_MERCHANT_URLKO", "http://localhost/wordpress/sample-page/");
-
-                        $params = $miObj->createMerchantParameters();
-                        // $claveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
-                        $claveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
-                        $firma = $miObj->createMerchantSignature($claveSHA256); ?>
-                        <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
-                            <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
-                            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
-                            <input type="hidden" name="Ds_Signature" value="<?php echo $firma; ?>" />
-                            <button type="submit"><span>
-                                    <?php echo _e('Pagar con Tarjeta '); ?>
-                                </span><img src="https://chocoletra.com/wp-content/uploads/2024/03/redsys-tarjetas.png"
-                                    alt="<?php echo _e('Chocoletra'); ?>"></button>
-                        </form>
-                    </div>
-
+                    <?php paymentFrontend();?>
                     <!-- <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
                 </div>
             </div>
