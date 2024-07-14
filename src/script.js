@@ -33,7 +33,7 @@
                     }
 
                     if (imgFileName) {
-                        const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${chocoType}/${imgFileName}`;
+                        const imgPath = `${ajax_variables.pluginUrl}img/letters/${chocoType}/${imgFileName}`;
                         const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
 
                         // Check if imgCount exceeds 15
@@ -51,7 +51,7 @@
                 $typewriterInner.append($wordDiv);
 
                 if (index < words.length - 1) {
-                    const imgPath = `http://localhost/wordpress/wp-content/plugins/crea-tu-frase/img/letters/${chocoType}/${keyMap[' '][$('#letras').val()]}`;
+                    const imgPath = `${ajax_variables.pluginUrl}img/letters/${chocoType}/${keyMap[' '][$('#letras').val()]}`;
                     const $img = $('<img>').attr('src', imgPath).addClass('letter-img');
                     $typewriterInner.append($img);
                 }
@@ -198,7 +198,7 @@
         function saveScreenshots(screenshots, callback) {
             $.ajax({
                 type: "POST",
-                url: "/wordpress/wp-content/plugins/crea-tu-frase/utils/save_screenshot.php",
+                url: `${ajax_variables.pluginUrl}utils/save_screenshot.php`,
                 data: {
                     screenshots: screenshots
                 },
