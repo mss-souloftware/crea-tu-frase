@@ -118,6 +118,7 @@ function chocoletrasInsertScripts()
       'gastoMinimo' => get_option('gastoMinimo'),
       'express' => get_option('expressShiping'),
       'pluginUrl' => plugin_dir_url(__DIR__),
+      'pluginPageUrl' => get_option('ctf_settings')['plugin_page'],
     )
   );
 }

@@ -323,7 +323,6 @@
             };
 
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
-            // setCookie('chocoletraOrderData', cookieValue);
 
             const dataToSend = {
                 action: 'test_action',
@@ -339,7 +338,7 @@
                 message: message,
                 uoi: uoi,
                 coupon: coupon,
-                screens: 'screenshots',
+                screens: screenshotPaths,
                 picDate: picDate,
                 shippingType: shippingType,
                 nonce: ajax_variables.nonce
@@ -352,22 +351,22 @@
                 url: ajax_variables.ajax_url,
                 data: dataToSend,
                 success: function (response) {
-                    loader.css('height', '0%');
-                    console.log("Response from server: ", response);
-                    const parsedResponse = JSON.parse(response);
+                    // console.log("Response from server: ", response);
+                    // const parsedResponse = JSON.parse(response);
 
-                    if (parsedResponse.Datos.Status) {
-                        console.info("Process succeeded: ", parsedResponse.Datos);
-                    } else {
-                        console.error("Process failed: ", parsedResponse.Datos);
-                    }
-                    // setCookie('chocol_cookie', true);
+                    // if (parsedResponse.Datos.Status) {
+                    //     console.info("Process succeeded: ", parsedResponse.Datos);
+                    // } else {
+                    //     console.error("Process failed: ", parsedResponse.Datos);
+                    // }
+                    setCookie('chocol_cookie', true);
+                    setCookie('chocoletraOrderData', cookieValue);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
                 },
                 complete: function () {
-                    // location.reload();
+                    location.reload();
                 }
             });
         });
@@ -467,7 +466,6 @@
                         removeCookie('chocoletraOrderData');
                         removeCookie('chocol_cookie');
                         removeCookie('paypamentType');
-                        loader.css('height', '0%');
                         location.reload();
                     },
                 });
@@ -781,7 +779,7 @@
             $("#countdownRedirect").text(counter);
             if (counter <= 0) {
                 clearInterval(interval);
-                window.location.href = "http://localhost/wordpress/sample-page/";
+                window.location.href = ajax_variables.pluginPageUrl;
             }
         }, 1000);
     } else {

@@ -74,7 +74,7 @@ function chocoletraMenu_ftn()
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fecha . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_precio">' . $value->precio . '€</li>';
           echo '<li class="AdministracionVentas-table-tbody_payment"><span class="' . $paymentClass . '">' . $payment . '</span></li>';
-          echo '<li class="AdministracionVentas-table-tbody_enviado">Redsys</li>';
+          echo '<li class="AdministracionVentas-table-tbody_enviado">' . $value->payment . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_payment">Proceso</li>';
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fechaEntrega . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_express"><span class="' . $expressStatus . '">' . $isExpress . '</span></li>';
@@ -107,7 +107,7 @@ function chocoletraMenu_ftn()
                   <span><b>Provincia: </b>' . $value->province . '</span>
                   <span><b>Codigo Postal: </b>' . $value->cp . '</span>
                   <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
-                  <span><b>Pagado: </b>Redsys</span>';
+                  <span><b>Pagado: </b>' . $value->payment . '</span>';
           if ($value->coupon) {
             echo '<span><b>Cupón: </b>' . $value->coupon . '</span>';
           }

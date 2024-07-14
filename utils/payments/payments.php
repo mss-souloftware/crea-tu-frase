@@ -1,4 +1,36 @@
-<?php function paymentFrontend()
+<?php
+if (isset($_COOKIE['chocoletraOrderData'])) {
+    $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
+}
+
+if (isset($_GET['payment']) && $_GET['payment'] == true) {
+    if (isset($_GET['payerID'])) {
+        $payerID = $_GET['payerID'];
+        $paymentType = $getOrderData['payment'];
+        global $wpdb;
+        $tablename = $wpdb->prefix . 'chocoletras_plugin';
+        $query = $wpdb->prepare("SELECT * FROM $tablename WHERE uoi = %s", $payerID);
+        $result = $wpdb->get_row($query);
+
+        if ($result) {
+            $getOrderData['payment'];
+            $update_query = $wpdb->prepare(
+                "UPDATE $tablename SET pagoRealizado = 1, payment = %s WHERE uoi = %s",
+                $paymentType,
+                $payerID
+            );
+            $wpdb->query($update_query);
+        }
+    }
+    ?>
+    <script>
+        document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
+        document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
+        document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
+        console.log("Payment True");
+    </script>
+<?php }
+function paymentFrontend()
 {
     if (isset($_COOKIE['chocoletraOrderData'])) {
         $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
@@ -27,28 +59,6 @@
         }
         // PayPal IPN Data Validate URL
         define('PAYPAL_URL', $paypal_url);
-
-        if (isset($_GET['payment']) && $_GET['payment'] == true) {
-            if (isset($_GET['payerID'])) {
-                $payerID = $_GET['payerID'];
-                global $wpdb;
-                $tablename = $wpdb->prefix . 'chocoletras_plugin';
-                $query = $wpdb->prepare("SELECT * FROM $tablename WHERE uoi = %s", $payerID);
-                $result = $wpdb->get_row($query);
-
-                if ($result) {
-                    $update_query = $wpdb->prepare("UPDATE $tablename SET pagoRealizado = 1 WHERE uoi = %s", $payerID);
-                    $wpdb->query($update_query);
-                }
-            }
-            ?>
-            <script>
-                document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
-                document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
-                document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
-                console.log("Payment True");
-            </script>
-        <?php }
 
         function generateRandomOrderNumberRedsys(int $lengthRedsys = 10): string
         {
