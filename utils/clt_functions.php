@@ -317,7 +317,7 @@ function addSubmenupaymentOutput()
     'Correos electrónicos',
     'install_plugins',
     'set_email_items',
-    'paymentOutput',
+    'emailItemsOutput',
     5
   );
 }
@@ -331,7 +331,7 @@ function addSubmenuEmailOptions()
     'Ajustes Payment',
     'install_plugins',
     'payment_settings',
-    'emailItemsOutput',
+    'paymentOutput',
     6
   );
 }
