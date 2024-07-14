@@ -323,7 +323,7 @@
             };
 
             const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
-            setCookie('chocoletraOrderData', cookieValue);
+            // setCookie('chocoletraOrderData', cookieValue);
 
             const dataToSend = {
                 action: 'test_action',
@@ -339,10 +339,13 @@
                 message: message,
                 uoi: uoi,
                 coupon: coupon,
+                screens: 'screenshots',
                 picDate: picDate,
                 shippingType: shippingType,
                 nonce: ajax_variables.nonce
             };
+
+            console.log(dataToSend);
 
             $.ajax({
                 type: "POST",
@@ -350,21 +353,21 @@
                 data: dataToSend,
                 success: function (response) {
                     loader.css('height', '0%');
-                    // console.log("Response from server: ", response);
-                    // const parsedResponse = JSON.parse(response);
+                    console.log("Response from server: ", response);
+                    const parsedResponse = JSON.parse(response);
 
-                    // if (parsedResponse.Datos.Status) {
-                    //     console.info("Process succeeded: ", parsedResponse.Datos);
-                    // } else {
-                    //     console.error("Process failed: ", parsedResponse.Datos);
-                    // }
-                    setCookie('chocol_cookie', true);
+                    if (parsedResponse.Datos.Status) {
+                        console.info("Process succeeded: ", parsedResponse.Datos);
+                    } else {
+                        console.error("Process failed: ", parsedResponse.Datos);
+                    }
+                    // setCookie('chocol_cookie', true);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
                 },
                 complete: function () {
-                    location.reload();
+                    // location.reload();
                 }
             });
         });
@@ -375,11 +378,14 @@
 
         jQuery(document).ready(function () {
             let selectedGatway = null;
-            let paymentMethod = "";
+            let paymentMethod = ""; // Declare paymentMethod outside the click event handler
+
             $(".paymentPanel .paymentCard").on('click', function () {
                 $(".paymentPanel .paymentCard").removeClass('active');
                 $(this).addClass("active");
                 selectedGatway = $(this).attr("data-gatway");
+
+                // Reset paymentMethod on each click
                 paymentMethod = "";
 
                 if (selectedGatway === 'paypal') {
@@ -393,36 +399,58 @@
                 } else if (selectedGatway === 'apple') {
                     paymentMethod = "Apple Pay";
                 }
+
                 $("#selectedPayment").val(paymentMethod);
-                removeCookie('paypamentType');
                 console.log(paymentMethod);
-                return selectedGatway;
+
+                // Show loader
+                $("#loader").css('height', '100%');
+
+                var cookieValue = getCookie("chocoletraOrderData");
+                if (cookieValue) {
+                    var orderData = JSON.parse(decodeURIComponent(cookieValue));
+                    orderData.payment = paymentMethod;
+                    setCookie("chocoletraOrderData", encodeURIComponent(JSON.stringify(orderData)));
+                }
+
+                console.log(orderData); // To check if the cookie is updated correctly
+                return selectedGatway; // Return only selectedGatway here
             });
 
             $("#proceedPayment").on('click', function () {
-                console.log(selectedGatway,paymentMethod);
-                var cookieValue = getCookie("chocoletraOrderData");
-                if (cookieValue) {
-                    setCookie("paypamentType", paymentMethod);
-                }
-                if (selectedGatway === 'paypal') {
-                    $("#payPayPal").submit();
-                    $("#selectedPayment").val("PayPal");
-                } else if (selectedGatway === 'redsys') {
-                    $("#selectedPayment").val("Redsys");
-                    $("#payRedsys").submit();
-                } else if (selectedGatway === 'bizum') {
-                    $("#selectedPayment").val("Bizum");
-                    $("#payBizum").submit();
-                } else if (selectedGatway === 'google') {
-                    $("#selectedPayment").val("Google Pay");
-                    $("#payGoogle").submit();
-                } else if (selectedGatway === 'apple') {
-                    $("#selectedPayment").val("Apple Pay");
-                    $("#payApple").submit();
-                } else {
-                    alert("Select any of the payment first!");
-                }
+                console.log(selectedGatway, paymentMethod);
+
+                var checkCookieUpdated = setInterval(function () {
+                    var updatedCookieValue = getCookie("chocoletraOrderData");
+                    if (updatedCookieValue) {
+                        var updatedOrderData = JSON.parse(decodeURIComponent(updatedCookieValue));
+                        if (updatedOrderData.payment === paymentMethod) {
+                            clearInterval(checkCookieUpdated);
+
+                            // Hide loader after updating the cookie
+                            $("#loader").css('height', '0%');
+
+                            if (selectedGatway === 'paypal') {
+                                $("#selectedPayment").val("PayPal");
+                                $("#payPayPal").submit();
+                            } else if (selectedGatway === 'redsys') {
+                                $("#selectedPayment").val("Redsys");
+                                $("#payRedsys").submit();
+                            } else if (selectedGatway === 'bizum') {
+                                $("#selectedPayment").val("Bizum");
+                                $("#payBizum").submit();
+                            } else if (selectedGatway === 'google') {
+                                $("#selectedPayment").val("Google Pay");
+                                $("#payGoogle").submit();
+                            } else if (selectedGatway === 'apple') {
+                                $("#selectedPayment").val("Apple Pay");
+                                $("#payApple").submit();
+                            } else {
+                                alert("Select any of the payment first!");
+                            }
+                        }
+                    }
+                }, 200); // Check every 200ms
             });
 
             jQuery("#cancelProcessPaiment").on('click', function () {

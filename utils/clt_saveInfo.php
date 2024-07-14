@@ -23,7 +23,7 @@ function responseForm()
 function confirmAllIsReady()
 {
     setcookie('chocol_price', '', time() - 3600);
-    $getData = array('mainText', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon', 'payment');
+    $getData = array('mainText', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon');
 
     $confirm_error = array();
 
@@ -48,8 +48,7 @@ function confirmViolationOfSequirity($incomingfrase)
     }
 }
 
-function saveDataInDatabase($datos)
-{
+function saveDataInDatabase($datos) {
     $sanitizeData = array();
 
     foreach ($datos as $info => $val) {
@@ -68,31 +67,37 @@ function saveDataInDatabase($datos)
     }
 
     global $wpdb;
+    $tablename = $wpdb->prefix . 'chocoletras_plugin';
+
+    $query = $wpdb->prepare(
+        "INSERT INTO $tablename (frase, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon, screens) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  %s)",
+        $sanitizeData['mainText'],
+        $sanitizeData['priceTotal'],
+        $sanitizeData['fname'],
+        $sanitizeData['email'],
+        $sanitizeData['tel'],
+        $sanitizeData['postal'],
+        $sanitizeData['city'],
+        $sanitizeData['province'],
+        $sanitizeData['message'],
+        $sanitizeData['address'],
+        $sanitizeData['nonce'],
+        $sanitizeData['picDate'],
+        $sanitizeData['shippingType'],
+        $sanitizeData['uoi'],
+        $sanitizeData['coupon'],
+        $sanitizeData['screens']
+    );
+
     try {
-        $tablename = $wpdb->prefix . 'chocoletras_plugin';
-        $result = $wpdb->query(
-            $wpdb->prepare(
-                "INSERT INTO $tablename (frase, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon, payment) 
-             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s)",
-                $sanitizeData['mainText'],
-                $sanitizeData['priceTotal'],
-                $sanitizeData['fname'],
-                $sanitizeData['email'],
-                $sanitizeData['tel'],
-                $sanitizeData['postal'],
-                $sanitizeData['city'],
-                $sanitizeData['province'],
-                $sanitizeData['message'],
-                $sanitizeData['address'],
-                $sanitizeData['nonce'],
-                $sanitizeData['picDate'],
-                $sanitizeData['shippingType'],
-                $sanitizeData['uoi'],
-                $sanitizeData['coupon'],
-                $sanitizeData['payment'],
-            )
-        );
+        $result = $wpdb->query($query);
+
+        if ($result === false) {
+            throw new Exception("Database error: " . $wpdb->last_error);
+        }
     } catch (Exception $error) {
+        error_log($error->getMessage()); // Log the error message
         throw new Exception("Database error: " . $error->getMessage());
     }
 
@@ -120,7 +125,6 @@ function saveDataInDatabase($datos)
         "faddress" => $sanitizeData['address'],
         "fuoi" => $sanitizeData['uoi'],
         "fcoupon" => $sanitizeData['coupon'],
-        "fpayment" => $sanitizeData['payment'],
         "cookie" => $confirmSaveCookie
     ) : array("Status" => 400);
 }

@@ -1,6 +1,8 @@
 <?php function paymentFrontend()
 {
-    $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
+    if (isset($_COOKIE['chocoletraOrderData'])) {
+        $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
+    }
     ?>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
