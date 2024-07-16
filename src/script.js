@@ -133,13 +133,15 @@
         }
 
         function checkInputs() {
-            let allFilled = false;
-            if ($.trim($('#getText').val()) !== "") {
-                allFilled = true;
+            let allFilled = true;
+
+            if ($.trim($('#getText').val()) === "") {
+                allFilled = false;
             }
+
             $('.fraseInput').each(function () {
-                if ($.trim($(this).val()) !== "") {
-                    allFilled = true;
+                if ($.trim($(this).val()) === "") {
+                    allFilled = false;
                 }
             });
 
@@ -149,8 +151,8 @@
                 $("#ctf_form .action-button").removeAttr('disabled');
             } else {
                 $(".dummyImg").css('display', 'block');
-                $("#ctf_form .action-button").prop('disabled', true);
                 $("#addNewFrase").prop('disabled', true);
+                $("#ctf_form .action-button").prop('disabled', true);
             }
         }
 
@@ -341,7 +343,7 @@
                 message: message,
                 uoi: uoi,
                 coupon: coupon,
-                screens: screenshotPaths,
+                screens: [screenshotPaths],
                 picDate: picDate,
                 shippingType: shippingType,
                 nonce: ajax_variables.nonce
@@ -362,14 +364,14 @@
                     // } else {
                     //     console.error("Process failed: ", parsedResponse.Datos);
                     // }
-                    // setCookie('chocol_cookie', true);
-                    // setCookie('chocoletraOrderData', cookieValue);
+                    setCookie('chocol_cookie', true);
+                    setCookie('chocoletraOrderData', cookieValue);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
                 },
                 complete: function () {
-                    // location.reload();
+                    location.reload();
                 }
             });
         });
