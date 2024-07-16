@@ -124,8 +124,8 @@ function chocoletras_shortCode()
 
                                     <label class="fieldlabels">Tipo de chocolate</label>
                                     <select id="chocoBase">
-                                        <option selected value="light" class="attached enabled">Chocolate Claro</option>
-                                        <option value="dark" class="attached enabled">Chocolate Negro</option>
+                                        <option selected value="Claro" class="attached enabled">Chocolate Claro</option>
+                                        <option value="Negro" class="attached enabled">Chocolate Negro</option>
                                     </select>
 
                                     <div class="fraseWrapper">

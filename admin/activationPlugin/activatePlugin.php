@@ -33,6 +33,7 @@ function createAllTables()
               id int(11) NOT NULL AUTO_INCREMENT,
               nombre varchar(150) NOT NULL,
               frase varchar(150) NOT NULL,
+              chocotype varchar(150) NOT NULL,
               email varchar(150) NOT NULL,
               telefono varchar(150) NOT NULL,
               cp varchar(50) NOT NULL,

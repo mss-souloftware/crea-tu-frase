@@ -280,6 +280,7 @@
             loader.css('height', '100%');
             console.log('submission');
             const mainText = [$('#getText').val()];
+            const chocoType = $('#chocoBase').val();
             const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
             const fullName = $("#fname").val();
             const email = $("#email").val();
@@ -304,6 +305,7 @@
 
             const cookieData = {
                 mainText: mainText,
+                chocoType: chocoType,
                 priceTotal: priceTotal,
                 fname: fullName,
                 email: email,
@@ -327,6 +329,7 @@
             const dataToSend = {
                 action: 'test_action',
                 mainText: JSON.stringify(mainText),
+                chocoType: chocoType,
                 priceTotal: priceTotal,
                 fname: fullName,
                 email: email,
@@ -359,14 +362,14 @@
                     // } else {
                     //     console.error("Process failed: ", parsedResponse.Datos);
                     // }
-                    setCookie('chocol_cookie', true);
-                    setCookie('chocoletraOrderData', cookieValue);
+                    // setCookie('chocol_cookie', true);
+                    // setCookie('chocoletraOrderData', cookieValue);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
                 },
                 complete: function () {
-                    location.reload();
+                    // location.reload();
                 }
             });
         });
