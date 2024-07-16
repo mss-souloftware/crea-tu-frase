@@ -23,15 +23,15 @@ function sendEmail($upcomingData)
 {
   $mail = new PHPMailer();
   $mail->IsSMTP();
-  $mail->SMTPDebug  = 0;
-  $mail->Host       = get_option("ouputCltHost"); //'smtp.ionos.es'; 
-  $mail->Port       = get_option("ouputCltPort"); // 587; 
+  $mail->SMTPDebug = 0;
+  $mail->Host = get_option("ouputCltHost"); //'smtp.ionos.es'; 
+  $mail->Port = get_option("ouputCltPort"); // 587; 
   $mail->SMTPSecure = get_option("ouputCltSecure"); //'tls'; 
-  $mail->SMTPAuth   = true;
-  $mail->Username   = get_option("ouputCltemail"); //"ricardo@lavour.es"
-  $mail->Password   = get_option("ouputCltPass"); // "Brembo3030"; 
+  $mail->SMTPAuth = true;
+  $mail->Username = get_option("ouputCltemail"); //"ricardo@lavour.es"
+  $mail->Password = get_option("ouputCltPass"); // "Brembo3030"; 
   $mail->SetFrom(get_option("ouputCltemail"), 'Chocoletra'); // $mail->SetFrom('ricardo@lavour.es', 'Chocoletras'); 
-  $result ;
+  $result;
 
   switch ($upcomingData['status']) {
     case 'proceso':
@@ -41,7 +41,7 @@ function sendEmail($upcomingData)
       $mail->MsgHTML(modelemail('proceso'));
       $mail->AltBody = 'Your product is in production!';
       if (!$mail->Send()) {
-        $result =  "Error: " . $mail->ErrorInfo;
+        $result = "Error: " . $mail->ErrorInfo;
       } else {
         $result = 'sucessfull';
       }
@@ -53,7 +53,7 @@ function sendEmail($upcomingData)
       $mail->MsgHTML(modelemail('envio'));
       $mail->AltBody = 'Your product was send!';
       if (!$mail->Send()) {
-        $result =  "Error: " . $mail->ErrorInfo;
+        $result = "Error: " . $mail->ErrorInfo;
       } else {
         $result = 'sucessfull';
       }
