@@ -784,7 +784,7 @@
             $("#countdownRedirect").text(counter);
             if (counter <= 0) {
                 clearInterval(interval);
-                window.location.href = ajax_variables.pluginPageUrl;
+                // window.location.href = ajax_variables.pluginPageUrl;
             }
         }, 1000);
     } else {

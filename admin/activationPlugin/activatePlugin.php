@@ -52,8 +52,8 @@ function createAllTables()
               express varchar(3) NOT NULL,
               uoi varchar(150) NOT NULL,
               coupon varchar(50) NOT NULL,
-              screens varchar(150) NOT NULL,
-              payment varchar(50) NOT NULL,
+              screens VARCHAR(150),
+              payment VARCHAR(50),
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
@@ -66,6 +66,11 @@ function createAllTables()
       error_log($error->getMessage());
     }
   }
+}
+
+function deactivationSetNull()
+{
+  update_option('errorRegisterTables', null);
 }
 
 function removeAllTables()

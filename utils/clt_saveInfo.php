@@ -23,7 +23,7 @@ function responseForm()
 function confirmAllIsReady()
 {
     setcookie('chocol_price', '', time() - 3600);
-    $getData = array('mainText', 'chocoType', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon', 'screens');
+    $getData = array('mainText', 'chocoType', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon');
 
     $confirm_error = array();
 

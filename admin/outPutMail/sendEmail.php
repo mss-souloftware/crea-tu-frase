@@ -34,6 +34,19 @@ function sendEmail($upcomingData)
   $result;
 
   switch ($upcomingData['status']) {
+    case 'nuevo':
+
+      $mail->AddAddress($upcomingData['email'], 'User');
+      $mail->Subject = 'Nuevo Pedido';
+      $mail->MsgHTML(modelemail('nuevo'));
+      $mail->AltBody = 'Your product is in production!';
+      if (!$mail->Send()) {
+        $result = "Error: " . $mail->ErrorInfo;
+      } else {
+        $result = 'sucessfull';
+      }
+      break;
+
     case 'proceso':
 
       $mail->AddAddress($upcomingData['email'], 'User');
@@ -66,3 +79,30 @@ function sendEmail($upcomingData)
   }
   return $result;
 }
+
+if (isset($_GET['payment']) && $_GET['payment'] == 'true') {
+  // Check if the cookie "chocoletraOrderData" is set
+  if (isset($_COOKIE['chocoletraOrderData'])) {
+    // Decode the JSON data from the cookie
+    $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
+
+    // Extract the user's email from the decoded data
+    if (isset($getOrderData['email'])) {
+      $upcomingData = [
+        'email' => $getOrderData['email'],
+        'status' => 'nuevo' // or 'envio' based on your logic
+      ];
+
+      // Send the email
+      $result = sendEmail($upcomingData);
+      echo $result;
+    } else {
+      echo "User email not found in the cookie.";
+    }
+  } else {
+    echo "Order data cookie not found.";
+  }
+}
+//else {
+//   echo "Payment parameter not set or not true.";
+// }

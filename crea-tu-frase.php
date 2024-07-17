@@ -17,6 +17,8 @@ require_once plugin_dir_path(__FILE__) . './admin/activationPlugin/activatePlugi
   // ACTIIVATION PLUGIN FUNCTION -CREATE TABLES -
   register_activation_hook( __FILE__, 'createAllTables' );
   
+  register_deactivation_hook( __FILE__, 'deactivationSetNull' );
+  
   register_uninstall_hook( __FILE__, 'removeAllTables' );
 
  

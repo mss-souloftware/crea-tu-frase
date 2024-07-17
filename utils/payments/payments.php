@@ -22,12 +22,13 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
             $wpdb->query($update_query);
         }
     }
+
     ?>
     <script>
-        document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
-        document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
-        document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
-        console.log("Payment True");
+        // document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
+        // document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
+        // document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
+        // console.log("Payment True");
     </script>
 <?php }
 function paymentFrontend()
