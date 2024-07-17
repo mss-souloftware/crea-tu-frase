@@ -77,7 +77,7 @@ function sendEmail($upcomingData)
 
       break;
   }
-  return $result;
+  // return $result;
 }
 
 if (isset($_GET['payment']) && $_GET['payment'] == 'true') {
