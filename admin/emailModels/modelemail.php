@@ -27,6 +27,9 @@ function typenuevo()
         // Decode the JSON data from the cookie
         $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
     }
+
+    $currentOrderDate = date('d F Y');
+
     $email = '
     
     <table cellspacing="0"
@@ -42,8 +45,8 @@ function typenuevo()
                 </td>
                 <td>
                     <p style="text-align: right; color: #7d7d7d;">
-                        30th July 20XX
-                    </p>
+                        ' . $currentOrderDate . '                
+                     </p>
                 </td>
             </tr>
             <tr>

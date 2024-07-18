@@ -442,6 +442,8 @@
 .termCondition {
     display: flex;
     align-items: center;
+    width: 100% !important;
+    justify-content: space-between;
 }
 
 .termCondition input {

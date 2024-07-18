@@ -1168,6 +1168,7 @@ label {
     display: block;
     margin-bottom: 10px;
     font-size: 14px;
+    line-break: anywhere;
 }
 
 #calendarSettingsStyling select {
