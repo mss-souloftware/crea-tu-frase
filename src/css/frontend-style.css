@@ -805,11 +805,13 @@
 
 #mainWrapperForm #pricingTable {
     display: flex;
-    max-width: 330px;
+    justify-content: space-between;
+    min-width: 330px;
     background: #fff;
     border: 1px solid #000;
     position: absolute;
     right: -26px;
+    left: 0;
     top: 0;
     bottom: 0;
     margin: auto;
@@ -819,7 +821,8 @@
 }
 
 #mainWrapperForm #pricingTable.open {
-    right: -270px;
+    left: 100%;
+    right: 0;
 }
 
 #mainWrapperForm #pricingTable .pricingTableData {
@@ -846,3 +849,7 @@
     width: 25px;
 }
 
+.fs-title-red {
+    color: #E64C3C !important;
+    font-size: 20px !important;
+}

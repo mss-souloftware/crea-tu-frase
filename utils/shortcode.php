@@ -41,7 +41,7 @@ function chocoletras_shortCode()
                             $getProductBanner = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true); ?>
                             <img class="dummyImg" src="<?php echo site_url() . $getProductBanner['productBanner']; ?>" alt="">
                         <?php } else { ?>
-                            <p class="dummyImg">Crea Tu <span class="typed-text"></span><span class="cursor blink">&nbsp;</span>
+                            <p class="dummyImg">Crea <span class="typed-text"></span><span class="cursor blink">&nbsp;</span>
                             </p>
                         <?php } ?>
                     </div>
@@ -105,6 +105,7 @@ function chocoletras_shortCode()
                                     <div class="row">
                                         <div class="col-7">
                                             <h2 class="fs-title">Crea tu frase</h2>
+                                            <h3 class="fs-title-red">Escriba su frase aqu&iacute;..</h3>
                                         </div>
                                         <div class="col-5">
                                             <h2 class="steps">

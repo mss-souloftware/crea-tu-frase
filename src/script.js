@@ -798,7 +798,7 @@
     const typedText = document.querySelector(".typed-text");
     const cursor = document.querySelector(".cursor");
 
-    const textArray = ["Frase", "Deseos", "Saludos"];
+    const textArray = ["Tu Frase", "Tus Deseos", "Tus Saludos"];
 
     let textArrayIndex = 0;
     let charIndex = 0;
