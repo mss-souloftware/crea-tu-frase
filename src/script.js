@@ -79,7 +79,9 @@
             let totalCount = 0;
             const pricePerCharacter = Number($("#precLetras").val());
             const pricePerSymbol = Number($("#precCoraz").val());
-
+            const minPrice = parseFloat(ajax_variables.gastoMinimo);
+            const shippingCost = parseFloat(ajax_variables.precEnvio);
+        
             function calculatePrice(text) {
                 let price = 0;
                 let count = 0;
@@ -94,27 +96,35 @@
                 }
                 return { price: price, count: count };
             }
-
+        
+            function getPriceForInput($input) {
+                const { price, count } = calculatePrice($input.val());
+                if (price < minPrice) {
+                    totalPrice += minPrice;
+                } else {
+                    totalPrice += minPrice + (price - minPrice);
+                }
+                totalCount += count;
+            }
+        
             // Calculate the price for #getText field
-            totalPrice += parseFloat(calculatePrice(jQuery('#getText').val()).price);
-            totalCount += parseInt(calculatePrice(jQuery('#getText').val()).count);
-
+            getPriceForInput(jQuery('#getText'));
+        
             // Calculate the price for .fraseInput fields
             jQuery('.fraseInput').each(function () {
-                const { price, count } = calculatePrice(jQuery(this).val());
-                totalPrice += parseFloat(price);
-                totalCount += parseInt(count);
+                getPriceForInput(jQuery(this));
             });
-
-            const minPrice = parseFloat(ajax_variables.gastoMinimo);
-            const shippingCost = parseFloat(ajax_variables.precEnvio);
-
-            totalPrice = (totalPrice > minPrice) ? totalPrice + shippingCost : minPrice + shippingCost;
-
+        
+            // Add shipping cost to the total price
+            totalPrice += shippingCost;
+        
             jQuery('#ctf_form #counter').text(totalPrice.toFixed(1));
             jQuery('#actual').text(totalCount);
             jQuery('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice.toFixed(1));
         }
+        
+
+
 
         function attachInputHandler($input, $typewriterInner) {
             function updateText() {
