@@ -81,7 +81,7 @@
             const pricePerSymbol = Number($("#precCoraz").val());
             const minPrice = parseFloat(ajax_variables.gastoMinimo);
             const shippingCost = parseFloat(ajax_variables.precEnvio);
-        
+
             function calculatePrice(text) {
                 let price = 0;
                 let count = 0;
@@ -96,7 +96,7 @@
                 }
                 return { price: price, count: count };
             }
-        
+
             function getPriceForInput($input) {
                 const { price, count } = calculatePrice($input.val());
                 if (price < minPrice) {
@@ -106,23 +106,23 @@
                 }
                 totalCount += count;
             }
-        
+
             // Calculate the price for #getText field
             getPriceForInput(jQuery('#getText'));
-        
+
             // Calculate the price for .fraseInput fields
             jQuery('.fraseInput').each(function () {
                 getPriceForInput(jQuery(this));
             });
-        
+
             // Add shipping cost to the total price
             totalPrice += shippingCost;
-        
-            jQuery('#ctf_form #counter').text(totalPrice.toFixed(1));
+
+            jQuery('#ctf_form #counter').text(totalPrice.toFixed(2));
             jQuery('#actual').text(totalCount);
-            jQuery('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice.toFixed(1));
+            jQuery('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val(totalPrice.toFixed(2));
         }
-        
+
 
 
 
@@ -232,10 +232,11 @@
 
         function takeScreenshot(element, filename, callback) {
             html2canvas(element, {
-                scale: 1,
+                scale: 0.5,  // Reduce scale to lower resolution
                 useCORS: true
             }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
+                // Reduce the quality and size by setting a lower quality value (0.1 = 10% quality)
+                const imgData = canvas.toDataURL('image/jpg', 0.1);
                 callback(null, {
                     imgBase64: imgData,
                     filename: filename
@@ -245,6 +246,7 @@
                 callback(error);
             });
         }
+
 
         $("#continuarBTN").on('click', function () {
             $('.priceCounter').text($(".chocoletrasPlg__wrapperCode-dataUser-form-input-price").val());
@@ -256,13 +258,13 @@
             let captureCount = 0;
 
             // Take screenshot of #typewriter first
-            takeScreenshot(typewriterElement, 'typewriter_screenshot_' + timestamp + '.png', function (error, typewriterScreenshot) {
+            takeScreenshot(typewriterElement, 'typewriter_screenshot_' + timestamp + '.jpg', function (error, typewriterScreenshot) {
                 if (!error) {
                     screenshotData.push(typewriterScreenshot);
                     captureCount++;
 
                     elementsToCapture.forEach((element, index) => {
-                        const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.png';
+                        const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.jpg';
 
                         takeScreenshot(element, uniqueFilename, function (error, screenshot) {
                             if (!error) {

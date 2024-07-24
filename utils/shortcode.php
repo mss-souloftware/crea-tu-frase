@@ -105,7 +105,6 @@ function chocoletras_shortCode()
                                     <div class="row">
                                         <div class="col-7">
                                             <h2 class="fs-title">Crea tu frase</h2>
-                                            <h3 class="fs-title-red">Escriba su frase aqu&iacute;..</h3>
                                         </div>
                                         <div class="col-5">
                                             <h2 class="steps">
@@ -117,18 +116,6 @@ function chocoletras_shortCode()
                                             </h2>
                                         </div>
                                     </div>
-                                    <label class="fieldlabels">Tipo de espacio</label>
-                                    <select id="letras" class="" name="attribute_letras">
-                                        <option selected value="heart" class="attached enabled">Corazón</option>
-                                        <option value="star" class="attached enabled">Estrella</option>
-                                    </select>
-
-                                    <label class="fieldlabels">Tipo de chocolate</label>
-                                    <select id="chocoBase">
-                                        <option selected value="Claro" class="attached enabled">Chocolate Claro</option>
-                                        <option value="Negro" class="attached enabled">Chocolate Negro</option>
-                                    </select>
-
                                     <div class="fraseWrapper">
                                         <div class="frasePanel">
                                             <input id="<?php echo _e('getText') ?>" type="text"
@@ -139,6 +126,19 @@ function chocoletras_shortCode()
                                     <button type="button" id="addNewFrase" disabled>
                                         <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>"> Nueva frase
                                     </button>
+
+                                    <label class="fieldlabels">Tipo de espacio</label>
+                                    <select id="letras" class="" name="attribute_letras">
+                                        <option selected value="heart" class="attached enabled">Corazón</option>
+                                        <option value="star" class="attached enabled">Estrella</option>
+                                    </select>
+
+                                    <label class="fieldlabels">Tipo de chocolate</label>
+                                    <select id="chocoBase">
+                                        <option selected value="Claro" class="attached enabled">Chocolate con Leche</option>
+                                        <option value="Negro" class="attached enabled">Chocolate Negro</option>
+                                    </select>
+
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
                                     class="next action-button" disabled>Continuar</button>
                             </fieldset>

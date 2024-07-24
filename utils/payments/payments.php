@@ -163,6 +163,41 @@ function paymentFrontend()
         </form>
 
     </div>
+
+    <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
+        <?php
+        // echo $lastCookieVal;
+        $goggleObj = new RedsysAPI;
+
+        // $goggleObj->setParameter("DS_MERCHANT_AMOUNT", 10);
+        $goggleObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
+        $goggleObj->setParameter("DS_MERCHANT_ORDER", $orderNumberBizum);
+        $goggleObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
+        $goggleObj->setParameter("DS_MERCHANT_CURRENCY", "978");
+        $goggleObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "7");
+        $goggleObj->setParameter("DS_MERCHANT_TERMINAL", "001");
+        $goggleObj->setParameter("DS_MERCHANT_PAYMETHODS", "xpay");
+        $goggleObj->setParameter("DS_MERCHANT_MERCHANTURL", $plugin_page);
+        $goggleObj->setParameter("DS_MERCHANT_URLOK", "$plugin_payment?payment=true&payerID=" . $getOrderData['uoi'] . "&paytype=" . $getOrderData['payment'] . "");
+        $goggleObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
+
+        $goggleparams = $goggleObj->createMerchantParameters();
+        // $bizumclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+        $goggleclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+        $goggleirma = $goggleObj->createMerchantSignature($goggleclaveSHA256); ?>
+        <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
+            <!-- <form action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
+            <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
+            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $goggleparams; ?>" />
+            <input type="hidden" name="Ds_Signature" value="<?php echo $goggleirma; ?>" />
+            <button type="submit"><span>
+                    <?php echo _e('Pagar con Bizum '); ?>
+                </span><img src="https://chocoletra.com/wp-content/uploads/2024/03/Bizum.svg.png"
+                    alt="<?php echo _e('Chocoletra'); ?>"></button>
+        </form>
+
+    </div>
+
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
         <form id="payPayPal" action="<?php echo PAYPAL_URL; ?>" method="post">
             <!-- PayPal business email to collect payments -->
