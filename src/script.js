@@ -66,12 +66,23 @@
             });
 
             if (maxChildCount > 10) {
-                $('.typewriterInner .word').children().css('max-width', '35px');
-                $('.typewriterInner .letter-img').css('max-width', '35px');
+                if ($(window).width() < 600) {
+                    $('.typewriterInner .word').children().css('max-width', '18px');
+                    $('.typewriterInner .letter-img').css('max-width', '18px');
+                } else {
+                    $('.typewriterInner .word').children().css('max-width', '35px');
+                    $('.typewriterInner .letter-img').css('max-width', '35px');
+                }
             } else if (maxChildCount > 7) {
-                $('.typewriterInner .word').children().css('max-width', '50px');
-                $('.typewriterInner .letter-img').css('max-width', '50px');
+                if ($(window).width() < 600) {
+                    $('.typewriterInner .word').children().css('max-width', '25px');
+                    $('.typewriterInner .letter-img').css('max-width', '25px');
+                } else {
+                    $('.typewriterInner .word').children().css('max-width', '50px');
+                    $('.typewriterInner .letter-img').css('max-width', '50px');
+                }
             }
+
         }
 
         function calculateTotalPrice() {
@@ -232,11 +243,11 @@
 
         function takeScreenshot(element, filename, callback) {
             html2canvas(element, {
-                scale: 0.5,  // Reduce scale to lower resolution
+                scale: 1,  // Reduce scale to lower resolution
                 useCORS: true
             }).then(canvas => {
                 // Reduce the quality and size by setting a lower quality value (0.1 = 10% quality)
-                const imgData = canvas.toDataURL('image/jpg', 0.1);
+                const imgData = canvas.toDataURL('image/png');
                 callback(null, {
                     imgBase64: imgData,
                     filename: filename
@@ -258,13 +269,13 @@
             let captureCount = 0;
 
             // Take screenshot of #typewriter first
-            takeScreenshot(typewriterElement, 'typewriter_screenshot_' + timestamp + '.jpg', function (error, typewriterScreenshot) {
+            takeScreenshot(typewriterElement, 'typewriter_screenshot_' + timestamp + '.png', function (error, typewriterScreenshot) {
                 if (!error) {
                     screenshotData.push(typewriterScreenshot);
                     captureCount++;
 
                     elementsToCapture.forEach((element, index) => {
-                        const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.jpg';
+                        const uniqueFilename = 'screenshot_' + timestamp + '_' + (index + 1) + '.png';
 
                         takeScreenshot(element, uniqueFilename, function (error, screenshot) {
                             if (!error) {
@@ -460,7 +471,7 @@
                                 $("#payGoogle").submit();
                             } else if (selectedGatway === 'apple') {
                                 $("#selectedPayment").val("Apple Pay");
-                                $("#payApple").submit();
+                                $("#payGoogle").submit();
                             } else {
                                 alert("Select any of the payment first!");
                             }

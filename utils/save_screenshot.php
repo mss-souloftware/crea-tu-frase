@@ -2,7 +2,7 @@
 
 // Load WordPress environment
 $path = $_SERVER['DOCUMENT_ROOT'];
-include_once $path . '/wordpress/wp-load.php';
+include_once $path . '/wp-load.php';
 
 if (isset($_POST['screenshots'])) {
     $screenshots = $_POST['screenshots'];

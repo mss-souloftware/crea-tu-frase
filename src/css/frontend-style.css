@@ -586,7 +586,7 @@
 .paymentPanel {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .paymentPanel .paymentCard {
@@ -852,4 +852,79 @@
 .fs-title-red {
     color: #E64C3C !important;
     font-size: 20px !important;
+}
+
+@media(max-width:600px) {
+
+    #ctf_form {
+        padding: 12px;
+    }
+
+    #mainWrapperForm #pricingTableBtn {
+        font-size: 12px;
+        width: 20px;
+    }
+
+    #mainWrapperForm #pricingTable {
+        position: fixed;
+        z-index: 1;
+        width: 100%;
+        left: inherit;
+        right: calc(100% - 20px);
+        z-index: 99;
+        background: #fff;
+    }
+
+    #mainWrapperForm #pricingTable.open {
+        right: 2px;
+        left: inherit;
+        z-index: 1;
+    }
+
+    #ctf_form .fs-title {
+        font-size: 20px;
+    }
+
+    .form-card .steps {
+        font-size: 22px !important;
+    }
+
+    #typewriter .dummyImg {
+        font-size: 8vw;
+    }
+
+    #typewriter {
+        padding: 20px 10px;
+    }
+
+    #typewriter img {
+        max-width: 35px;
+        margin: 1px;
+    }
+
+    #ctf_form input[type="number"] {
+        max-width: 100% !important;
+    }
+
+    #ctf_form .twiceField {
+        flex-flow: column;
+    }
+
+    .ordersPanel .orderDetails {
+        flex-flow: column;
+    }
+
+    .ordersPanel .orderDetails .orderThumb {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .ordersPanel .orderDetails .orderData {
+        width: 100%;
+    }
+
+    .paymentPanel .paymentCard {
+        width: calc(50% - 10px);
+        margin: 5px;
+    }
 }
