@@ -165,7 +165,7 @@ function chocoletras_shortCode()
                                     <div class="twiceField">
                                         <input type="tel" name="tel" id="chocoTel" placeholder="Tel&#233;fono" minlength="9"
                                             required />
-                                        <input type="number" name="cp" id="cp" placeholder="C&#243;digo postal" />
+                                        <input type="number" name="cp" id="cp" placeholder="C&#243;digo postal" required />
                                     </div>
                                     <div class="twiceField">
                                         <input type="text" name="city" id="city" placeholder="Ciudad" />
