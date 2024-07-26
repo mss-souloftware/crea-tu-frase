@@ -99,10 +99,14 @@ function chocoletraMenu_ftn()
             foreach ($repareFrase as $frase) {
               echo '<span>' . htmlspecialchars($frase) . '</span>';
             }
+          } else {
+            echo '<span>' . htmlspecialchars($value->frase) . '</span>';
+
           }
-          echo '<span><b>Mensaje:</b></span>';
           if ($value->message != "") {
             echo getMessage($value->message);
+          } else{
+            echo '<span><b>No Mensaje</b></span>';
           }
           echo '</div>';
 
