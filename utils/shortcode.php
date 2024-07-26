@@ -39,6 +39,13 @@ function chocoletras_shortCode()
                         <?php
                         if (isset($_COOKIE['chocoletraOrderData'])) {
                             $getProductBanner = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true); ?>
+                            <style>
+                                @media(max-width:600px) {
+                                    #typewriter {
+                                        display: none !important;
+                                    }   
+                                }
+                            </style>
                             <img class="dummyImg" src="<?php echo site_url() . $getProductBanner['productBanner']; ?>" alt="">
                         <?php } else { ?>
                             <p class="dummyImg">Crea <span class="typed-text"></span><span class="cursor blink">&nbsp;</span>

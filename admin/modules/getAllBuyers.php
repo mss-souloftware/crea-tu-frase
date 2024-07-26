@@ -55,8 +55,15 @@ function chocoletraMenu_ftn()
           // echo '</pre>';
           $payment = $value->pagoRealizado == 0 ? 'No Pagado' : 'Pagado';
           $paymentClass = $value->pagoRealizado == 0 ? 'notPaid' : 'paid';
-          $proceso = $value->enProceso == 0 ? '...' : 'Procesando';
-          $enviado = $value->enviado == 0 ? '...' : 'Enviado';
+          // $proceso = $value->enProceso == 0 ? '...' : 'Procesando';
+          // $enviado = $value->enviado == 0 ? '...' : 'Enviado';
+          if ($value->enProceso == 0 && $value->enviado == 0) {
+            $proceso = '...';
+          } elseif ($value->enviado == 1) {
+            $proceso = 'Enviado';
+          } elseif ($value->enProceso == 1) {
+            $proceso = 'Procesando';
+          }
           $repareFrase = json_decode($value->frase, true);
           $isExpress = $value->express == "on" ? "Envío Express" : "Envío Normal";
           $expressStatus = $value->express == "on" ? "express" : "normal";
@@ -75,7 +82,7 @@ function chocoletraMenu_ftn()
           echo '<li class="AdministracionVentas-table-tbody_precio">' . $value->precio . '€</li>';
           echo '<li class="AdministracionVentas-table-tbody_payment"><span class="' . $paymentClass . '">' . $payment . '</span></li>';
           echo '<li class="AdministracionVentas-table-tbody_enviado">' . $value->payment . '</li>';
-          echo '<li class="AdministracionVentas-table-tbody_payment">Proceso</li>';
+          echo '<li class="AdministracionVentas-table-tbody_payment">' . $proceso . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_fecha">' . $value->fechaEntrega . '</li>';
           echo '<li class="AdministracionVentas-table-tbody_express"><span class="' . $expressStatus . '">' . $isExpress . '</span></li>';
           echo '</ul>';

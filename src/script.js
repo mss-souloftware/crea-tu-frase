@@ -67,8 +67,8 @@
 
             if (maxChildCount > 10) {
                 if ($(window).width() < 600) {
-                    $('.typewriterInner .word').children().css('max-width', '18px');
-                    $('.typewriterInner .letter-img').css('max-width', '18px');
+                    $('.typewriterInner .word').children().css('max-width', '16px');
+                    $('.typewriterInner .letter-img').css('max-width', '16px');
                 } else {
                     $('.typewriterInner .word').children().css('max-width', '35px');
                     $('.typewriterInner .letter-img').css('max-width', '35px');
