@@ -21,7 +21,7 @@ $paymentType = $decodedParams["Ds_TransactionType"];
 
 $formattedAmount = number_format($paidAmount / 100, 2, '.', '');
 
-$claveModuloAdmin = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+$claveModuloAdmin = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
 $signatureCalculada = $miObj->createMerchantSignatureNotif($claveModuloAdmin, $params);
 
 if ($signatureCalculada === $signatureRecibida) {
@@ -115,12 +115,13 @@ function paymentFrontend()
         log_ipn("IPN script started");
 
         // PayPal Configuration
-        define('PAYPAL_EMAIL', 'sb-hjjsi25330300@business.example.com');
+        // define('PAYPAL_EMAIL', 'sb-hjjsi25330300@business.example.com');
+        define('PAYPAL_EMAIL', 'chocoletra2020@gmail.com');
         define('RETURN_URL', "$plugin_page?payment=true");
         define('CANCEL_URL', $plugin_payment);
         define('NOTIFY_URL', "$thank_you_page");
         define('PAYPAL_CURRENCY', 'EUR');
-        define('SANDBOX', TRUE);
+        define('SANDBOX', FALSE);
         define('LOCAL_CERTIFICATE', FALSE);
 
         $paypal_url = SANDBOX ? "https://ipnpb.sandbox.paypal.com/cgi-bin/webscr" : "https://ipnpb.paypal.com/cgi-bin/webscr";
@@ -152,7 +153,7 @@ function paymentFrontend()
                 $req .= "&$key=$value";
             }
 
-            $ch = curl_init('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr');
+            $ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
             curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -321,12 +322,12 @@ function paymentFrontend()
         $miObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
 
         $params = $miObj->createMerchantParameters();
-        // $claveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
-        $claveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+        $claveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+        // $claveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $firma = $miObj->createMerchantSignature($claveSHA256);
         ?>
-        <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
-            <!-- <form id="payRedsys" action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
+        <!-- <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
+            <form id="payRedsys" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $firma; ?>" />
@@ -355,13 +356,13 @@ function paymentFrontend()
         $bizumObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
 
         $bizumparams = $bizumObj->createMerchantParameters();
-        // $bizumclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
-        $bizumclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+        $bizumclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+        // $bizumclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $bizumfirma = $bizumObj->createMerchantSignature($bizumclaveSHA256);
 
         ?>
-        <form id="payBizum" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
-            <!-- <form id="payBizum" action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
+        <!-- <form id="payBizum" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
+            <form id="payBizum" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $bizumparams; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $bizumfirma; ?>" />
@@ -392,11 +393,11 @@ function paymentFrontend()
         $goggleObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
 
         $goggleparams = $goggleObj->createMerchantParameters();
-        // $goggleclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
-        $goggleclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+        $goggleclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+        // $goggleclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $goggleirma = $goggleObj->createMerchantSignature($goggleclaveSHA256); ?>
-        <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
-            <!-- <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
+        <!-- <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
+            <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $goggleparams; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $goggleirma; ?>" />
@@ -417,7 +418,7 @@ function paymentFrontend()
     ?>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
-        <form id="payPayPal" action="https://ipnpb.sandbox.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>"
+        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>"
             method="post">
             <!-- PayPal business email to collect payments -->
             <input type='hidden' name='business' value="<?php echo PAYPAL_EMAIL; ?>">

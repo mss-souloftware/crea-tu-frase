@@ -36,10 +36,10 @@ function typeabandoned($data)
         <thead>
             <tr style="border-bottom: 2px solid #CCCCCC;">
                 <td>
-                    <a style="max-width: 150px;" href="https://creatubrownie.com/" target="_blank">
+                    <a style="max-width: 150px;" href="https://chocoletra.com/" target="_blank">
                         <img style="max-width: 150px;"
-                            src="https://creatubrownie.com/wp-content/uploads/2023/10/cropped-brownie-personalizado-chocoleta.png"
-                            alt="Crea Tu Brownie">
+                            src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
+                            alt="Chocoletra">
                     </a>
                 </td>
                 <td>
@@ -231,7 +231,7 @@ function typeabandoned($data)
             <tr>
                 <td colspan="2">
                     <p style="text-align: center; font-size: 16px;  margin: 40px 0;">
-                        <a href="' . get_option('ctf_settings')['plugin_page'] . '?abandoned=' . $data->id . '&coupon=' . get_option('abandoned_cart_coupon', '') . '" target="_blank">Compra Completa!</a>
+                        <a style="background:#000; color:#fff; padding:15px 25px;" href="' . get_option('ctf_settings')['plugin_page'] . '?abandoned=' . $data->id . '&coupon=' . get_option('abandoned_cart_coupon', '') . '" target="_blank">Compra Completa!</a>
                     </p>
                 </td>
             </tr>
@@ -241,21 +241,21 @@ function typeabandoned($data)
                 <td colspan="2">
                     <p style="text-align: center; margin: 25px 0;">
                         <span style="color: #ffffff; line-height: 1; font-size: 14px;">
-                            <a rel="noopener" href="https://creatubrownie.com/choco-store/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/choco-store/" target="_blank"
                                 style="color: #ffffff;">Tienda</a> |
-                            <a rel="noopener" href="https://creatubrownie.com/crea-tu-frase/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/crea-tu-frase/" target="_blank"
                                 style="color: #ffffff;">Frase</a> |
-                            <a rel="noopener" href="https://creatubrownie.com/my-account/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/mi-cuenta/" target="_blank"
                                 style="color: #ffffff;">Cuenta </a>|
-                            <a rel="noopener" href="https://creatubrownie.com/about/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/quienes-somos/" target="_blank"
                                 style="color: #ffffff;">Quienes somos </a>|
-                            <a rel="noopener" href="https://creatubrownie.com/contact-us/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/contactanos/" target="_blank"
                                 style="color: #ffffff;">Contacto</a>
                         </span>
                     </p>
                     <p style="font-size: 14px; line-height: 1; text-align: center; color: #fff; margin-bottom: 30px;">Copyright © 2024 <span
                             style="color: #ffffff; line-height: 1;"><a rel="noopener"
-                                href="https://creatubrownie.com/" target="_blank"
+                                href="https://chocoletra.com/" target="_blank"
                                 style="color: #ffffff;">Chocoletra</a>.</span></p>
                 </td>
             </tr>
@@ -266,7 +266,6 @@ function typeabandoned($data)
     return $email;
 }
 
-// echo typeabandoned($data);
 function typenuevo($data)
 {
     $currentOrderDate = date('d F Y');
@@ -278,10 +277,10 @@ function typenuevo($data)
         <thead>
             <tr style="border-bottom: 2px solid #CCCCCC;">
                 <td>
-                    <a style="max-width: 150px;" href="https://creatubrownie.com/" target="_blank">
+                    <a style="max-width: 150px;" href="https://chocoletra.com/" target="_blank">
                         <img style="max-width: 150px;"
-                            src="https://creatubrownie.com/wp-content/uploads/2023/10/cropped-brownie-personalizado-chocoleta.png"
-                            alt="Crea Tu Brownie">
+                            src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
+                            alt="Chocoletra">
                     </a>
                 </td>
                 <td>
@@ -475,7 +474,7 @@ function typenuevo($data)
             <tr>
                 <td colspan="2">
                     <p style="text-align: center; font-size: 16px;  margin: 40px 0;">
-                        Gracias por comprar en Crea Tu Brownie, suscríbase a nuestro boletín y manténgase actualizado con
+                        Gracias por comprar en Chocoletra, suscríbase a nuestro boletín y manténgase actualizado con
                         nuestros descuentos y ofertas.
                     </p>
                 </td>
@@ -486,21 +485,21 @@ function typenuevo($data)
                 <td colspan="2">
                     <p style="text-align: center; margin: 25px 0;">
                         <span style="color: #ffffff; line-height: 1; font-size: 14px;">
-                            <a rel="noopener" href="https://creatubrownie.com/choco-store/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/choco-store/" target="_blank"
                                 style="color: #ffffff;">Tienda</a> |
-                            <a rel="noopener" href="https://creatubrownie.com/crea-tu-frase/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/crea-tu-frase/" target="_blank"
                                 style="color: #ffffff;">Frase</a> |
-                            <a rel="noopener" href="https://creatubrownie.com/my-account/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/mi-cuenta/" target="_blank"
                                 style="color: #ffffff;">Cuenta </a>|
-                            <a rel="noopener" href="https://creatubrownie.com/about/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/quienes-somos/" target="_blank"
                                 style="color: #ffffff;">Quienes somos </a>|
-                            <a rel="noopener" href="https://creatubrownie.com/contact-us/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/contactanos/" target="_blank"
                                 style="color: #ffffff;">Contacto</a>
                         </span>
                     </p>
                     <p style="font-size: 14px; line-height: 1; text-align: center; color: #fff; margin-bottom: 30px;">Copyright © 2024 <span
                             style="color: #ffffff; line-height: 1;"><a rel="noopener"
-                                href="https://creatubrownie.com/" target="_blank"
+                                href="https://chocoletra.com/" target="_blank"
                                 style="color: #ffffff;">Chocoletra</a>.</span></p>
                 </td>
             </tr>
@@ -510,7 +509,6 @@ function typenuevo($data)
 
     return $email;
 }
-
 
 function typeproceso()
 {
@@ -523,10 +521,10 @@ function typeproceso()
         <thead>
             <tr style="border-bottom: 2px solid #CCCCCC;">
                 <td>
-                    <a style="max-width: 150px;" href="https://creatubrownie.com/" target="_blank">
+                    <a style="max-width: 150px;" href="https://chocoletra.com/" target="_blank">
                         <img style="max-width: 150px;"
-                            src="https://creatubrownie.com/wp-content/uploads/2023/10/cropped-brownie-personalizado-chocoleta.png"
-                            alt="Crea Tu Brownie">
+                            src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
+                            alt="Chocoletra">
                     </a>
                 </td>
                 <td>
@@ -546,7 +544,7 @@ function typeproceso()
                 <td colspan="2" style="text-align:center;">
                 <img style="max-width: 150px; margin:auto;"
                             src="https://chocoletra.com/wp-content/uploads/2022/01/on-process.jpg"
-                            alt="Crea Tu Brownie">
+                            alt="Chocoletra">
                 </td>
             </tr>
             <tr>
@@ -561,22 +559,22 @@ function typeproceso()
                 <td colspan="2">
                     <p style="text-align: center; margin: 25px 0;">
                         <span style="color: #ffffff; line-height: 1; font-size: 14px;">
-                            <a rel="noopener" https://creatubrownie.com/choco-store/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/choco-store/" target="_blank"
                                 style="color: #ffffff;">Tienda</a> |
-                            <a rel="noopener" https://creatubrownie.com/crea-tu-frase/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/crea-tu-frase/" target="_blank"
                                 style="color: #ffffff;">Frase</a> |
-                            <a rel="noopener" https://creatubrownie.com/my-account/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/mi-cuenta/" target="_blank"
                                 style="color: #ffffff;">Cuenta </a>|
-                            <a rel="noopener" https://creatubrownie.com/about/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/quienes-somos/" target="_blank"
                                 style="color: #ffffff;">Quienes somos </a>|
-                            <a rel="noopener" https://creatubrownie.com/contact-us/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/contactanos/" target="_blank"
                                 style="color: #ffffff;">Contacto</a>
                         </span>
                     </p>
                     <p style="font-size: 14px; line-height: 1; text-align: center; color: #fff; margin-bottom: 30px;">Copyright © 2024 <span
                             style="color: #ffffff; line-height: 1;"><a rel="noopener"
-                                href="https://creatubrownie.com/" target="_blank"
-                                style="color: #ffffff;">Crea Tu Brownie</a>.</span></p>
+                                href="https://chocoletra.com/" target="_blank"
+                                style="color: #ffffff;">Chocoletra</a>.</span></p>
                 </td>
             </tr>
         </tfoot>
@@ -584,7 +582,6 @@ function typeproceso()
 
     return $email;
 }
-
 
 function typeEnviado()
 {
@@ -598,10 +595,10 @@ function typeEnviado()
         <thead>
             <tr style="border-bottom: 2px solid #CCCCCC;">
                 <td>
-                    <a style="max-width: 150px;" href="https://creatubrownie.com/" target="_blank">
+                    <a style="max-width: 150px;" href="https://chocoletra.com/" target="_blank">
                         <img style="max-width: 150px;"
-                            src="https://creatubrownie.com/wp-content/uploads/2023/10/cropped-brownie-personalizado-chocoleta.png"
-                            alt="Crea Tu Brownie">
+                            src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
+                            alt="Chocoletra">
                     </a>
                 </td>
                 <td>
@@ -621,7 +618,7 @@ function typeEnviado()
                 <td colspan="2" style="text-align:center;">
                 <img style="max-width: 150px; margin:auto;"
                             src="https://chocoletra.com/wp-content/uploads/2022/01/enviado.jpg"
-                            alt="Crea Tu Brownie">
+                            alt="Chocoletra">
                 </td>
             </tr>
             <tr>
@@ -636,22 +633,22 @@ function typeEnviado()
                 <td colspan="2">
                     <p style="text-align: center; margin: 25px 0;">
                         <span style="color: #ffffff; line-height: 1; font-size: 14px;">
-                            <a rel="noopener" https://creatubrownie.com/choco-store/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/choco-store/" target="_blank"
                                 style="color: #ffffff;">Tienda</a> |
-                            <a rel="noopener" https://creatubrownie.com/crea-tu-frase/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/crea-tu-frase/" target="_blank"
                                 style="color: #ffffff;">Frase</a> |
-                            <a rel="noopener" https://creatubrownie.com/my-account/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/mi-cuenta/" target="_blank"
                                 style="color: #ffffff;">Cuenta </a>|
-                            <a rel="noopener" https://creatubrownie.com/about/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/quienes-somos/" target="_blank"
                                 style="color: #ffffff;">Quienes somos </a>|
-                            <a rel="noopener" https://creatubrownie.com/contact-us/" target="_blank"
+                            <a rel="noopener" href="https://chocoletra.com/contactanos/" target="_blank"
                                 style="color: #ffffff;">Contacto</a>
                         </span>
                     </p>
                     <p style="font-size: 14px; line-height: 1; text-align: center; color: #fff; margin-bottom: 30px;">Copyright © 2024 <span
                             style="color: #ffffff; line-height: 1;"><a rel="noopener"
-                                href="https://creatubrownie.com/" target="_blank"
-                                style="color: #ffffff;">Crea Tu Brownie</a>.</span></p>
+                                href="https://chocoletra.com/" target="_blank"
+                                style="color: #ffffff;">Chocoletra</a>.</span></p>
                 </td>
             </tr>
         </tfoot>
@@ -660,3 +657,5 @@ function typeEnviado()
 
     return $email;
 }
+
+echo typeEnviado();

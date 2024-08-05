@@ -93,6 +93,7 @@ function chocoletraMenu_ftn()
                 <span><b>Nombre: </b>' . $value->nombre . '</span>
                 <span><b>Email: </b>' . $value->email . '</span>
                 <span><b>Telefono: </b>' . $value->telefono . '</span>
+                <span><b>Tipo de chocolate: </b>' . $value->chocotype . '</span>
                 <span><b>Frases: (' . $fraseCount . ')</b></span>';
           if (is_array($repareFrase)) {
             foreach ($repareFrase as $frase) {

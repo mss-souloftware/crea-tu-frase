@@ -253,13 +253,13 @@ function chocoletras_shortCode()
                                         <option selected value="heart" class="attached enabled">Corazón</option>
                                         <option value="star" class="attached enabled">Estrella</option>
                                     </select>
-                                    <div style="display:none;">
+                                    
                                         <label class="fieldlabels">Tipo de chocolate</label>
                                         <select id="chocoBase">
                                             <option selected value="Claro" class="attached enabled">Chocolate con Leche</option>
                                             <option value="Negro" class="attached enabled">Chocolate Negro</option>
                                         </select>
-                                    </div>
+                                    
                                 </div> <button id="<?php echo _e('continuarBTN') ?>" type="button" name="next"
                                     class="next action-button" disabled>Continuar</button>
                             </fieldset>
