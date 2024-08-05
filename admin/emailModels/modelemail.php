@@ -657,5 +657,3 @@ function typeEnviado()
 
     return $email;
 }
-
-echo typeEnviado();
