@@ -32,7 +32,7 @@ function createAllTables()
       $createTablePlugin = "CREATE TABLE $table_plugin  (
               id int(11) NOT NULL AUTO_INCREMENT,
               nombre varchar(150) NOT NULL,
-              frase varchar(150) NOT NULL,
+              frase varchar(1000) NOT NULL,
               chocotype varchar(150) NOT NULL,
               email varchar(150) NOT NULL,
               telefono varchar(150) NOT NULL,
@@ -44,6 +44,7 @@ function createAllTables()
               enProceso tinyint(1) NOT NULL DEFAULT 0,
               enviado tinyint(1) NOT NULL DEFAULT 0,
               pagoRealizado tinyint(1) NOT NULL DEFAULT 0,
+              cart tinyint(1) NOT NULL DEFAULT 0,
               fechaEntrega date NOT NULL,
               id_venta varchar(150) NOT NULL DEFAULT 'null',
               nonce varchar(50) NOT NULL,
@@ -52,7 +53,8 @@ function createAllTables()
               express varchar(3) NOT NULL,
               uoi varchar(150) NOT NULL,
               coupon varchar(50) NOT NULL,
-              screens VARCHAR(150),
+              screens LONGTEXT,
+              featured LONGTEXT,
               payment VARCHAR(50),
               PRIMARY KEY  (id)
             ) $charset_collate;";

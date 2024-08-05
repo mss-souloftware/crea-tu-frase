@@ -1,11 +1,11 @@
 <?php
 /**
  * 
- * Plugin Name: Crea Tu Frasess
+ * Plugin Name: Crea Tu Brownie
  * plugin URI: https://syntechtia.com/
  * version:1.0.0
  * Text Domail: lic. Christian 
- * Description: plugin for get control of chocoletra. For activate add this shorcode [chocoletras]
+ * Description: plugin for get control of chocoletra. For activate add this shorcode [brownie]
  * Author: Syntechtia
  * Author URI: https://syntechtia.com/
 */

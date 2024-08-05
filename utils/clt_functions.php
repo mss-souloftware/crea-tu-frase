@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  * @package Chocoletras
@@ -17,6 +18,7 @@ require_once plugin_dir_path(__FILE__) . '../admin/opciones/submenu.php';
 require_once plugin_dir_path(__FILE__) . '../admin/calander/calander.php';
 require_once plugin_dir_path(__FILE__) . '../admin/coupons/coupons.php';
 require_once plugin_dir_path(__FILE__) . '../admin/payments/payments.php';
+require_once plugin_dir_path(__FILE__) . '../admin/abandoned/abandoned.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/itemsEmail.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/reportsPage.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/stripe.php';
@@ -28,8 +30,43 @@ require_once plugin_dir_path(__FILE__) . './savestripeoption/stripeoption.php';
 require_once plugin_dir_path(__FILE__) . './savestripeoption/stripeSession.php';
 require_once plugin_dir_path(__FILE__) . './report/saveReportToDatabase.php';
 require_once plugin_dir_path(__FILE__) . './report/deletteReport.php';
-// add styles to backend
 
+require_once (plugin_dir_path(__FILE__) . '/abandoned/abandoned-cart-functions.php');
+
+add_filter('cron_schedules', 'add_custom_cron_intervals');
+
+function add_custom_cron_intervals($schedules) {
+    $interval = get_option('abandoned_cart_minutes', 1) * 60; // Minutes to seconds
+
+    // Add a custom interval
+    $schedules['custom_interval'] = array(
+        'interval' => $interval,
+        'display' => __('Custom Interval')
+    );
+
+    return $schedules;
+}
+
+// Schedule event on init hook
+function schedule_abandoned_cart_check() {
+  $abandoned_cart_enable = get_option('abandoned_cart_enable', 0);
+  
+  // If abandoned cart is disabled, unschedule the event
+  if (!$abandoned_cart_enable) {
+      if ($timestamp = wp_next_scheduled('check_abandoned_cart')) {
+          wp_unschedule_event($timestamp, 'check_abandoned_cart');
+      }
+      return;
+  }
+
+  // Get the interval from settings, default to 60 seconds if not set
+  $interval = get_option('abandoned_cart_minutes', 1) * 60;
+
+  if (!wp_next_scheduled('check_abandoned_cart')) {
+      wp_schedule_event(time(), 'custom_interval', 'check_abandoned_cart');
+  }
+}
+add_action('init', 'schedule_abandoned_cart_check');
 
 function clt_admin_style()
 {
@@ -91,7 +128,10 @@ function chocoletrasInsertScripts()
   // wp_enqueue_script('chocoletrasScript', plugins_url('../src/main.js', __FILE__), array(), '1.0.0', true);
   wp_enqueue_style('pluginStylesClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
 
-  wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
+  if (is_page('crea-tu-frase')) {
+    wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
+  }
+
   wp_enqueue_style('faltpickrForPlugin', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', array(), false);
 
   wp_enqueue_style('styleForFrontend', plugins_url('../src/css/frontend-style.css', __FILE__), array(), false);
@@ -123,7 +163,6 @@ function chocoletrasInsertScripts()
   );
 }
 add_action('wp_enqueue_scripts', 'chocoletrasInsertScripts');
-
 
 // Register AJAX actions
 function register_coupon_ajax()
@@ -244,7 +283,7 @@ add_action('wp_ajax_reportForm', 'saveReportData');
 //=============================================================//
 define('PROCESS_FRASE', plugins_url('clt_process_form.php', __FILE__));
 
-add_shortcode('chocoletras', 'chocoletras_shortCode');
+add_shortcode('brownie', 'chocoletras_shortCode');
 
 // chocoletras admin menu
 add_action('admin_menu', 'clt_adminMenu');
@@ -336,6 +375,21 @@ function addSubmenuEmailOptions()
   );
 }
 
+
+add_action('admin_menu', 'addSubmenuAbandoned');
+function addSubmenuAbandoned()
+{
+  add_submenu_page(
+    'clt_amin',
+    'Carro Abandonado',
+    'Carro Abandonado',
+    'install_plugins',
+    'abandoned_cart',
+    'abandonedOutput',
+    6
+  );
+}
+
 // add_action('admin_menu', 'listOfReportProblems');
 // function listOfReportProblems()
 // {
@@ -362,6 +416,3 @@ function addSubmenuEmailOptions()
 // function tata(){
 
 // }
-
-
-

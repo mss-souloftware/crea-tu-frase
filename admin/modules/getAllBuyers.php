@@ -93,7 +93,6 @@ function chocoletraMenu_ftn()
                 <span><b>Nombre: </b>' . $value->nombre . '</span>
                 <span><b>Email: </b>' . $value->email . '</span>
                 <span><b>Telefono: </b>' . $value->telefono . '</span>
-                <span><b>Tipo de chocolate: </b>' . $value->chocotype . '</span>
                 <span><b>Frases: (' . $fraseCount . ')</b></span>';
           if (is_array($repareFrase)) {
             foreach ($repareFrase as $frase) {
@@ -105,7 +104,7 @@ function chocoletraMenu_ftn()
           }
           if ($value->message != "") {
             echo getMessage($value->message);
-          } else{
+          } else {
             echo '<span><b>No Mensaje</b></span>';
           }
           echo '</div>';
@@ -119,6 +118,16 @@ function chocoletraMenu_ftn()
                   <span><b>Codigo Postal: </b>' . $value->cp . '</span>
                   <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
                   <span><b>Pagado: </b>' . $value->payment . '</span>';
+                if ($value->cart == 0 && $value->pagoRealizado == 0) {
+                  echo '<span><b>Estado Abandonado: </b>Pendiente 🕐</span>';
+                } else if ($value->cart == 1 && $value->pagoRealizado == 0) {
+                  echo '<span><b>Estado Abandonado: </b>Expedido ✔</span>';
+                } else if ($value->cart == 1 && $value->pagoRealizado == 1) {
+                  echo '<span><b>Estado Abandonado: </b>Expedido ✔</span>';
+                } else {
+                  echo '';
+                }
+
           if ($value->coupon) {
             echo '<span><b>Cupón: </b>' . $value->coupon . '</span>';
           }
