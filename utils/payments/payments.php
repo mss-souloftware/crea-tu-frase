@@ -1,87 +1,90 @@
 <?php
-require_once plugin_dir_path(__FILE__) . '../../admin/outPutMail/sendEmail.php';
+$notNull = '';
+if ($notNull !== '') {
+    require_once plugin_dir_path(__FILE__) . '../../admin/outPutMail/sendEmail.php';
 
-$redsysAPIwoo = WP_PLUGIN_DIR . '/redsyspur/apiRedsys/apiRedsysFinal.php';
-require_once ($redsysAPIwoo);
+    $redsysAPIwoo = WP_PLUGIN_DIR . '/redsyspur/apiRedsys/apiRedsysFinal.php';
+    require_once ($redsysAPIwoo);
 
-$miObj = new RedsysAPI;
+    $miObj = new RedsysAPI;
 
-$version = $_POST["Ds_SignatureVersion"];
-$params = $_POST["Ds_MerchantParameters"];
-$signatureRecibida = $_POST["Ds_Signature"];
+    $version = $_POST["Ds_SignatureVersion"];
+    $params = $_POST["Ds_MerchantParameters"];
+    $signatureRecibida = $_POST["Ds_Signature"];
 
-$decodec = $miObj->decodeMerchantParameters($params);
-$decodedParams = json_decode($decodec, true);
+    $decodec = $miObj->decodeMerchantParameters($params);
+    $decodedParams = json_decode($decodec, true);
 
-$codigoRespuesta = $decodedParams["Ds_Response"];
-$payerID = $decodedParams["Ds_Order"];
-$rowID = $decodedParams["Ds_MerchantData"];
-$paidAmount = $decodedParams["Ds_Amount"];
-$paymentType = $decodedParams["Ds_TransactionType"];
+    $codigoRespuesta = $decodedParams["Ds_Response"];
+    $payerID = $decodedParams["Ds_Order"];
+    $rowID = $decodedParams["Ds_MerchantData"];
+    $paidAmount = $decodedParams["Ds_Amount"];
+    $paymentType = $decodedParams["Ds_TransactionType"];
 
-$formattedAmount = number_format($paidAmount / 100, 2, '.', '');
+    $formattedAmount = number_format($paidAmount / 100, 2, '.', '');
 
-$claveModuloAdmin = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
-$signatureCalculada = $miObj->createMerchantSignatureNotif($claveModuloAdmin, $params);
+    $claveModuloAdmin = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+    $signatureCalculada = $miObj->createMerchantSignatureNotif($claveModuloAdmin, $params);
 
-if ($signatureCalculada === $signatureRecibida) {
-    if ($codigoRespuesta == "0000") {
-        global $wpdb;
-        $tablename = $wpdb->prefix . 'chocoletras_plugin';
+    if ($signatureCalculada === $signatureRecibida) {
+        if ($codigoRespuesta == "0000") {
+            global $wpdb;
+            $tablename = $wpdb->prefix . 'chocoletras_plugin';
 
-        $query = $wpdb->prepare("SELECT * FROM $tablename WHERE id = %s", $rowID);
-        $result = $wpdb->get_row($query);
+            $query = $wpdb->prepare("SELECT * FROM $tablename WHERE id = %s", $rowID);
+            $result = $wpdb->get_row($query);
 
-        if ($result) {
-            $paymentDescription = ($paymentType == "0") ? "Redsys" : (($paymentType == "7") ? "Bizum" : $paymentType);
+            if ($result) {
+                $paymentDescription = ($paymentType == "0") ? "Redsys" : (($paymentType == "7") ? "Bizum" : $paymentType);
 
-            $update_query = $wpdb->prepare(
-                "UPDATE $tablename SET uoi = %s, pagoRealizado = 1, payment = %s, precio = %f WHERE id = %s",
-                $payerID,
-                $paymentDescription,
-                $formattedAmount,
-                $rowID
-            );
-            $wpdb->query($update_query);
+                $update_query = $wpdb->prepare(
+                    "UPDATE $tablename SET uoi = %s, pagoRealizado = 1, payment = %s, precio = %f WHERE id = %s",
+                    $payerID,
+                    $paymentDescription,
+                    $formattedAmount,
+                    $rowID
+                );
+                $wpdb->query($update_query);
 
-            // Prepare email data
-            $upcomingData = [
-                'email' => $result->email, // Adjust as necessary
-                'status' => 'nuevo', // or 'envio' based on your logic
-                'rowID' => $result->id
-            ];
+                // Prepare email data
+                $upcomingData = [
+                    'email' => $result->email, // Adjust as necessary
+                    'status' => 'nuevo', // or 'envio' based on your logic
+                    'rowID' => $result->id
+                ];
 
-            // Send the email
-            $emailResult = sendEmail($upcomingData);
-            echo $emailResult;
+                // Send the email
+                $emailResult = sendEmail($upcomingData);
+                echo $emailResult;
 
 
+            }
+
+            ?>
+            <script>
+                document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
+                document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
+                document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
+            </script>
+            <?php
         }
+    }
 
+
+    if (isset($_COOKIE['chocoletraOrderData'])) {
+        $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
+    }
+
+    if (isset($_GET['payment']) && $_GET['payment'] == true) {
         ?>
         <script>
             document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
             document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
             document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
+            console.log("Payment True");
         </script>
-        <?php
-    }
+    <?php }
 }
-
-
-if (isset($_COOKIE['chocoletraOrderData'])) {
-    $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
-}
-
-if (isset($_GET['payment']) && $_GET['payment'] == true) {
-    ?>
-    <script>
-        document.cookie = `chocol_cookie=; Secure; Max-Age=-35120; path=/`;
-        document.cookie = `chocoletraOrderData=; Secure; Max-Age=-35120; path=/`;
-        document.cookie = `paypamentType=; Secure; Max-Age=-35120; path=/`;
-        console.log("Payment True");
-    </script>
-<?php }
 function paymentFrontend()
 {
     if (isset($_GET['abandoned'])) {
@@ -327,7 +330,7 @@ function paymentFrontend()
         $firma = $miObj->createMerchantSignature($claveSHA256);
         ?>
         <!-- <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-            <form id="payRedsys" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+        <form id="payRedsys" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $firma; ?>" />
@@ -362,7 +365,7 @@ function paymentFrontend()
 
         ?>
         <!-- <form id="payBizum" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-            <form id="payBizum" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+        <form id="payBizum" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $bizumparams; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $bizumfirma; ?>" />
@@ -397,7 +400,7 @@ function paymentFrontend()
         // $goggleclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $goggleirma = $goggleObj->createMerchantSignature($goggleclaveSHA256); ?>
         <!-- <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-            <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+        <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $goggleparams; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $goggleirma; ?>" />
@@ -418,8 +421,7 @@ function paymentFrontend()
     ?>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
-        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>"
-            method="post">
+        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>" method="post">
             <!-- PayPal business email to collect payments -->
             <input type='hidden' name='business' value="<?php echo PAYPAL_EMAIL; ?>">
 

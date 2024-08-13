@@ -10,6 +10,7 @@
 
 
 require_once plugin_dir_path(__FILE__) . 'shortcode.php';
+require_once plugin_dir_path(__FILE__) . 'affiliate-panel.php';
 require_once plugin_dir_path(__FILE__) . 'checkoutStripe.php';
 require_once plugin_dir_path(__FILE__) . 'clt_saveInfo.php';
 require_once plugin_dir_path(__FILE__) . '../admin/outputBackend.php';
@@ -19,6 +20,7 @@ require_once plugin_dir_path(__FILE__) . '../admin/calander/calander.php';
 require_once plugin_dir_path(__FILE__) . '../admin/coupons/coupons.php';
 require_once plugin_dir_path(__FILE__) . '../admin/payments/payments.php';
 require_once plugin_dir_path(__FILE__) . '../admin/abandoned/abandoned.php';
+require_once plugin_dir_path(__FILE__) . '../admin/affiliate/affiliate.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/itemsEmail.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/reportsPage.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/stripe.php';
@@ -128,7 +130,7 @@ function chocoletrasInsertScripts()
   // wp_enqueue_script('chocoletrasScript', plugins_url('../src/main.js', __FILE__), array(), '1.0.0', true);
   wp_enqueue_style('pluginStylesClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
 
-  if (is_page('crea-tu-frase')) {
+  if (is_page('sample-page')) {
     wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
   }
 
@@ -284,6 +286,7 @@ add_action('wp_ajax_reportForm', 'saveReportData');
 define('PROCESS_FRASE', plugins_url('clt_process_form.php', __FILE__));
 
 add_shortcode('chocoletra', 'chocoletras_shortCode');
+add_shortcode('affiliate_panel', 'chocoletras_affiliate');
 
 // chocoletras admin menu
 add_action('admin_menu', 'clt_adminMenu');
@@ -329,6 +332,15 @@ function addSubmenuChocoletras()
     'coupons_settings',
     'coupon_settings_page',
     4
+  ); 
+  add_submenu_page(
+    'clt_amin', // Parent slug
+    'Socios afiliados', // Page title
+    'Socios afiliados', // Menu title
+    'manage_options',
+    'socios_afiliados',
+    'affiliate_adminpanel',
+    8
   );
 }
 
@@ -386,7 +398,7 @@ function addSubmenuAbandoned()
     'install_plugins',
     'abandoned_cart',
     'abandonedOutput',
-    6
+    7
   );
 }
 
