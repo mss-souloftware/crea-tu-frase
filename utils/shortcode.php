@@ -170,7 +170,7 @@ function chocoletras_shortCode()
 
                 <div class="col-md-5 col-12 text-center mb-2">
                     <div class="chocoletrasPlg-spiner">
-                        <img src="https://creatubrownie.com/wp-content/uploads/2023/10/cropped-brownie-personalizado-chocoleta.png"
+                        <img src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
                             alt="<?php echo _e('Chocoletras'); ?>">
                         <div class="chocoletrasPlg-spiner-ring"></div>
                     </div>
