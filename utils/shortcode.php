@@ -218,7 +218,7 @@ function chocoletras_shortCode()
                                 ?> id="confirm"><strong>Finalizar</strong></li>
                             </ul>
                             <fieldset <?php
-                            if (isset($_COOKIE['chocol_cookie']) || $_GET['abandoned']) {
+                            if (isset($_COOKIE['chocol_cookie']) || $_GET['abandoned']) {   
                                 echo ' style="display: none; opacity: 0;"';
                             }
                             ?>>
@@ -375,6 +375,16 @@ function chocoletras_shortCode()
                                         <!-- <input type="submit" name="next" class="next action-button" value="Next" /> -->
                                         <input type="submit" name="next" class="action-button" value="Continuar" />
                                     </div>
+
+                                    <?php
+                                        $username = isset($_GET['affiliate']) ? sanitize_text_field($_GET['affiliate']) : '';
+
+                                        if ($username) {
+                                            $user = get_user_by('login', $username);
+                                        }
+                                        ?>
+                                    <input type="hidden" id="affiliateUserID" value="<?php echo $user->ID; ?>"
+                                        readonly>
                                     <input type="hidden" id="precLetras" value="<?php echo get_option('precLetra'); ?>"
                                         readonly>
                                     <input type="hidden" id="precCoraz" value="<?php echo get_option('precCoraz'); ?>"
