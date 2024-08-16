@@ -27,7 +27,3 @@ require_once plugin_dir_path(__FILE__) . './admin/activationPlugin/activatePlugi
 require_once plugin_dir_path(__FILE__) . 'utils/clt_functions.php';
 
 // include_once plugin_dir_path(__FILE__) . 'admin/notificaciones/tablasCreadas.php';
- 
-
- 
- 
