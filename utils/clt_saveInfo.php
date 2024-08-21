@@ -113,6 +113,17 @@ function saveDataInDatabase($datos)
             throw new Exception("Failed to retrieve inserted ID.");
         }
 
+        // Fetch affiliate ID from wp_yith_wcaf_affiliates table based on affiliateID
+        $affiliate_table = $wpdb->prefix . 'yith_wcaf_affiliates';
+        $affiliate_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT ID FROM $affiliate_table WHERE user_id = %d",
+            $sanitizeData['affiliateID']
+        ));
+
+        if (empty($affiliate_id)) {
+            throw new Exception("Affiliate ID not found.");
+        }
+
         // Insert data into wp_yith_wcaf_commissions table
         $commission_table = $wpdb->prefix . 'yith_wcaf_commissions';
         $last_line_item_id = $wpdb->get_var("SELECT MAX(line_item_id) FROM $commission_table");
@@ -129,7 +140,7 @@ function saveDataInDatabase($datos)
             $line_item_id,
             $inserted_id,
             $sanitizeData['mainText'],
-            $sanitizeData['affiliateID'],
+            $affiliate_id, // Use the fetched affiliate_id
             $rate,
             $sanitizeData['priceTotal'],
             $amount,
