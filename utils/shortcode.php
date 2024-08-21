@@ -378,12 +378,8 @@ function chocoletras_shortCode()
 
                                     <?php
                                         $username = isset($_GET['affiliate']) ? sanitize_text_field($_GET['affiliate']) : '';
-
-                                        if ($username) {
-                                            $user = get_user_by('login', $username);
-                                        }
                                         ?>
-                                    <input type="hidden" id="affiliateUserID" value="<?php echo $user->ID; ?>"
+                                    <input type="hidden" id="affiliateUserID" value="<?php echo $username; ?>"
                                         readonly>
                                     <input type="hidden" id="precLetras" value="<?php echo get_option('precLetra'); ?>"
                                         readonly>
@@ -717,7 +713,7 @@ function chocoletras_shortCode()
                         <div class="chocoletrasPlg__wrapperCode-firstHead"></div>
                         <div class="chocoletrasPlg__wrapperCode-firstHead-dataUser"></div>
                     </div>
-                    <?php  paymentFrontend();?>
+                    <?php  // paymentFrontend();?>
                     <!-- <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
                 </div>
             </div>

@@ -55,11 +55,11 @@ function affiliate_users_page()
     global $wpdb;
 
     // Get the commission percentage from the settings
-    $commission_percentage = get_option('affc_commission_percentage', 0);
+    $commission_percentage = get_option('yith_wcaf_general_rate', 0);
 
     // Get all users with the role 'affiliate_chocoletra'
     $args = [
-        'role' => 'affiliate_chocoletra',
+        'role' => 'yith_affiliate',
         'orderby' => 'user_nicename',
         'order' => 'ASC'
     ];
