@@ -714,7 +714,7 @@ function chocoletras_shortCode()
                         <div class="chocoletrasPlg__wrapperCode-firstHead-dataUser"></div>
                     </div>
                     <?php  // paymentFrontend();?>
-                    <!-- <a class="copyrightPluginSet" href="http://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
+                    <!-- <a class="copyrightPluginSet" href="https://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
                 </div>
             </div>
         </div>
