@@ -120,41 +120,52 @@ function saveDataInDatabase($datos)
             $sanitizeData['affiliateID']
         ));
 
-        if (empty($affiliate_id)) {
-            throw new Exception("Affiliate ID not found.");
+        // Check if affiliateID is provided
+        if (!empty($sanitizeData['affiliateID'])) {
+            // Fetch affiliate ID from wp_yith_wcaf_affiliates table based on affiliateID
+            $affiliate_table = $wpdb->prefix . 'yith_wcaf_affiliates';
+            $affiliate_id = $wpdb->get_var($wpdb->prepare(
+                "SELECT ID FROM $affiliate_table WHERE user_id = %d",
+                $sanitizeData['affiliateID']
+            ));
+
+            if (empty($affiliate_id)) {
+                throw new Exception("Affiliate ID not found.");
+            }
+
+            // Insert data into wp_yith_wcaf_commissions table
+            $commission_table = $wpdb->prefix . 'yith_wcaf_commissions';
+            $last_line_item_id = $wpdb->get_var("SELECT MAX(line_item_id) FROM $commission_table");
+
+            $line_item_id = $last_line_item_id ? $last_line_item_id + 1 : 1;
+            $rate = get_option('yith_wcaf_general_rate', 0);
+            $amount = $sanitizeData['priceTotal'] * ($rate / 100);
+            $current_date = current_time('mysql');
+
+            $commission_query = $wpdb->prepare(
+                "INSERT INTO $commission_table (order_id, line_item_id, product_id, product_name, affiliate_id, rate, line_total, amount, refunds, status, created_at, last_edit) 
+        VALUES (%d, %d, %d, %s, %d, %f, %f, %f, %d, %s, %s, %s)",
+                $inserted_id,
+                $line_item_id,
+                $inserted_id,
+                $sanitizeData['mainText'],
+                $affiliate_id, // Use the fetched affiliate_id
+                $rate,
+                $sanitizeData['priceTotal'],
+                $amount,
+                0, // refunds
+                'not-confirmed', // status
+                $current_date, // created_at
+                $current_date  // last_edit
+            );
+
+            // Execute the commission query and check for errors
+            $commission_result = $wpdb->query($commission_query);
+            if ($commission_result === false) {
+                throw new Exception("Failed to insert commission data: " . $wpdb->last_error);
+            }
         }
 
-        // Insert data into wp_yith_wcaf_commissions table
-        $commission_table = $wpdb->prefix . 'yith_wcaf_commissions';
-        $last_line_item_id = $wpdb->get_var("SELECT MAX(line_item_id) FROM $commission_table");
-
-        $line_item_id = $last_line_item_id ? $last_line_item_id + 1 : 1;
-        $rate = get_option('yith_wcaf_general_rate', 0);
-        $amount = $sanitizeData['priceTotal'] * ($rate / 100);
-        $current_date = current_time('mysql');
-
-        $commission_query = $wpdb->prepare(
-            "INSERT INTO $commission_table (order_id, line_item_id, product_id, product_name, affiliate_id, rate, line_total, amount, refunds, status, created_at, last_edit) 
-            VALUES (%d, %d, %d, %s, %d, %f, %f, %f, %d, %s, %s, %s)",
-            $inserted_id,
-            $line_item_id,
-            $inserted_id,
-            $sanitizeData['mainText'],
-            $affiliate_id, // Use the fetched affiliate_id
-            $rate,
-            $sanitizeData['priceTotal'],
-            $amount,
-            0, // refunds
-            'not-confirmed', // status
-            $current_date, // created_at
-            $current_date  // last_edit
-        );
-
-        // Execute the commission query and check for errors
-        $commission_result = $wpdb->query($commission_query);
-        if ($commission_result === false) {
-            throw new Exception("Failed to insert commission data: " . $wpdb->last_error);
-        }
 
     } catch (Exception $error) {
         error_log($error->getMessage()); // Log the error message

@@ -45,7 +45,7 @@ function createAllTables()
               enviado tinyint(1) NOT NULL DEFAULT 0,
               pagoRealizado tinyint(1) NOT NULL DEFAULT 0,
               cart tinyint(1) NOT NULL DEFAULT 0,
-              affiliate_id varchar(150) NOT NULL DEFAULT 'null',
+              affiliate_id varchar(150),
               fechaEntrega date NOT NULL,
               id_venta varchar(150) NOT NULL DEFAULT 'null',
               nonce varchar(50) NOT NULL,
