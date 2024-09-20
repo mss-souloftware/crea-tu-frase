@@ -161,8 +161,13 @@ function chocoletras_shortCode()
                         <?php if (!empty($result)) { ?>
                                 <img class="dummyImg" src="<?php echo site_url() . $result['featured']; ?>" alt="">
                             <?php } else { ?>
-                            <p class="dummyImg">Crea <span class="typed-text"></span><span class="cursor blink">&nbsp;</span>
-                            </p>
+                                <p class="dummyImg">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/c.png', __FILE__); ?>">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/r.png', __FILE__); ?>">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/e.png', __FILE__); ?>">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/a.png', __FILE__); ?>">
+                                <span class="typed-images"></span><span class="cursor blink">&nbsp;</span>
+                                </p>
                         <?php } 
                     } ?>
                     </div>
@@ -377,8 +382,15 @@ function chocoletras_shortCode()
                                     </div>
 
                                     <?php
-                                        $username = isset($_GET['affiliate']) ? sanitize_text_field($_GET['affiliate']) : '';
-                                        ?>
+                                        if($_GET['affiliate']){
+                                            $username = isset($_GET['affiliate']) ? sanitize_text_field($_GET['affiliate']) : '';
+                                        }
+                                        else if($_COOKIE['yith_wcaf_referral_token']){
+                                            $username = $_COOKIE['yith_wcaf_referral_token'];
+                                        }else{
+                                            $username = '';
+                                        }
+                                    ?>
                                     <input type="hidden" id="affiliateUserID" value="<?php echo $username; ?>"
                                         readonly>
                                     <input type="hidden" id="precLetras" value="<?php echo get_option('precLetra'); ?>"
@@ -549,7 +561,7 @@ function chocoletras_shortCode()
                                     </div>
                                 <?php } ?>
                                     <div class="lineBreaker">
-                                        <span>Aceptamos Pagos</span>
+                                        <span>⬇️ SELECCIONA EL METODO DE PAGO ⬇️</span>
                                     </div>
 
                                     <div class="paymentPanel">

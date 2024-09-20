@@ -1,4 +1,5 @@
 (function ($) {
+
     let loader = $(".chocoletrasPlg-spiner");
     $(document).ready(function () {
         const keyMap = {
@@ -328,7 +329,7 @@
             $('.fraseInput').each(function () {
                 mainText.push($(this).val());
             });
-            
+
             const dataToSend = {
                 action: 'test_action',
                 mainText: JSON.stringify(mainText),
@@ -402,7 +403,11 @@
                     console.error("AJAX request failed: ", status, error);
                 },
                 complete: function () {
-                    location.reload();
+                    // location.reload();
+                    const randomString = Math.random().toString(36).substring(2, 15);
+
+                    // Reload the page with a random query string appended
+                    window.location.href = window.location.pathname + "?q=" + randomString;
                 }
             });
         });
@@ -418,9 +423,8 @@
             $(".paymentPanel .paymentCard").on('click', function () {
                 $(".paymentPanel .paymentCard").removeClass('active');
                 $(this).addClass("active");
-                selectedGatway = $(this).attr("data-gatway");
 
-                // Reset paymentMethod on each click
+                selectedGatway = $(this).attr("data-gatway");
                 paymentMethod = "";
 
                 if (selectedGatway === 'paypal') {
@@ -441,11 +445,41 @@
                 // Show loader
                 $("#loader").css('height', '100%');
 
+                // var cookieValue = getCookie("chocoletraOrderData");
+                // if (cookieValue) {
+                //     var orderData = JSON.parse(decodeURIComponent(cookieValue));
+                //     orderData.payment = paymentMethod;
+                //     setCookie("chocoletraOrderData", encodeURIComponent(JSON.stringify(orderData)));
+                // }
+
+                // Retrieve cookie value
                 var cookieValue = getCookie("chocoletraOrderData");
                 if (cookieValue) {
                     var orderData = JSON.parse(decodeURIComponent(cookieValue));
+                    var inserted_id = orderData.inserted_id; // Extract inserted_id from cookie
+
+                    // Update payment method in cookie
                     orderData.payment = paymentMethod;
                     setCookie("chocoletraOrderData", encodeURIComponent(JSON.stringify(orderData)));
+                    console.log(orderData);
+
+                    // AJAX request to update the payment method in the database
+                    $.ajax({
+                        url: ajax_variables.ajax_url, // Replace with your AJAX handler URL if necessary
+                        type: 'POST',
+                        data: {
+                            action: 'update_payment_method', // Your custom action for handling the request
+                            order_id: inserted_id, // ID from the cookie
+                            payment_method: paymentMethod
+                        },
+                        success: function (response) {
+                            // Handle the response
+                            console.log('Payment method updated successfully:', response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error updating payment method:', error);
+                        }
+                    });
                 }
 
                 console.log(orderData); // To check if the cookie is updated correctly
@@ -801,6 +835,16 @@
         $(".couponSection p").on('click', function () {
             $(this).parents('.couponSection').toggleClass('open');
         })
+
+        let scrollerCookie = getCookie("chocoletraOrderData");
+
+        if (scrollerCookie && window.innerWidth <= 768) {
+            window.onload = function () {
+                document.getElementById('ctf_form').scrollIntoView({ behavior: 'smooth' });
+                console.log('scroll top');
+            };
+        }
+
     });
 
     function getQueryParam(param) {
@@ -826,44 +870,126 @@
         $("#pricingTable").toggleClass('open');
     })
 
-    const typedText = document.querySelector(".typed-text");
+
+    const typedImagesContainer = document.querySelector(".typed-images");
     const cursor = document.querySelector(".cursor");
 
-    const textArray = ["Tu Frase", "Tus Deseos", "Tus Saludos"];
+    const imgWordsArray = [
+        // First word "Tus"
+        [
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/t.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            " ",
+            `${ajax_variables.pluginUrl}img/letters/Claro/f.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/r.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/a.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/e.png`
+        ],
+        // Second word "Frase"
+        [
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/t.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            " ",
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/a.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/l.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/d.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/o.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`
+        ],
+        // Third word "Deseos"
+        [
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/t.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            " ",
+            `${ajax_variables.pluginUrl}img/letters/Claro/d.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/e.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/e.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/o.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`
+        ]
+    ];
 
-    let textArrayIndex = 0;
-    let charIndex = 0;
+    let wordIndex = 0; // Track the current word
+    let imgArrayIndex = 0; // Track the current image in the word
+    let imageElements = []; // Store added image elements and spacing divs for removal
 
-    const erase = () => {
-        if (charIndex > 0) {
+    // Erase the images and spaces for the current word
+    const eraseImages = () => {
+        if (imageElements.length > 0) {
             cursor.classList.remove('blink');
-            typedText.textContent = textArray[textArrayIndex].slice(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, 80);
+            const lastElement = imageElements.pop(); // Get the last added element (image or space)
+            lastElement.remove(); // Remove it from the DOM
+
+            setTimeout(eraseImages, 80); // Erase one element at a time
         } else {
             cursor.classList.add('blink');
-            textArrayIndex++;
-            if (textArrayIndex > textArray.length - 1) {
-                textArrayIndex = 0;
+            wordIndex++;
+            if (wordIndex >= imgWordsArray.length) {
+                wordIndex = 0; // Loop back to the first word
             }
-            setTimeout(type, 1000);
+            setTimeout(typeImages, 1000); // Start typing the next word
         }
-    }
+    };
 
-    const type = () => {
-        if (charIndex <= textArray[textArrayIndex].length - 1) {
+    // Type out the images and spaces for the current word
+    const typeImages = () => {
+        const currentWord = imgWordsArray[wordIndex];
+
+        if (imgArrayIndex < currentWord.length) {
             cursor.classList.remove('blink');
-            typedText.textContent += textArray[textArrayIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(type, 120);
+
+            if (currentWord[imgArrayIndex] === " ") {
+                // Create a spacer using CSS
+                const spacer = document.createElement("div");
+                spacer.style.display = "inline-block";
+                spacer.style.width = "0px"; // Adjust the width of the space
+                typedImagesContainer.appendChild(spacer);
+                imageElements.push(spacer); // Keep track of the spacer div
+            } else {
+                // Create new img element and add it to the container
+                const newImg = document.createElement("img");
+                newImg.src = currentWord[imgArrayIndex];
+                newImg.style.opacity = 1; // Show the image
+                typedImagesContainer.appendChild(newImg);
+                imageElements.push(newImg); // Keep track of added images
+            }
+
+            imgArrayIndex++;
+            setTimeout(typeImages, 120); // Type next image after a small delay
         } else {
             cursor.classList.add('blink');
-            setTimeout(erase, 1000);
+            if (wordIndex === 0) {
+                // Insert a line break after the first word
+                const lineBreak = document.createElement("br");
+                typedImagesContainer.appendChild(lineBreak);
+                imageElements.push(lineBreak); // Keep track of the line break
+            }
+            setTimeout(() => {
+                imgArrayIndex = 0; // Reset the image index for the next word
+                eraseImages();
+            }, 1000); // Hold the word for a second before erasing
         }
-    }
+    };
 
     document.addEventListener("DOMContentLoaded", () => {
-        type();
-    })
+        typeImages();
+    });
+
+
+
+
+
 
 }(jQuery));

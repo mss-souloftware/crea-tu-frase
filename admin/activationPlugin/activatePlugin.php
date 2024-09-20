@@ -54,6 +54,7 @@ function createAllTables()
               express varchar(3) NOT NULL,
               uoi varchar(150) NOT NULL,
               coupon varchar(50) NOT NULL,
+              selectedMethod varchar(50),
               screens LONGTEXT,
               featured LONGTEXT,
               payment VARCHAR(50),

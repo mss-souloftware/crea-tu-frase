@@ -118,7 +118,8 @@ function chocoletraMenu_ftn()
                   <span><b>Provincia: </b>' . $value->province . '</span>
                   <span><b>Codigo Postal: </b>' . $value->cp . '</span>
                   <span><b>Fecha de Entrega: </b>' . $value->fechaEntrega . '</span>
-                  <span><b>Pagado: </b>' . $value->payment . '</span>';
+                  <span><b>Pagado: </b>' . $value->payment . '</span>                  
+                  <span><b>Pago seleccionado: </b>' . $value->selectedMethod . '</span>';
           if ($value->cart == 0 && $value->pagoRealizado == 0) {
             echo '<span><b>Estado Abandonado: </b>Pendiente 🕐</span>';
           } else if ($value->cart == 1 && $value->pagoRealizado == 0) {
@@ -136,14 +137,20 @@ function chocoletraMenu_ftn()
 
           echo '<div class="infoPanelInnn">
           <h2>Estado del pedido</h2> ';
+          global $wpdb;
+
           $user_id = $value->affiliate_id;
+          $result = $wpdb->get_var($wpdb->prepare(
+            "SELECT ID FROM wp_yith_wcaf_affiliates WHERE token = %s",
+            $user_id
+          ));
 
           $first_name = get_user_meta($user_id, 'first_name', true);
           $last_name = get_user_meta($user_id, 'last_name', true);
           $full_name = trim($first_name . ' ' . $last_name);
 
           if ($user_id != '') {
-            echo '<span><b>Usuario afiliado: </b>' . $full_name . '</span>';
+            echo '<span><b>Usuario afiliado: </b><a style="color:#000;" href="' . site_url() . '/wp-admin/admin.php?page=yith_wcaf_panel&affiliate_id=' . $result . '&tab=affiliates">' . $full_name . '</a></span>';
           }
           echo useractions($value->id, $value->email, $value->enProceso, $value->enviado);
           echo '</div>';

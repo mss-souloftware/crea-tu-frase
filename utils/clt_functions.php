@@ -125,14 +125,44 @@ function get_calendar_settings()
   wp_send_json($response);
 }
 
+add_action('wp_ajax_update_payment_method', 'update_payment_method');
+add_action('wp_ajax_nopriv_update_payment_method', 'update_payment_method');
+function update_payment_method() {
+  global $wpdb;
+  
+  // Check if the order ID and payment method are set
+  if (isset($_POST['order_id']) && isset($_POST['payment_method'])) {
+      $order_id = intval($_POST['order_id']);
+      $payment_method = sanitize_text_field($_POST['payment_method']);
 
+      // Update the payment method in the wp_chocoletras_plugin table
+      $table_name = $wpdb->prefix . 'chocoletras_plugin';
+      $updated = $wpdb->update(
+          $table_name,
+          array('selectedMethod' => $payment_method),
+          array('ID' => $order_id),
+          array('%s'), // Format for the new value
+          array('%d')  // Format for the where condition
+      );
+
+      if ($updated !== false) {
+          wp_send_json_success('Payment method updated successfully.');
+      } else {              
+          wp_send_json_error('Failed to update payment method.');
+      }
+  } else {
+      wp_send_json_error('Invalid data.');
+  }
+
+  wp_die();
+}
 
 function chocoletrasInsertScripts()
 {
   // wp_enqueue_script('chocoletrasScript', plugins_url('../src/main.js', __FILE__), array(), '1.0.0', true);
   wp_enqueue_style('pluginStylesClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
 
-  if (is_page('sample-page')) {
+  if (is_page('crea-tu-frase-personalizada-en-chocolate')) {
     wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
   }
 

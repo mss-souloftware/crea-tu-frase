@@ -239,7 +239,7 @@
 
 #typewriter {
     background: #F7F7F7;
-    padding: 20px;
+    padding: 20px 0px;
     border-radius: 8px;
     height: 100%;
 }
@@ -262,6 +262,20 @@
 #typewriter img {
     max-width: 50px;
     margin: 2px;
+}
+
+
+#typewriter .dummyImg>img {
+    margin: 0 -5px 0 0;
+    max-width: 36px;
+}
+
+#typewriter .dummyImg>.typed-images img {
+    max-width: 36px;
+}
+
+#typewriter .dummyImg .typed-images {
+    margin-left: 0px;
 }
 
 #ctf_form {
