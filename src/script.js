@@ -422,7 +422,9 @@
 
             $(".paymentPanel .paymentCard").on('click', function () {
                 $(".paymentPanel .paymentCard").removeClass('active');
+                $(".paymentPanel .paymentCard .selectionCircle").removeClass('active');
                 $(this).addClass("active");
+                $(this).find(".selectionCircle").addClass("active");
 
                 selectedGatway = $(this).attr("data-gatway");
                 paymentMethod = "";

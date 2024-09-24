@@ -646,6 +646,21 @@
     border: 1px solid #000;
 }
 
+.paymentPanel .paymentCard .selectionCircle {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    height: 15px;
+    border: 1px solid #D1D5DB;
+    border-radius: 30px;
+    top: 3px;
+    right: 3px;
+}
+
+.paymentPanel .paymentCard .selectionCircle.active {
+    display: none;
+}
+
 .lineBreaker {
     position: relative;
     text-align: center;

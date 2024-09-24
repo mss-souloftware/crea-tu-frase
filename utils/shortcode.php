@@ -162,10 +162,10 @@ function chocoletras_shortCode()
                                 <img class="dummyImg" src="<?php echo site_url() . $result['featured']; ?>" alt="">
                             <?php } else { ?>
                                 <p class="dummyImg">
-                                <img src="<?php echo plugins_url('../img/letters/Claro/c.png', __FILE__); ?>">
-                                <img src="<?php echo plugins_url('../img/letters/Claro/r.png', __FILE__); ?>">
-                                <img src="<?php echo plugins_url('../img/letters/Claro/e.png', __FILE__); ?>">
-                                <img src="<?php echo plugins_url('../img/letters/Claro/a.png', __FILE__); ?>">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/c.png', __FILE__); ?>" alt="C">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/r.png', __FILE__); ?>" alt="R">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/e.png', __FILE__); ?>" alt="E">
+                                <img src="<?php echo plugins_url('../img/letters/Claro/a.png', __FILE__); ?>" alt="A">
                                 <span class="typed-images"></span><span class="cursor blink">&nbsp;</span>
                                 </p>
                         <?php } 
@@ -250,7 +250,7 @@ function chocoletras_shortCode()
                                         </div>
                                     </div>
                                     <button type="button" id="addNewFrase" disabled>
-                                        <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>"> Nueva frase
+                                    <img src="<?php echo plugins_url('../img/add-icon.png', __FILE__); ?>" alt="Add New Phrase"> Nueva frase
                                     </button>
 
                                     <label class="fieldlabels">Tipo de espacio</label>
@@ -569,6 +569,7 @@ function chocoletras_shortCode()
                                         if($getRedsys === 1){
                                         ?>
                                             <div class="paymentCard" data-gatway="redsys">
+                                            <div class="selectionCircle"></div>
                                                 <div class="selected">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -589,6 +590,7 @@ function chocoletras_shortCode()
                                         if($getBizum === 1){
                                         ?>
                                             <div class="paymentCard" data-gatway="bizum">
+                                            <div class="selectionCircle"></div>
                                                 <div class="selected">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -617,6 +619,7 @@ function chocoletras_shortCode()
                                         if($getPaypPal === 1){
                                         ?>
                                             <div class="paymentCard" data-gatway="paypal">
+                                            <div class="selectionCircle"></div>
                                                 <div class="selected">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -638,6 +641,7 @@ function chocoletras_shortCode()
                                         if($getGooglepPay === 1){
                                         ?>
                                             <div class="paymentCard" data-gatway="google">
+                                            <div class="selectionCircle"></div>
                                                 <div class="selected">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -659,6 +663,7 @@ function chocoletras_shortCode()
                                         if($getApplePay === 1){
                                         ?>
                                             <div class="paymentCard" data-gatway="apple">
+                                            <div class="selectionCircle"></div>
                                                 <div class="selected">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
