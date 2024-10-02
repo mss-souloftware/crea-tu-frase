@@ -1,6 +1,7 @@
 <?php
 // $notNull = '';
 // if ($notNull !== '') {
+global $wpdb;
 require_once plugin_dir_path(__FILE__) . '../../admin/outPutMail/sendEmail.php';
 
 $redsysAPIwoo = WP_PLUGIN_DIR . '/redsyspur/apiRedsys/apiRedsysFinal.php';
@@ -112,9 +113,27 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
         console.log("Payment True");
     </script>
 <?php }
-// }
-function paymentFrontend()
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Log incoming data for debugging
+    error_log("Response payment.php file");
+    error_log("Received POST data: " . print_r($_POST, true));
+
+    // Sanitize the inputs
+    $dyninsertedId = isset($_POST['inserted_id']) ? sanitize_text_field($_POST['inserted_id']) : '';
+    $dynamount = isset($_POST['amount']) ? sanitize_text_field($_POST['amount']) : '';
+
+    // Log the sanitized values
+    error_log("Sanitized Inserted ID: " . $dyninsertedId);
+    error_log("Sanitized Amount: " . $dynamount);
+}
+
+function paymentFrontend($dynamount, $dyninsertedId)
 {
+    error_log("Inside Sanitized Inserted ID: " . $dyninsertedId);
+    error_log("Inside Sanitized Amount: " . $dynamount);
+
     if (isset($_GET['abandoned'])) {
         global $wpdb;
         $tablename = $wpdb->prefix . 'chocoletras_plugin';
@@ -128,7 +147,10 @@ function paymentFrontend()
     if (isset($_COOKIE['chocoletraOrderData'])) {
         $getOrderData = json_decode(stripslashes($_COOKIE['chocoletraOrderData']), true);
     }
+
+    ob_start();
     ?>
+
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
         <?php
@@ -370,7 +392,12 @@ function paymentFrontend()
 
         echo 'final ammount' . $amount;
 
-        $miObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
+        if (isset($_POST['price'])) {
+            $amount
+                = $_POST['price'];
+        }
+
+
         $miObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRedsys);
         $miObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
         $miObj->setParameter("DS_MERCHANT_CURRENCY", "978");
@@ -399,40 +426,51 @@ function paymentFrontend()
     </div>
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
         <?php
-        // echo $lastCookieVal;
         $bizumObj = new RedsysAPI;
 
-        // $bizumObj->setParameter("DS_MERCHANT_AMOUNT", 10);
-        $bizumObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
+        // Log the amount for debugging
+        error_log("Near to Amount field: " . $dynamount);
+
+        // Format the amount as an integer (e.g., 35.50 becomes 3550)
+        $formattedAmount = round($dynamount * 100); // Ensure correct formatting
+    
+        // Log the formatted amount for debugging
+        error_log("Formatted Amount (as integer): " . $formattedAmount);
+
+        // Set the parameter using the formatted integer amount
+        $bizumObj->setParameter("DS_MERCHANT_AMOUNT", $formattedAmount);
+        error_log("Set DS_MERCHANT_AMOUNT to: " . $formattedAmount); // Debug log
+    
+        // Set other parameters
         $bizumObj->setParameter("DS_MERCHANT_ORDER", $orderNumberBizum);
         $bizumObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
         $bizumObj->setParameter("DS_MERCHANT_CURRENCY", "978");
         $bizumObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "7");
         $bizumObj->setParameter("DS_MERCHANT_TERMINAL", "001");
         $bizumObj->setParameter("DS_MERCHANT_PAYMETHODS", "z");
-        $bizumObj->setParameter("DS_MERCHANT_MERCHANTDATA", $insertedID);
         $bizumObj->setParameter("DS_MERCHANT_MERCHANTURL", $plugin_page);
         $bizumObj->setParameter("DS_MERCHANT_URLOK", "$plugin_payment?payment=true");
         $bizumObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
 
+        // Create merchant parameters and log them
         $bizumparams = $bizumObj->createMerchantParameters();
-        $bizumclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
-        // $bizumclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+        error_log("Merchant Parameters: " . $bizumparams); // Log the parameters
+    
+        $bizumclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $bizumfirma = $bizumObj->createMerchantSignature($bizumclaveSHA256);
-
         ?>
-        <!-- <form id="payBizum" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-            <form id="payBizum" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+
+        <form id="payBizum" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
-            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $bizumparams; ?>" />
-            <input type="hidden" name="Ds_Signature" value="<?php echo $bizumfirma; ?>" />
+            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo htmlspecialchars($bizumparams); ?>" />
+            <input type="hidden" name="Ds_Signature" value="<?php echo htmlspecialchars($bizumfirma); ?>" />
             <button type="submit"><span>
                     <?php echo _e('Pagar con Bizum '); ?>
                 </span><img src="https://chocoletra.com/wp-content/uploads/2024/03/Bizum.svg.png"
                     alt="<?php echo _e('Chocoletra'); ?>"></button>
         </form>
-
     </div>
+
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
         <?php
@@ -457,7 +495,7 @@ function paymentFrontend()
         // $goggleclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $goggleirma = $goggleObj->createMerchantSignature($goggleclaveSHA256); ?>
         <!-- <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-            <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+        <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST">
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $goggleparams; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $goggleirma; ?>" />
@@ -478,8 +516,7 @@ function paymentFrontend()
     ?>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
-        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>"
-            method="post">
+        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>" method="post">
             <!-- PayPal business email to collect payments -->
             <input type='hidden' name='business' value="<?php echo PAYPAL_EMAIL; ?>">
 
@@ -517,4 +554,6 @@ function paymentFrontend()
 
     </div>
 
-<?php } ?>
+    <?php
+    return ob_get_clean();
+} ?>

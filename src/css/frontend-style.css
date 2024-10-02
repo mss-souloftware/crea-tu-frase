@@ -924,6 +924,7 @@
 
     #typewriter {
         padding: 20px 10px;
+        min-height: 330px;
     }
 
     #typewriter img {

@@ -3,17 +3,17 @@
     let loader = $(".chocoletrasPlg-spiner");
     $(document).ready(function () {
         const keyMap = {
-            '0': '0.png', '1': '1.png', '2': '2.png', '3': '3.png', '4': '4.png', '5': '5.png',
-            '6': '6.png', '7': '7.png', '8': '8.png', '9': '9.png', ' ': { heart: 'heart.png', star: 'star.png' },
-            'A': 'a.png', 'Á': 'a.png', 'B': 'b.png', 'C': 'c.png', 'D': 'd.png', 'E': 'e.png', 'É': 'e.png', 'F': 'f.png',
-            'G': 'g.png', 'H': 'h.png', 'I': 'i.png', 'Í': 'i.png', 'J': 'j.png', 'K': 'k.png', 'L': 'l.png',
-            'M': 'm.png', 'N': 'n.png', 'O': 'o.png', 'Ó': 'o.png', 'P': 'p.png', 'Q': 'q.png', 'R': 'r.png',
-            'S': 's.png', 'T': 't.png', 'U': 'u.png', 'Ú': 'u.png', 'V': 'v.png', 'W': 'w.png', 'X': 'x.png',
-            'Y': 'y.png', 'Z': 'z.png',
-            'Ñ': 'n1.png', 'ñ': 'n1.png', 'Ç': 'c1.png',
-            '?': 'que.png', '¡': 'exclm1.png',
-            '!': 'exclm.png', '¿': 'que1.png',
-            ',': 'coma.png', '&': 'and.png'
+            '0': '0.webp', '1': '1.webp', '2': '2.webp', '3': '3.webp', '4': '4.webp', '5': '5.webp',
+            '6': '6.webp', '7': '7.webp', '8': '8.webp', '9': '9.webp', ' ': { heart: 'heart.webp', star: 'star.webp' },
+            'A': 'a.webp', 'Á': 'a.webp', 'B': 'b.webp', 'C': 'c.webp', 'D': 'd.webp', 'E': 'e.webp', 'É': 'e.webp', 'F': 'f.webp',
+            'G': 'g.webp', 'H': 'h.webp', 'I': 'i.webp', 'Í': 'i.webp', 'J': 'j.webp', 'K': 'k.webp', 'L': 'l.webp',
+            'M': 'm.webp', 'N': 'n.webp', 'O': 'o.webp', 'Ó': 'o.webp', 'P': 'p.webp', 'Q': 'q.webp', 'R': 'r.webp',
+            'S': 's.webp', 'T': 't.webp', 'U': 'u.webp', 'Ú': 'u.webp', 'V': 'v.webp', 'W': 'w.webp', 'X': 'x.webp',
+            'Y': 'y.webp', 'Z': 'z.webp',
+            'Ñ': 'n1.webp', 'ñ': 'n1.webp', 'Ç': 'c1.webp',
+            '?': 'que.webp', '¡': 'exclm1.webp',
+            '!': 'exclm.webp', '¿': 'que1.webp',
+            ',': 'coma.webp', '&': 'and.webp'
         };
 
         function generateImages(text, $typewriterInner, spaceSymbol) {
@@ -298,9 +298,6 @@
             });
         });
 
-
-
-
         $("#ctf_form").on("submit", function (event) {
             event.preventDefault();
             loader.css('height', '100%');
@@ -318,6 +315,7 @@
             let picDate = $("#picDate").val();
             const shippingType = $("#ExpressActivator").val();
             const message = $("#message").val();
+            const paymentSelected = $("#selectedPayment").val().toLowerCase();
             const uoi = $("#uniqueOrderID").val();
             const coupon = $("#usedCoupon").val();
             const affiliateID = $("#affiliateUserID").val();
@@ -343,6 +341,7 @@
                 province: province,
                 address: address,
                 message: message,
+                paymentType: paymentSelected,
                 uoi: uoi,
                 coupon: coupon,
                 screens: JSON.stringify(screenshotPaths),
@@ -367,6 +366,10 @@
                         console.info("Process succeeded: ", parsedResponse.Datos);
                         console.log("Inserted ID: ", parsedResponse.Datos.inserted_id);
 
+                        const insertedId = parsedResponse.Datos.inserted_id;
+                        const amount = parsedResponse.Datos.amount;
+                        const paymentSelected = parsedResponse.Datos.paymentType;
+
                         const cookieData = {
                             inserted_id: parsedResponse.Datos.inserted_id,
                             mainText: mainText,
@@ -383,6 +386,7 @@
                             shippingType: shippingType,
                             express: new Date().toISOString(),
                             message: message,
+                            paymentSelected: paymentSelected,
                             uoi: uoi,
                             coupon: coupon,
                             affiliateID: affiliateID,
@@ -392,8 +396,53 @@
 
                         const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
 
-                        setCookie('chocol_cookie', true);
-                        setCookie('chocoletraOrderData', cookieValue);
+                        // setCookie('chocol_cookie', true);
+                        // setCookie('chocoletraOrderData', cookieValue);
+
+                        // setupPayment(amount, insertedId);
+
+
+                        // Inside the success callback of the first AJAX call
+                        $.ajax({
+                            url: ajax_variables.ajax_url,
+                            type: 'POST',
+                            data: {
+                                action: 'handle_payment', // Use the registered action
+                                inserted_id: insertedId,
+                                amount: amount,
+                                paymentSelected: paymentSelected,
+                                security: ajax_variables.nonce,
+                            },
+                            success: function (paymentResponse) {
+                                console.log('Payment Response:', paymentResponse);
+                                if (paymentResponse.success) {
+                                    // Call the paymentFrontend function with the amount and insertedId
+                                    // Optionally trigger the payment submission here
+                                    $('input[name="Ds_MerchantParameters"]').val(paymentResponse.merchantParameters);
+                                    $('input[name="Ds_Signature"]').val(paymentResponse.signature);
+
+                                    console.log('Merchant Parameters updated:', paymentResponse.merchantParameters);
+                                    console.log('Signature updated:', paymentResponse.signature);
+                                } else {
+                                    console.error('Payment Error:', paymentResponse.message);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Payment Setup Error:', status, error);
+                            },
+                            complete: function () {
+                                // setTimeout(function () {
+                                console.log('Submitting Payment with:', {
+                                    inserted_id: insertedId,
+                                    amount: amount,
+                                    paymentSelected: paymentSelected,
+                                });
+                                // $("#proceedPayment").click(); // If you want to automatically submit the form
+                                // }, 2000);
+                            }
+                        });
+
+
 
                     } else {
                         console.error("Process failed: ", parsedResponse.Datos);
@@ -403,13 +452,26 @@
                     console.error("AJAX request failed: ", status, error);
                 },
                 complete: function () {
+                    // loader.css('height', '0px');
                     // location.reload();
-                    const randomString = Math.random().toString(36).substring(2, 15);
+                    // const randomString = Math.random().toString(36).substring(2, 15);
 
                     // Reload the page with a random query string appended
-                    window.location.href = window.location.pathname + "?q=" + randomString;
+                    // window.location.href = window.location.pathname + "?q=" + randomString;
+                    // $("#ctf_form fieldset").removeAttr("style");
+                    // $("#ctf_form fieldset").css({
+                    //     "display": "none",
+                    //     "opacity": "0",
+                    // });
+                    // $("#ctf_form fieldset.paymentBox").css({
+                    //     "display": "block",
+                    //     "opacity": "1",
+                    // });
+                    // $("#proceedPayment").click();
                 }
             });
+
+            // setupPayment(priceTotal, parsedResponse.Datos.inserted_id);
         });
 
         function removeCookie(name) {
@@ -443,6 +505,7 @@
 
                 $("#selectedPayment").val(paymentMethod);
                 console.log(paymentMethod);
+                console.log(selectedGatway);
 
                 // Show loader
                 $("#loader").css('height', '100%');
@@ -490,38 +553,38 @@
 
             $("#proceedPayment").on('click', function () {
                 console.log(selectedGatway, paymentMethod);
+                if (selectedGatway === 'paypal') {
+                    $("#selectedPayment").val("PayPal");
+                    $("#payPayPal").submit();
+                } else if (selectedGatway === 'redsys') {
+                    $("#selectedPayment").val("Redsys");
+                    $("#payRedsys").submit();
+                } else if (selectedGatway === 'bizum') {
+                    $("#selectedPayment").val("Bizum");
+                    $("#payBizum").submit();
+                } else if (selectedGatway === 'google') {
+                    $("#selectedPayment").val("Google Pay");
+                    $("#payGoogle").submit();
+                } else if (selectedGatway === 'apple') {
+                    $("#selectedPayment").val("Apple Pay");
+                    $("#payGoogle").submit();
+                } else {
+                    alert("Select any of the payment first!");
+                }
+                // var checkCookieUpdated = setInterval(function () {
+                //     var updatedCookieValue = getCookie("chocoletraOrderData");
+                //     if (updatedCookieValue) {
+                //         var updatedOrderData = JSON.parse(decodeURIComponent(updatedCookieValue));
+                //         if (updatedOrderData.payment === paymentMethod) {
+                //             clearInterval(checkCookieUpdated);
 
-                var checkCookieUpdated = setInterval(function () {
-                    var updatedCookieValue = getCookie("chocoletraOrderData");
-                    if (updatedCookieValue) {
-                        var updatedOrderData = JSON.parse(decodeURIComponent(updatedCookieValue));
-                        if (updatedOrderData.payment === paymentMethod) {
-                            clearInterval(checkCookieUpdated);
+                //             // Hide loader after updating the cookie
+                //             $("#loader").css('height', '0%');
 
-                            // Hide loader after updating the cookie
-                            $("#loader").css('height', '0%');
 
-                            if (selectedGatway === 'paypal') {
-                                $("#selectedPayment").val("PayPal");
-                                $("#payPayPal").submit();
-                            } else if (selectedGatway === 'redsys') {
-                                $("#selectedPayment").val("Redsys");
-                                $("#payRedsys").submit();
-                            } else if (selectedGatway === 'bizum') {
-                                $("#selectedPayment").val("Bizum");
-                                $("#payBizum").submit();
-                            } else if (selectedGatway === 'google') {
-                                $("#selectedPayment").val("Google Pay");
-                                $("#payGoogle").submit();
-                            } else if (selectedGatway === 'apple') {
-                                $("#selectedPayment").val("Apple Pay");
-                                $("#payGoogle").submit();
-                            } else {
-                                alert("Select any of the payment first!");
-                            }
-                        }
-                    }
-                }, 200); // Check every 200ms
+                //         }
+                //     }
+                // }, 200); // Check every 200ms
             });
 
             jQuery("#cancelProcessPaiment").on('click', function () {
@@ -879,47 +942,47 @@
     const imgWordsArray = [
         // First word "Tus"
         [
-            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/t.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/t.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.webp`,
             " ",
-            `${ajax_variables.pluginUrl}img/letters/Claro/f.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/r.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/a.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/e.png`
+            `${ajax_variables.pluginUrl}img/letters/Claro/f.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/r.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/a.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/e.webp`
         ],
         // Second word "Frase"
         [
-            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/t.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/t.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.webp`,
             " ",
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/a.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/l.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/d.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/o.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/a.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/l.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/d.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/o.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`
         ],
         // Third word "Deseos"
         [
-            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/t.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/u.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/heart.png`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/t.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/u.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/heart.webp`,
             " ",
-            `${ajax_variables.pluginUrl}img/letters/Claro/d.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/e.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/e.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/o.png`,
-            `${ajax_variables.pluginUrl}img/letters/Claro/s.png`
+            `${ajax_variables.pluginUrl}img/letters/Claro/d.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/e.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/e.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/o.webp`,
+            `${ajax_variables.pluginUrl}img/letters/Claro/s.webp`
         ]
     ];
 

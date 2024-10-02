@@ -127,31 +127,32 @@ function get_calendar_settings()
 
 add_action('wp_ajax_update_payment_method', 'update_payment_method');
 add_action('wp_ajax_nopriv_update_payment_method', 'update_payment_method');
-function update_payment_method() {
+function update_payment_method()
+{
   global $wpdb;
-  
+
   // Check if the order ID and payment method are set
   if (isset($_POST['order_id']) && isset($_POST['payment_method'])) {
-      $order_id = intval($_POST['order_id']);
-      $payment_method = sanitize_text_field($_POST['payment_method']);
+    $order_id = intval($_POST['order_id']);
+    $payment_method = sanitize_text_field($_POST['payment_method']);
 
-      // Update the payment method in the wp_chocoletras_plugin table
-      $table_name = $wpdb->prefix . 'chocoletras_plugin';
-      $updated = $wpdb->update(
-          $table_name,
-          array('selectedMethod' => $payment_method),
-          array('ID' => $order_id),
-          array('%s'), // Format for the new value
-          array('%d')  // Format for the where condition
-      );
+    // Update the payment method in the wp_chocoletras_plugin table
+    $table_name = $wpdb->prefix . 'chocoletras_plugin';
+    $updated = $wpdb->update(
+      $table_name,
+      array('selectedMethod' => $payment_method),
+      array('ID' => $order_id),
+      array('%s'), // Format for the new value
+      array('%d')  // Format for the where condition
+    );
 
-      if ($updated !== false) {
-          wp_send_json_success('Payment method updated successfully.');
-      } else {              
-          wp_send_json_error('Failed to update payment method.');
-      }
+    if ($updated !== false) {
+      wp_send_json_success('Payment method updated successfully.');
+    } else {
+      wp_send_json_error('Failed to update payment method.');
+    }
   } else {
-      wp_send_json_error('Invalid data.');
+    wp_send_json_error('Invalid data.');
   }
 
   wp_die();
@@ -162,7 +163,7 @@ function chocoletrasInsertScripts()
   // wp_enqueue_script('chocoletrasScript', plugins_url('../src/main.js', __FILE__), array(), '1.0.0', true);
   wp_enqueue_style('pluginStylesClt', plugins_url('../src/css/clt_style.css', __FILE__), array(), false);
 
-  if (is_page('crea-tu-frase-personalizada-en-chocolate')) {
+  if (is_page('sample-page')) {
     wp_enqueue_style('bootstrapForPlugin', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), false);
   }
 
@@ -205,6 +206,114 @@ function register_coupon_ajax()
   add_action('wp_ajax_nopriv_validate_coupon', 'validate_coupon');
 }
 add_action('init', 'register_coupon_ajax');
+
+
+add_action('wp_ajax_handle_payment', 'handle_payment');
+add_action('wp_ajax_nopriv_handle_payment', 'handle_payment');
+
+function handle_payment()
+{
+  // Check nonce for security
+  if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'my-ajax-nonce')) {
+    wp_send_json(['success' => false, 'message' => 'Security check failed']);
+    exit;
+  }
+
+  // Include necessary files
+  require_once plugin_dir_path(__FILE__) . 'payments/payments.php';
+
+  // Call the payment handling function and capture its response
+  $response = chocoletras_handle_payment();
+
+  // Send back the response
+  wp_send_json($response);
+}
+
+function chocoletras_handle_payment()
+{
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize the inputs
+    $insertedId = isset($_POST['inserted_id']) ? sanitize_text_field($_POST['inserted_id']) : '';
+    $amount = isset($_POST['amount']) ? sanitize_text_field($_POST['amount']) : '';
+    $paymentMethod = isset($_POST['paymentType']) ? sanitize_text_field($_POST['paymentType']) : ''; // Use the value from input
+
+    // Validate amount
+    if (!is_numeric($amount) || floatval($amount) <= 0) {
+      return ['success' => false, 'message' => 'Invalid amount'];
+    }
+
+    // Generate a random order number
+    $orderNumberRedsys = bin2hex(random_bytes(5));
+    $formattedAmount = round(floatval($amount) * 100);
+
+    // Initialize the objects for different payment methods
+    $paymentParams = [];
+    $signature = '';
+
+    // Handle the payment logic based on the payment method name
+    $paymentTypeMapping = [
+      'PayPal' => [
+        'transactionType' => '0',
+        'payMethods' => 'xpay',
+        'signatureKey' => 'your_paypal_signature_key',
+      ],
+      'bizum' => [
+        'transactionType' => '7',
+        'payMethods' => 'z',
+        'signatureKey' => 'sq7HjrUOBfKmC576ILgskD5srU870gJ7',
+      ],
+      'Google Pay' => [
+        'transactionType' => '7',
+        'payMethods' => 'xpay',
+        'signatureKey' => 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm',
+      ],
+      'Apple Pay' => [
+        'transactionType' => '0',
+        'payMethods' => 'xpay',
+        'signatureKey' => 'your_apple_signature_key',
+      ],
+      // Add other payment methods as necessary
+    ];
+
+    if (!array_key_exists($paymentMethod, $paymentTypeMapping)) {
+      return ['success' => false, 'message' => 'Invalid payment method'];
+    }
+
+    $paymentObj = new RedsysAPI;
+    $paymentObj->setParameter("DS_MERCHANT_AMOUNT", $formattedAmount);
+    $paymentObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRedsys);
+    $paymentObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
+    $paymentObj->setParameter("DS_MERCHANT_CURRENCY", "978");
+    $paymentObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", $paymentTypeMapping[$paymentMethod]['transactionType']);
+    $paymentObj->setParameter("DS_MERCHANT_TERMINAL", "001");
+    $paymentObj->setParameter("DS_MERCHANT_MERCHANTDATA", $insertedId);
+    $paymentObj->setParameter("DS_MERCHANT_PAYMETHODS", $paymentTypeMapping[$paymentMethod]['payMethods']);
+    $paymentObj->setParameter("DS_MERCHANT_MERCHANTURL", "http://localhost/wordpress/sample-page/");
+    $paymentObj->setParameter("DS_MERCHANT_URLOK", "http://localhost/wordpress/sample-page/?payment=true");
+    $paymentObj->setParameter("DS_MERCHANT_URLKO", "http://localhost/wordpress/sample-page/");
+
+    $paymentParams = $paymentObj->createMerchantParameters();
+    $signature = $paymentObj->createMerchantSignature($paymentTypeMapping[$paymentMethod]['signatureKey']);
+
+    // Handle the payment logic
+    if ($insertedId && $amount && $paymentParams) {
+      // Send a success response with the parameters
+      return [
+        'success' => true,
+        'merchantParameters' => $paymentParams,
+        'signature' => $signature,
+        'message' => 'Payment processed'
+      ];
+    } else {
+      return ['success' => false, 'message' => 'Missing parameters'];
+    }
+  } else {
+    return ['success' => false, 'message' => 'Invalid request method'];
+  }
+}
+
+
+
 
 // Validate Coupon Function
 function validate_coupon()
