@@ -605,35 +605,45 @@
 
 .paymentPanel .paymentCard {
     position: relative;
-    width: calc(33.33% - 20px);
+    width: 100%;
     margin: 10px;
     border: 1px solid #D1D5DB;
     padding: 10px;
     border-radius: 8px;
     text-align: center;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .paymentPanel .paymentCard .paymentData {
     font-size: 14px;
     margin-top: 10px;
+    margin-left: 20px;
 }
 
 .paymentPanel .paymentCard .paymentIcon {
-    width: 100%;
+    width: 170px;
     height: 40px;
+    text-align: start;
+    margin-left: 30px;
 }
 
 .paymentPanel .paymentCard .paymentIcon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: left;
 }
 
 .paymentPanel .paymentCard .selected {
+    height: 20px;
+    width: 20px;
     position: absolute;
-    right: -8px;
-    top: -8px;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     background: #fff;
     line-height: 1;
 }
@@ -653,8 +663,10 @@
     height: 15px;
     border: 1px solid #D1D5DB;
     border-radius: 30px;
-    top: 3px;
-    right: 3px;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    margin: auto;
 }
 
 .paymentPanel .paymentCard .selectionCircle.active {
@@ -695,7 +707,7 @@
     border-radius: 8px;
     height: 55px;
     overflow: hidden;
-    margin-bottom: 50px;
+    margin-bottom: 0px;
     transition: all .3s linear;
 }
 
@@ -954,7 +966,7 @@
     }
 
     .paymentPanel .paymentCard {
-        width: calc(50% - 10px);
+        width: 100%;
         margin: 5px;
     }
 }

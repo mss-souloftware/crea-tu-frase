@@ -396,8 +396,8 @@
 
                         const cookieValue = encodeURIComponent(JSON.stringify(cookieData));
 
-                        // setCookie('chocol_cookie', true);
-                        // setCookie('chocoletraOrderData', cookieValue);
+                        setCookie('chocol_cookie', true);
+                        setCookie('chocoletraOrderData', cookieValue);
 
                         // setupPayment(amount, insertedId);
 
@@ -418,8 +418,22 @@
                                 if (paymentResponse.success) {
                                     // Call the paymentFrontend function with the amount and insertedId
                                     // Optionally trigger the payment submission here
+                                    $("#ctf_form fieldset").removeAttr("style");
+                                    $("#ctf_form fieldset").css({
+                                        "display": "none",
+                                        "opacity": "0",
+                                    });
+                                    $("#ctf_form fieldset.paymentBox").css({
+                                        "display": "block",
+                                        "opacity": "1",
+                                    });
+
                                     $('input[name="Ds_MerchantParameters"]').val(paymentResponse.merchantParameters);
                                     $('input[name="Ds_Signature"]').val(paymentResponse.signature);
+
+                                    $('#payPayPal input[name="item_name"]').val('sufyan');
+                                    $('#payPayPal input[name="item_number"]').val(insertedId);
+                                    $('#payPayPal input[name="amount"]').val(amount);
 
                                     console.log('Merchant Parameters updated:', paymentResponse.merchantParameters);
                                     console.log('Signature updated:', paymentResponse.signature);
@@ -431,14 +445,16 @@
                                 console.error('Payment Setup Error:', status, error);
                             },
                             complete: function () {
-                                // setTimeout(function () {
                                 console.log('Submitting Payment with:', {
                                     inserted_id: insertedId,
                                     amount: amount,
                                     paymentSelected: paymentSelected,
                                 });
-                                // $("#proceedPayment").click(); // If you want to automatically submit the form
-                                // }, 2000);
+
+                                $("#proceedPayment").click();
+                                setTimeout(function () {
+                                    loader.css('height', '0px');
+                                }, 3000);
                             }
                         });
 
@@ -458,15 +474,6 @@
 
                     // Reload the page with a random query string appended
                     // window.location.href = window.location.pathname + "?q=" + randomString;
-                    // $("#ctf_form fieldset").removeAttr("style");
-                    // $("#ctf_form fieldset").css({
-                    //     "display": "none",
-                    //     "opacity": "0",
-                    // });
-                    // $("#ctf_form fieldset.paymentBox").css({
-                    //     "display": "block",
-                    //     "opacity": "1",
-                    // });
                     // $("#proceedPayment").click();
                 }
             });
@@ -492,15 +499,15 @@
                 paymentMethod = "";
 
                 if (selectedGatway === 'paypal') {
-                    paymentMethod = "PayPal";
+                    paymentMethod = "payPal";
                 } else if (selectedGatway === 'redsys') {
-                    paymentMethod = "Redsys";
+                    paymentMethod = "redsys";
                 } else if (selectedGatway === 'bizum') {
-                    paymentMethod = "Bizum";
+                    paymentMethod = "bizum";
                 } else if (selectedGatway === 'google') {
-                    paymentMethod = "Google Pay";
+                    paymentMethod = "google";
                 } else if (selectedGatway === 'apple') {
-                    paymentMethod = "Apple Pay";
+                    paymentMethod = "apple";
                 }
 
                 $("#selectedPayment").val(paymentMethod);

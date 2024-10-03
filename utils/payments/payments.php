@@ -24,7 +24,7 @@ $paymentType = $decodedParams["Ds_TransactionType"];
 
 $formattedAmount = number_format($paidAmount / 100, 2, '.', '');
 
-$claveModuloAdmin = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+$claveModuloAdmin = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
 $signatureCalculada = $miObj->createMerchantSignatureNotif($claveModuloAdmin, $params);
 
 if ($signatureCalculada === $signatureRecibida) {
@@ -115,24 +115,24 @@ if (isset($_GET['payment']) && $_GET['payment'] == true) {
 <?php }
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Log incoming data for debugging
-    error_log("Response payment.php file");
-    error_log("Received POST data: " . print_r($_POST, true));
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     // Log incoming data for debugging
+//     error_log("Response payment.php file");
+//     error_log("Received POST data: " . print_r($_POST, true));
 
-    // Sanitize the inputs
-    $dyninsertedId = isset($_POST['inserted_id']) ? sanitize_text_field($_POST['inserted_id']) : '';
-    $dynamount = isset($_POST['amount']) ? sanitize_text_field($_POST['amount']) : '';
+//     // Sanitize the inputs
+//     $dyninsertedId = isset($_POST['inserted_id']) ? sanitize_text_field($_POST['inserted_id']) : '';
+//     $dynamount = isset($_POST['amount']) ? sanitize_text_field($_POST['amount']) : '';
 
-    // Log the sanitized values
-    error_log("Sanitized Inserted ID: " . $dyninsertedId);
-    error_log("Sanitized Amount: " . $dynamount);
-}
+//     // Log the sanitized values
+//     error_log("Sanitized Inserted ID: " . $dyninsertedId);
+//     error_log("Sanitized Amount: " . $dynamount);
+// }
 
 function paymentFrontend($dynamount, $dyninsertedId)
 {
-    error_log("Inside Sanitized Inserted ID: " . $dyninsertedId);
-    error_log("Inside Sanitized Amount: " . $dynamount);
+    // error_log("Inside Sanitized Inserted ID: " . $dyninsertedId);
+    // error_log("Inside Sanitized Amount: " . $dynamount);
 
     if (isset($_GET['abandoned'])) {
         global $wpdb;
@@ -168,8 +168,8 @@ function paymentFrontend($dynamount, $dyninsertedId)
         log_ipn("IPN script started");
 
         // PayPal Configuration
-        // define('PAYPAL_EMAIL', 'sb-hjjsi25330300@business.example.com');
-        define('PAYPAL_EMAIL', 'chocoletra2020@gmail.com');
+        define('PAYPAL_EMAIL', 'sb-hjjsi25330300@business.example.com');
+        // define('PAYPAL_EMAIL', 'chocoletra2020@gmail.com');
         define('RETURN_URL', "$plugin_page?payment=true");
         define('CANCEL_URL', $plugin_payment);
         define('NOTIFY_URL', "$thank_you_page");
@@ -206,7 +206,7 @@ function paymentFrontend($dynamount, $dyninsertedId)
                 $req .= "&$key=$value";
             }
 
-            $ch = curl_init('https://ipnpb.paypal.com/cgi-bin/webscr');
+            $ch = curl_init('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr');
             curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -392,12 +392,7 @@ function paymentFrontend($dynamount, $dyninsertedId)
 
         echo 'final ammount' . $amount;
 
-        if (isset($_POST['price'])) {
-            $amount
-                = $_POST['price'];
-        }
-
-
+        $miObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
         $miObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRedsys);
         $miObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
         $miObj->setParameter("DS_MERCHANT_CURRENCY", "978");
@@ -413,8 +408,8 @@ function paymentFrontend($dynamount, $dyninsertedId)
         // $claveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $firma = $miObj->createMerchantSignature($claveSHA256);
         ?>
-        <!-- <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-        <form id="payRedsys" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+        <form id="payRedsys" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
+        <!-- <form id="payRedsys" action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $firma; ?>" />
@@ -426,51 +421,40 @@ function paymentFrontend($dynamount, $dyninsertedId)
     </div>
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
         <?php
+        // echo $lastCookieVal;
         $bizumObj = new RedsysAPI;
 
-        // Log the amount for debugging
-        error_log("Near to Amount field: " . $dynamount);
-
-        // Format the amount as an integer (e.g., 35.50 becomes 3550)
-        $formattedAmount = round($dynamount * 100); // Ensure correct formatting
-    
-        // Log the formatted amount for debugging
-        error_log("Formatted Amount (as integer): " . $formattedAmount);
-
-        // Set the parameter using the formatted integer amount
-        $bizumObj->setParameter("DS_MERCHANT_AMOUNT", $formattedAmount);
-        error_log("Set DS_MERCHANT_AMOUNT to: " . $formattedAmount); // Debug log
-    
-        // Set other parameters
+        // $bizumObj->setParameter("DS_MERCHANT_AMOUNT", 10);
+        $bizumObj->setParameter("DS_MERCHANT_AMOUNT", $amount);
         $bizumObj->setParameter("DS_MERCHANT_ORDER", $orderNumberBizum);
         $bizumObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
         $bizumObj->setParameter("DS_MERCHANT_CURRENCY", "978");
         $bizumObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "7");
         $bizumObj->setParameter("DS_MERCHANT_TERMINAL", "001");
         $bizumObj->setParameter("DS_MERCHANT_PAYMETHODS", "z");
+        $bizumObj->setParameter("DS_MERCHANT_MERCHANTDATA", $insertedID);
         $bizumObj->setParameter("DS_MERCHANT_MERCHANTURL", $plugin_page);
         $bizumObj->setParameter("DS_MERCHANT_URLOK", "$plugin_payment?payment=true");
         $bizumObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
 
-        // Create merchant parameters and log them
         $bizumparams = $bizumObj->createMerchantParameters();
-        error_log("Merchant Parameters: " . $bizumparams); // Log the parameters
-    
-        $bizumclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+        $bizumclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
+        // $bizumclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $bizumfirma = $bizumObj->createMerchantSignature($bizumclaveSHA256);
-        ?>
 
+        ?>
         <form id="payBizum" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
+        <!-- <form id="payBizum" action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
-            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo htmlspecialchars($bizumparams); ?>" />
-            <input type="hidden" name="Ds_Signature" value="<?php echo htmlspecialchars($bizumfirma); ?>" />
+            <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $bizumparams; ?>" />
+            <input type="hidden" name="Ds_Signature" value="<?php echo $bizumfirma; ?>" />
             <button type="submit"><span>
                     <?php echo _e('Pagar con Bizum '); ?>
                 </span><img src="https://chocoletra.com/wp-content/uploads/2024/03/Bizum.svg.png"
                     alt="<?php echo _e('Chocoletra'); ?>"></button>
         </form>
-    </div>
 
+    </div>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
         <?php
@@ -494,8 +478,8 @@ function paymentFrontend($dynamount, $dyninsertedId)
         $goggleclaveSHA256 = 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm';
         // $goggleclaveSHA256 = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
         $goggleirma = $goggleObj->createMerchantSignature($goggleclaveSHA256); ?>
-        <!-- <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST"> -->
-        <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST">
+        <form id="payGoogle" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
+        <!-- <form id="payGoogle" action="https://sis.redsys.es/sis/realizarPago" method="POST"> -->
             <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
             <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $goggleparams; ?>" />
             <input type="hidden" name="Ds_Signature" value="<?php echo $goggleirma; ?>" />
@@ -516,7 +500,7 @@ function paymentFrontend($dynamount, $dyninsertedId)
     ?>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
-        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>" method="post">
+        <form id="payPayPal" action="https://ipnpb.sandbox.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>" method="post">
             <!-- PayPal business email to collect payments -->
             <input type='hidden' name='business' value="<?php echo PAYPAL_EMAIL; ?>">
 

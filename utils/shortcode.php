@@ -501,7 +501,7 @@ function chocoletras_shortCode()
                                         <!-- <input type="button" name="previous" class="previous action-button-previous" /> -->
                                         <div class="previous action-button-previous"></div>
                                         <!-- <input type="submit" name="next" class="next action-button" value="Next" /> -->
-                                        <input type="submit" name="next" class="action-button" value="Continuar" />
+                                        <input type="submit" name="next" class="action-button" value="Pagar Ahora" />
                                     </div>
 
                                     <?php
@@ -530,7 +530,7 @@ function chocoletras_shortCode()
                                     <input id="usedCoupon" type="hidden" name="coupon" value="" readonly>
                                     <input id="selectedPayment" type="hidden" name="paymentType" value="" readonly>
                             </fieldset>
-                            <fieldset <?php
+                            <fieldset class="paymentBox" <?php 
 
                             if (isset($_GET['payment']) && $_GET['payment'] == true) {
                                 echo ' style="display: none; opacity: 0;"';

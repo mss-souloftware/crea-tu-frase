@@ -235,7 +235,7 @@ function chocoletras_handle_payment()
     // Sanitize the inputs
     $insertedId = isset($_POST['inserted_id']) ? sanitize_text_field($_POST['inserted_id']) : '';
     $amount = isset($_POST['amount']) ? sanitize_text_field($_POST['amount']) : '';
-    $paymentMethod = isset($_POST['paymentType']) ? sanitize_text_field($_POST['paymentType']) : ''; // Use the value from input
+    $paymentMethod = isset($_POST['paymentSelected']) ? sanitize_text_field($_POST['paymentSelected']) : ''; // Use the value from input
 
     // Validate amount
     if (!is_numeric($amount) || floatval($amount) <= 0) {
@@ -243,57 +243,59 @@ function chocoletras_handle_payment()
     }
 
     // Generate a random order number
-    $orderNumberRedsys = bin2hex(random_bytes(5));
+    $orderNumberRandom = bin2hex(random_bytes(5));
     $formattedAmount = round(floatval($amount) * 100);
 
-    // Initialize the objects for different payment methods
-    $paymentParams = [];
-    $signature = '';
+    // Check for PayPal payment method
+    if ($paymentMethod === 'paypal') {
+      // Prepare PayPal data for hidden input fields
+      return [
+        'success' => true,
+        'payPalData' => [
 
-    // Handle the payment logic based on the payment method name
-    $paymentTypeMapping = [
-      'PayPal' => [
-        'transactionType' => '0',
-        'payMethods' => 'xpay',
-        'signatureKey' => 'your_paypal_signature_key',
-      ],
-      'bizum' => [
-        'transactionType' => '7',
-        'payMethods' => 'z',
-        'signatureKey' => 'sq7HjrUOBfKmC576ILgskD5srU870gJ7',
-      ],
-      'Google Pay' => [
-        'transactionType' => '7',
-        'payMethods' => 'xpay',
-        'signatureKey' => 'qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm',
-      ],
-      'Apple Pay' => [
-        'transactionType' => '0',
-        'payMethods' => 'xpay',
-        'signatureKey' => 'your_apple_signature_key',
-      ],
-      // Add other payment methods as necessary
-    ];
-
-    if (!array_key_exists($paymentMethod, $paymentTypeMapping)) {
-      return ['success' => false, 'message' => 'Invalid payment method'];
+          'item_name' => 'sufyan', // Replace with $getOrderData['fname'] or similar
+          'item_number' => $insertedId,
+          'amount' => $amount,
+        ],
+        'message' => 'PayPal payment processing initiated'
+      ];
     }
 
+    // Initialize the Redsys object for non-PayPal payment methods
     $paymentObj = new RedsysAPI;
     $paymentObj->setParameter("DS_MERCHANT_AMOUNT", $formattedAmount);
-    $paymentObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRedsys);
+    $paymentObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRandom);
     $paymentObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
     $paymentObj->setParameter("DS_MERCHANT_CURRENCY", "978");
-    $paymentObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", $paymentTypeMapping[$paymentMethod]['transactionType']);
+    $paymentObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
     $paymentObj->setParameter("DS_MERCHANT_TERMINAL", "001");
     $paymentObj->setParameter("DS_MERCHANT_MERCHANTDATA", $insertedId);
-    $paymentObj->setParameter("DS_MERCHANT_PAYMETHODS", $paymentTypeMapping[$paymentMethod]['payMethods']);
-    $paymentObj->setParameter("DS_MERCHANT_MERCHANTURL", "http://localhost/wordpress/sample-page/");
-    $paymentObj->setParameter("DS_MERCHANT_URLOK", "http://localhost/wordpress/sample-page/?payment=true");
-    $paymentObj->setParameter("DS_MERCHANT_URLKO", "http://localhost/wordpress/sample-page/");
+    $paymentObj->setParameter("DS_MERCHANT_MERCHANTURL", "https://test.chocoletra.com/crea-tu-frase-personalizada-en-chocolate/");
+    $paymentObj->setParameter("DS_MERCHANT_URLOK", "https://test.chocoletra.com/crea-tu-frase-personalizada-en-chocolate/?payment=true");
+    $paymentObj->setParameter("DS_MERCHANT_URLKO", "https://test.chocoletra.com/crea-tu-frase-personalizada-en-chocolate/");
 
+    // Conditionally set DS_MERCHANT_PAYMETHODS if the payment method is not Redsys
+    if ($paymentMethod !== 'redsys') {
+      $paymentTypeMapping = [
+        'bizum' => [
+          'payMethods' => 'z',
+        ],
+        'google' => [
+          'payMethods' => 'xpay',
+        ]
+      ];
+
+      if (!array_key_exists($paymentMethod, $paymentTypeMapping)) {
+        return ['success' => false, 'message' => 'Invalid payment method'];
+      }
+
+      $paymentObj->setParameter("DS_MERCHANT_PAYMETHODS", $paymentTypeMapping[$paymentMethod]['payMethods']);
+    }
+
+    // Create merchant parameters and signature
     $paymentParams = $paymentObj->createMerchantParameters();
-    $signature = $paymentObj->createMerchantSignature($paymentTypeMapping[$paymentMethod]['signatureKey']);
+    $signature = $paymentObj->createMerchantSignature('sq7HjrUOBfKmC576ILgskD5srU870gJ7'); // testing
+    // $signature = $paymentObj->createMerchantSignature('qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm');
 
     // Handle the payment logic
     if ($insertedId && $amount && $paymentParams) {
@@ -311,6 +313,8 @@ function chocoletras_handle_payment()
     return ['success' => false, 'message' => 'Invalid request method'];
   }
 }
+
+
 
 
 
