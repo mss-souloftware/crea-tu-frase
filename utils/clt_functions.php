@@ -237,6 +237,10 @@ function chocoletras_handle_payment()
     $amount = isset($_POST['amount']) ? sanitize_text_field($_POST['amount']) : '';
     $paymentMethod = isset($_POST['paymentSelected']) ? sanitize_text_field($_POST['paymentSelected']) : ''; // Use the value from input
 
+    $plugin_page = get_option('ctf_settings')['plugin_page'];
+    $plugin_payment = get_option('ctf_settings')['plugin_payment'];
+    $thank_you_page = get_option('ctf_settings')['thank_you_page'];
+
     // Validate amount
     if (!is_numeric($amount) || floatval($amount) <= 0) {
       return ['success' => false, 'message' => 'Invalid amount'];
@@ -270,9 +274,9 @@ function chocoletras_handle_payment()
     $paymentObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
     $paymentObj->setParameter("DS_MERCHANT_TERMINAL", "001");
     $paymentObj->setParameter("DS_MERCHANT_MERCHANTDATA", $insertedId);
-    $paymentObj->setParameter("DS_MERCHANT_MERCHANTURL", "https://test.chocoletra.com/crea-tu-frase-personalizada-en-chocolate/");
-    $paymentObj->setParameter("DS_MERCHANT_URLOK", "https://test.chocoletra.com/crea-tu-frase-personalizada-en-chocolate/?payment=true");
-    $paymentObj->setParameter("DS_MERCHANT_URLKO", "https://test.chocoletra.com/crea-tu-frase-personalizada-en-chocolate/");
+    $paymentObj->setParameter("DS_MERCHANT_MERCHANTURL", $plugin_page);
+    $paymentObj->setParameter("DS_MERCHANT_URLOK", "$plugin_payment?payment=true");
+    $paymentObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
 
     // Conditionally set DS_MERCHANT_PAYMETHODS if the payment method is not Redsys
     if ($paymentMethod !== 'redsys') {
@@ -294,8 +298,8 @@ function chocoletras_handle_payment()
 
     // Create merchant parameters and signature
     $paymentParams = $paymentObj->createMerchantParameters();
-    $signature = $paymentObj->createMerchantSignature('sq7HjrUOBfKmC576ILgskD5srU870gJ7'); // testing
-    // $signature = $paymentObj->createMerchantSignature('qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm');
+    // $signature = $paymentObj->createMerchantSignature('sq7HjrUOBfKmC576ILgskD5srU870gJ7'); // testing
+    $signature = $paymentObj->createMerchantSignature('qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm');
 
     // Handle the payment logic
     if ($insertedId && $amount && $paymentParams) {

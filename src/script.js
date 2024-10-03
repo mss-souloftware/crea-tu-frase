@@ -369,6 +369,7 @@
                         const insertedId = parsedResponse.Datos.inserted_id;
                         const amount = parsedResponse.Datos.amount;
                         const paymentSelected = parsedResponse.Datos.paymentType;
+                        const fname = parsedResponse.Datos.fname;
 
                         const cookieData = {
                             inserted_id: parsedResponse.Datos.inserted_id,
@@ -411,6 +412,7 @@
                                 inserted_id: insertedId,
                                 amount: amount,
                                 paymentSelected: paymentSelected,
+                                fname: fname,
                                 security: ajax_variables.nonce,
                             },
                             success: function (paymentResponse) {
@@ -431,7 +433,7 @@
                                     $('input[name="Ds_MerchantParameters"]').val(paymentResponse.merchantParameters);
                                     $('input[name="Ds_Signature"]').val(paymentResponse.signature);
 
-                                    $('#payPayPal input[name="item_name"]').val('sufyan');
+                                    $('#payPayPal input[name="item_name"]').val(fname);
                                     $('#payPayPal input[name="item_number"]').val(insertedId);
                                     $('#payPayPal input[name="amount"]').val(amount);
 
