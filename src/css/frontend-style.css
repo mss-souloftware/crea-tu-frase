@@ -969,4 +969,16 @@
         width: 100%;
         margin: 5px;
     }
+
+    .lineBreaker span {
+        font-size: 14px;
+    }
+
+    #ctf_form .termCondition {
+        margin-top: 20px;
+    }
+
+    #ctf_form .termCondition input {
+        height: 20px;
+    }
 }

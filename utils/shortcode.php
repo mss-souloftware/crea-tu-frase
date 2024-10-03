@@ -367,7 +367,7 @@ function chocoletras_shortCode()
                                     </div>
 
                                     <div class="lineBreaker">
-                                        <span>⬇️ SELECCIONA EL METODO DE PAGO ⬇️</span>
+                                        <span>⬇️ <b>SELECCIONA EL METODO DE PAGO</b> ⬇️</span>
                                     </div>
 
                                     <div class="paymentPanel">
@@ -684,7 +684,7 @@ function chocoletras_shortCode()
                                     </div>
                                 <?php } ?>
                                     <div class="lineBreaker">
-                                        <span>⬇️ SELECCIONA EL METODO DE PAGO ⬇️</span>
+                                        <span>⬇️ <b>SELECCIONA EL METODO DE PAGO</b> ⬇️</span>
                                     </div>
 
                                     <div class="paymentPanel">
