@@ -380,6 +380,9 @@
                             "display": "block",
                             "opacity": "1",
                         });
+                        $('html, body').animate({
+                            scrollTop: $("#screenCenterLoader").offset().top - 200
+                        }, 0);
 
                         // console.info("Process succeeded: ", parsedResponse);
                         const insertedId = parsedResponse.Datos.inserted_id;
@@ -437,7 +440,7 @@
                 complete: function(){
                     setTimeout(function () {
                         loader.css('height', '0px');
-                    }, 10000);
+                    }, 5000);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);

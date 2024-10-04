@@ -858,8 +858,6 @@ function chocoletras_shortCode()
                     $dyninsertedId = null;
                     echo paymentFrontend($dynamount, $dyninsertedId) ;?>
                     <!-- <a class="copyrightPluginSet" href="https://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
-
-                    <a href="#screenCenterLoader" id="scrollingToForm">scroll up</a>
                 </div>
             </div>
         </div>
