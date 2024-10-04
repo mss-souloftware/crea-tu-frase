@@ -175,7 +175,7 @@ function chocoletras_shortCode()
 
                 <div class="col-md-5 col-12 text-center mb-2">
                     <div class="chocoletrasPlg-spiner">
-                        <img src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
+                        <img id="screenCenterLoader" src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
                             alt="<?php echo _e('Chocoletras'); ?>">
                         <div class="chocoletrasPlg-spiner-ring"></div>
                     </div>
@@ -858,6 +858,8 @@ function chocoletras_shortCode()
                     $dyninsertedId = null;
                     echo paymentFrontend($dynamount, $dyninsertedId) ;?>
                     <!-- <a class="copyrightPluginSet" href="https://syntechtia.com/">Hecho con ❤️ por Syntechtia</a> -->
+
+                    <a href="#screenCenterLoader" id="scrollingToForm">scroll up</a>
                 </div>
             </div>
         </div>

@@ -302,6 +302,12 @@
             event.preventDefault();
             loader.css('height', '100%');
             console.log('submission');
+
+            $('html, body').animate({
+                scrollTop: $("#screenCenterLoader").offset().top - 200
+            }, 0);
+
+
             const mainText = [$('#getText').val()];
             const chocoType = $('#chocoBase').val();
             const priceTotal = $('.chocoletrasPlg__wrapperCode-dataUser-form-input-price').val();
@@ -424,12 +430,14 @@
                         // Trigger payment form submission or another action if needed
                         $("#proceedPayment").click();
 
-                        setTimeout(function () {
-                            loader.css('height', '0px');
-                        }, 3000);
                     } else {
                         console.error("Process failed: ", parsedResponse.Datos.message);
                     }
+                },
+                complete: function(){
+                    setTimeout(function () {
+                        loader.css('height', '0px');
+                    }, 10000);
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
