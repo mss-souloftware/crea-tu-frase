@@ -358,16 +358,16 @@
                 nonce: ajax_variables.nonce,
             };
 
-            console.log(dataToSend);
+            // console.log(dataToSend);
 
             $.ajax({
                 type: "POST",
                 url: ajax_variables.ajax_url,
                 data: dataToSend,
                 success: function (response) {
-                    console.log("Response from server: ", response);
+                    // console.log("Response from server: ", response);
                     const parsedResponse = response;
-                    console.log("reformed respond: ", parsedResponse)
+                    // console.log("reformed respond: ", parsedResponse)
                     // Check if the response indicates success
                     if (parsedResponse.success) {
                         // Process succeeded
@@ -381,7 +381,7 @@
                             "opacity": "1",
                         });
 
-                        console.info("Process succeeded: ", parsedResponse);
+                        // console.info("Process succeeded: ", parsedResponse);
                         const insertedId = parsedResponse.Datos.inserted_id;
                         const amount = parsedResponse.Datos.amount;
                         const paymentSelected = parsedResponse.Datos.paymentType;
@@ -425,7 +425,7 @@
                         setCookie('chocol_cookie', true);
                         setCookie('chocoletraOrderData', cookieValue);
 
-                        console.log('Payment parameters set:', parsedResponse.Datos.merchantParameters);
+                        // console.log('Payment parameters set:', parsedResponse.Datos.merchantParameters);
 
                         // Trigger payment form submission or another action if needed
                         $("#proceedPayment").click();
@@ -499,7 +499,7 @@
                     // Update payment method in cookie
                     orderData.payment = paymentMethod;
                     setCookie("chocoletraOrderData", encodeURIComponent(JSON.stringify(orderData)));
-                    console.log(orderData);
+                    // console.log(orderData);
 
                     // AJAX request to update the payment method in the database
                     $.ajax({
@@ -512,7 +512,7 @@
                         },
                         success: function (response) {
                             // Handle the response
-                            console.log('Payment method updated successfully:', response);
+                            // console.log('Payment method updated successfully:', response);
                         },
                         error: function (xhr, status, error) {
                             console.error('Error updating payment method:', error);
@@ -520,7 +520,7 @@
                     });
                 }
 
-                console.log(orderData); // To check if the cookie is updated correctly
+                // console.log(orderData); // To check if the cookie is updated correctly
                 return selectedGatway; // Return only selectedGatway here
             });
 
