@@ -7,20 +7,96 @@
  * @subpackage M. Sufyan Shaikh
  */
 
-function responseForm()
-{
+function responseForm() {
     try {
+        // Retrieve and process data
         $response = array('Datos' => confirmAllIsReady());
-        echo json_encode($response);
-        exit;
+
+        // Payment handling
+        $amount = isset($_POST['priceTotal']) ? sanitize_text_field($_POST['priceTotal']) : '';
+        $paymentMethod = isset($_POST['paymentType']) ? sanitize_text_field($_POST['paymentType']) : ''; // Use the value from input
+
+        if (!is_numeric($amount) || floatval($amount) <= 0) {
+            wp_send_json(['success' => false, 'message' => 'Invalid amount']);
+            return;
+        }
+
+        // Payment logic for PayPal
+        if ($paymentMethod === 'paypal') {
+            wp_send_json([
+                'success' => true,
+                'Datos' => [
+                    'inserted_id' => $response['Datos']['inserted_id'],
+                    'amount' => $amount,
+                    'fname' => sanitize_text_field($_POST['fname']),
+                    'message' => 'PayPal payment processing initiated'
+                ]
+            ]);
+            return;
+        }
+
+        // Redsys or other payment gateways
+        $paymentObj = new RedsysAPI;
+        $formattedAmount = round(floatval($amount) * 100); // Format amount for Redsys
+        $orderNumberRandom = bin2hex(random_bytes(5));
+
+        $plugin_page = get_option('ctf_settings')['plugin_page'];
+        $plugin_payment = get_option('ctf_settings')['plugin_payment'];
+        $thank_you_page = get_option('ctf_settings')['thank_you_page'];
+
+        $paymentObj->setParameter("DS_MERCHANT_AMOUNT", $formattedAmount);
+        $paymentObj->setParameter("DS_MERCHANT_ORDER", $orderNumberRandom);
+        $paymentObj->setParameter("DS_MERCHANT_MERCHANTCODE", "340873405");
+        $paymentObj->setParameter("DS_MERCHANT_CURRENCY", "978");
+        $paymentObj->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
+        $paymentObj->setParameter("DS_MERCHANT_TERMINAL", "001");
+        $paymentObj->setParameter("DS_MERCHANT_MERCHANTDATA", $response['Datos']['inserted_id']);
+        $paymentObj->setParameter("DS_MERCHANT_MERCHANTURL", $plugin_page);
+        $paymentObj->setParameter("DS_MERCHANT_URLOK", "$plugin_payment?payment=true");
+        $paymentObj->setParameter("DS_MERCHANT_URLKO", $thank_you_page);
+
+        // Set payment method for Redsys alternatives
+        if ($paymentMethod !== 'redsys') {
+            $paymentTypeMapping = [
+                'bizum' => ['payMethods' => 'z'],
+                'google' => ['payMethods' => 'xpay']
+            ];
+
+            if (!array_key_exists($paymentMethod, $paymentTypeMapping)) {
+                wp_send_json(['success' => false, 'message' => 'Invalid payment method']);
+                return;
+            }
+
+            $paymentObj->setParameter("DS_MERCHANT_PAYMETHODS", $paymentTypeMapping[$paymentMethod]['payMethods']);
+        }
+
+        // Create merchant parameters and signature
+        $paymentParams = $paymentObj->createMerchantParameters();
+        $signature = $paymentObj->createMerchantSignature('qdBg81KwXKi+QZpgNXoOMfBzsVhBT+tm'); // Use your secret key here
+
+        // Return success with payment parameters
+        wp_send_json([
+            'success' => true,
+            'Datos' => [
+                'merchantParameters' => $paymentParams,
+                'signature' => $signature,
+                'inserted_id' => $response['Datos']['inserted_id'],
+                'amount' => $amount,
+                'paymentType' => $paymentMethod,
+                'fname' => sanitize_text_field($_POST['fname']),
+                'testing' => 'testingParam'
+            ]
+        ]);
+
+        return;
+
     } catch (Exception $e) {
-        echo json_encode(array('error' => $e->getMessage()));
+        wp_send_json(array('error' => $e->getMessage()));
         exit;
     }
 }
 
-function confirmAllIsReady()
-{
+function confirmAllIsReady() {
     setcookie('chocol_price', '', time() - 3600);
     $getData = array('mainText', 'chocoType', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon', 'screens', 'featured', 'affiliateID', 'paymentType');
 
@@ -37,8 +113,7 @@ function confirmAllIsReady()
     return saveDataInDatabase($confirm_error);
 }
 
-function confirmViolationOfSequirity($incomingfrase)
-{
+function confirmViolationOfSequirity($incomingfrase) {
     $confirmSequirity = preg_match('/[$^\*\(\)=\{\]\{\{\<\>\:\;]/', $incomingfrase);
     if ($confirmSequirity > 0) {
         throw new Exception('Invalid characters in frase');
@@ -47,8 +122,7 @@ function confirmViolationOfSequirity($incomingfrase)
     }
 }
 
-function saveDataInDatabase($datos)
-{
+function saveDataInDatabase($datos) {
     $sanitizeData = array();
 
     foreach ($datos as $info => $val) {
@@ -94,36 +168,24 @@ function saveDataInDatabase($datos)
         $sanitizeData['screens'],
         $sanitizeData['featured'],
         $sanitizeData['affiliateID'],
-        $sanitizeData['paymentType'],
+        $sanitizeData['paymentType']
     );
 
     try {
-        // Execute the query and get the result
         $result = $wpdb->query($query);
 
-        // Check if the query executed successfully
         if ($result === false) {
             throw new Exception("Database error: " . $wpdb->last_error);
         }
 
-        // Retrieve the ID of the last inserted row
         $inserted_id = $wpdb->insert_id;
 
-        // Check if the ID was set
         if (empty($inserted_id)) {
             throw new Exception("Failed to retrieve inserted ID.");
         }
 
-        // Fetch affiliate ID from wp_yith_wcaf_affiliates table based on affiliateID
-        $affiliate_table = $wpdb->prefix . 'yith_wcaf_affiliates';
-        $affiliate_id = $wpdb->get_var($wpdb->prepare(
-            "SELECT ID FROM $affiliate_table WHERE user_id = %d",
-            $sanitizeData['affiliateID']
-        ));
-
-        // Check if affiliateID is provided
+        // Process affiliate commissions if affiliateID is provided
         if (!empty($sanitizeData['affiliateID'])) {
-            // Fetch affiliate ID from wp_yith_wcaf_affiliates table based on affiliateID
             $affiliate_table = $wpdb->prefix . 'yith_wcaf_affiliates';
             $affiliate_id = $wpdb->get_var($wpdb->prepare(
                 "SELECT ID FROM $affiliate_table WHERE user_id = %d",
@@ -134,7 +196,6 @@ function saveDataInDatabase($datos)
                 throw new Exception("Affiliate ID not found.");
             }
 
-            // Insert data into wp_yith_wcaf_commissions table
             $commission_table = $wpdb->prefix . 'yith_wcaf_commissions';
             $last_line_item_id = $wpdb->get_var("SELECT MAX(line_item_id) FROM $commission_table");
 
@@ -145,46 +206,36 @@ function saveDataInDatabase($datos)
 
             $commission_query = $wpdb->prepare(
                 "INSERT INTO $commission_table (order_id, line_item_id, product_id, product_name, affiliate_id, rate, line_total, amount, refunds, status, created_at, last_edit) 
-        VALUES (%d, %d, %d, %s, %d, %f, %f, %f, %d, %s, %s, %s)",
+                VALUES (%d, %d, %d, %s, %d, %f, %f, %f, %d, %s, %s, %s)",
                 $inserted_id,
                 $line_item_id,
                 $inserted_id,
                 $sanitizeData['mainText'],
-                $affiliate_id, // Use the fetched affiliate_id
+                $affiliate_id,
                 $rate,
                 $sanitizeData['priceTotal'],
                 $amount,
-                0, // refunds
-                'not-confirmed', // status
-                $current_date, // created_at
-                $current_date  // last_edit
+                0,
+                'pending',
+                $current_date,
+                $current_date
             );
 
-            // Execute the commission query and check for errors
             $commission_result = $wpdb->query($commission_query);
+
             if ($commission_result === false) {
-                throw new Exception("Failed to insert commission data: " . $wpdb->last_error);
+                throw new Exception("Failed to insert commission: " . $wpdb->last_error);
             }
         }
 
+        return array(
+            'inserted_id' => $inserted_id,
+            'amount' => $sanitizeData['priceTotal']
+        );
 
-    } catch (Exception $error) {
-        error_log($error->getMessage()); // Log the error message
-        throw new Exception("Database error: " . $error->getMessage());
+    } catch (Exception $e) {
+        return array(
+            'error' => $e->getMessage()
+        );
     }
-
-    return $result === 1 ? array(
-        "Status" => true,
-        "inserted_id" => $inserted_id,
-        "amount" => $sanitizeData['priceTotal'],
-        "frase" => $sanitizeData['mainText'],
-        "paymentType" => $sanitizeData['paymentType'],
-        "telef" => $sanitizeData['tel'],
-        "femail" => $sanitizeData['email'],
-        "fname" => $sanitizeData['fname'],
-        "fcity" => $sanitizeData['city'],
-        "faddress" => $sanitizeData['address'],
-        "fuoi" => $sanitizeData['uoi'],
-        "fcoupon" => $sanitizeData['coupon']
-    ) : array("Status" => 400);
 }

@@ -360,16 +360,35 @@
                 data: dataToSend,
                 success: function (response) {
                     console.log("Response from server: ", response);
-                    const parsedResponse = JSON.parse(response);
+                    const parsedResponse = response;
+                    console.log("reformed respond: ", parsedResponse)
+                    // Check if the response indicates success
+                    if (parsedResponse.success) {
+                        // Process succeeded
+                        $("#ctf_form fieldset").removeAttr("style");
+                        $("#ctf_form fieldset").css({
+                            "display": "none",
+                            "opacity": "0",
+                        });
+                        $("#ctf_form fieldset.paymentBox").css({
+                            "display": "block",
+                            "opacity": "1",
+                        });
 
-                    if (parsedResponse.Datos.Status) {
-                        console.info("Process succeeded: ", parsedResponse.Datos);
-                        console.log("Inserted ID: ", parsedResponse.Datos.inserted_id);
-
+                        console.info("Process succeeded: ", parsedResponse);
                         const insertedId = parsedResponse.Datos.inserted_id;
                         const amount = parsedResponse.Datos.amount;
                         const paymentSelected = parsedResponse.Datos.paymentType;
                         const fname = parsedResponse.Datos.fname;
+
+                        // Update the form or trigger the payment
+                        $('input[name="Ds_MerchantParameters"]').val(parsedResponse.Datos.merchantParameters);
+                        $('input[name="Ds_Signature"]').val(parsedResponse.Datos.signature);
+
+                        // For PayPal, update hidden inputs
+                        $('#payPayPal input[name="item_name"]').val(fname);
+                        $('#payPayPal input[name="item_number"]').val(insertedId);
+                        $('#payPayPal input[name="amount"]').val(amount);
 
                         const cookieData = {
                             inserted_id: parsedResponse.Datos.inserted_id,
@@ -400,87 +419,24 @@
                         setCookie('chocol_cookie', true);
                         setCookie('chocoletraOrderData', cookieValue);
 
-                        // setupPayment(amount, insertedId);
+                        console.log('Payment parameters set:', parsedResponse.Datos.merchantParameters);
 
+                        // Trigger payment form submission or another action if needed
+                        $("#proceedPayment").click();
 
-                        // Inside the success callback of the first AJAX call
-                        $.ajax({
-                            url: ajax_variables.ajax_url,
-                            type: 'POST',
-                            data: {
-                                action: 'handle_payment', // Use the registered action
-                                inserted_id: insertedId,
-                                amount: amount,
-                                paymentSelected: paymentSelected,
-                                fname: fname,
-                                security: ajax_variables.nonce,
-                            },
-                            success: function (paymentResponse) {
-                                console.log('Payment Response:', paymentResponse);
-                                if (paymentResponse.success) {
-                                    // Call the paymentFrontend function with the amount and insertedId
-                                    // Optionally trigger the payment submission here
-                                    $("#ctf_form fieldset").removeAttr("style");
-                                    $("#ctf_form fieldset").css({
-                                        "display": "none",
-                                        "opacity": "0",
-                                    });
-                                    $("#ctf_form fieldset.paymentBox").css({
-                                        "display": "block",
-                                        "opacity": "1",
-                                    });
-
-                                    $('input[name="Ds_MerchantParameters"]').val(paymentResponse.merchantParameters);
-                                    $('input[name="Ds_Signature"]').val(paymentResponse.signature);
-
-                                    $('#payPayPal input[name="item_name"]').val(fname);
-                                    $('#payPayPal input[name="item_number"]').val(insertedId);
-                                    $('#payPayPal input[name="amount"]').val(amount);
-
-                                    console.log('Merchant Parameters updated:', paymentResponse.merchantParameters);
-                                    console.log('Signature updated:', paymentResponse.signature);
-                                } else {
-                                    console.error('Payment Error:', paymentResponse.message);
-                                }
-                            },
-                            error: function (xhr, status, error) {
-                                console.error('Payment Setup Error:', status, error);
-                            },
-                            complete: function () {
-                                console.log('Submitting Payment with:', {
-                                    inserted_id: insertedId,
-                                    amount: amount,
-                                    paymentSelected: paymentSelected,
-                                });
-
-                                $("#proceedPayment").click();
-                                setTimeout(function () {
-                                    loader.css('height', '0px');
-                                }, 3000);
-                            }
-                        });
-
-
-
+                        setTimeout(function () {
+                            loader.css('height', '0px');
+                        }, 3000);
                     } else {
-                        console.error("Process failed: ", parsedResponse.Datos);
+                        console.error("Process failed: ", parsedResponse.Datos.message);
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX request failed: ", status, error);
-                },
-                complete: function () {
-                    // loader.css('height', '0px');
-                    // location.reload();
-                    // const randomString = Math.random().toString(36).substring(2, 15);
-
-                    // Reload the page with a random query string appended
-                    // window.location.href = window.location.pathname + "?q=" + randomString;
-                    // $("#proceedPayment").click();
                 }
             });
 
-            // setupPayment(priceTotal, parsedResponse.Datos.inserted_id);
+
         });
 
         function removeCookie(name) {
