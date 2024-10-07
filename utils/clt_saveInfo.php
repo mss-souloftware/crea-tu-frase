@@ -98,7 +98,7 @@ function responseForm() {
 
 function confirmAllIsReady() {
     setcookie('chocol_price', '', time() - 3600);
-    $getData = array('mainText', 'chocoType', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon', 'screens', 'featured', 'affiliateID', 'paymentType');
+    $getData = array('mainText', 'chocoType', 'priceTotal', 'fname', 'email', 'tel', 'postal', 'city', 'address', 'province', 'message', 'picDate', 'shippingType', 'nonce', 'uoi', 'coupon', 'screens', 'featured', 'affiliateID', 'loggedInUser', 'paymentType');
 
     $confirm_error = array();
 
@@ -147,8 +147,8 @@ function saveDataInDatabase($datos) {
     $tablename = $wpdb->prefix . 'chocoletras_plugin';
 
     $query = $wpdb->prepare(
-        "INSERT INTO $tablename (frase, chocotype, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon, screens, featured, affiliate_id, selectedMethod) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        "INSERT INTO $tablename (frase, chocotype, precio, nombre, email, telefono, cp, ciudad, province, message, direccion, nonce, fechaEntrega, express, uoi, coupon, screens, featured, affiliate_id, loggedInUser, selectedMethod) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
         $sanitizeData['mainText'],
         $sanitizeData['chocoType'],
         $sanitizeData['priceTotal'],
@@ -168,6 +168,7 @@ function saveDataInDatabase($datos) {
         $sanitizeData['screens'],
         $sanitizeData['featured'],
         $sanitizeData['affiliateID'],
+        $sanitizeData['loggedInUser'],
         $sanitizeData['paymentType']
     );
 

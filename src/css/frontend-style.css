@@ -895,6 +895,14 @@
     font-size: 20px !important;
 }
 
+.lineBreaker .forMobile {
+    display: none;
+}
+
+.lineBreaker .forDesktop {
+    display: block;
+}
+
 @media(max-width:600px) {
 
     #ctf_form {
@@ -980,5 +988,13 @@
 
     #ctf_form .termCondition input {
         height: 20px;
+    }
+
+    .lineBreaker .forMobile {
+        display: block;
+    }
+
+    .lineBreaker .forDesktop {
+        display: none;
     }
 }

@@ -325,6 +325,7 @@
             const uoi = $("#uniqueOrderID").val();
             const coupon = $("#usedCoupon").val();
             const affiliateID = $("#affiliateUserID").val();
+            const loggedInUser = $("#loggedInUser").val();
 
             if (!picDate) {
                 picDate = new Date().toISOString().slice(0, 10);
@@ -354,6 +355,7 @@
                 featured: typewriterScreenshotPath,
                 picDate: picDate,
                 affiliateID: affiliateID,
+                loggedInUser: loggedInUser,
                 shippingType: shippingType,
                 nonce: ajax_variables.nonce,
             };
@@ -380,6 +382,7 @@
                             "display": "block",
                             "opacity": "1",
                         });
+
                         $('html, body').animate({
                             scrollTop: $("#screenCenterLoader").offset().top - 200
                         }, 0);
@@ -419,6 +422,7 @@
                             uoi: uoi,
                             coupon: coupon,
                             affiliateID: affiliateID,
+                            loggedInUser: loggedInUser,
                             screenshots: screenshotPaths,
                             productBanner: typewriterScreenshotPath,
                         };

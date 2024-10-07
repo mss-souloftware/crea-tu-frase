@@ -367,7 +367,8 @@ function chocoletras_shortCode()
                                     </div>
 
                                     <div class="lineBreaker">
-                                        <span>⬇️ <b>SELECCIONA EL METODO DE PAGO</b> ⬇️</span>
+                                        <span class="forDesktop">⬇️ <b>SELECCIONA EL METODO DE PAGO</b> ⬇️</span>
+                                        <span class="forMobile"><b>SELECCIONA EL METODO DE PAGO</b> <br> ⬇️⬇️</span>
                                     </div>
 
                                     <div class="paymentPanel">
@@ -513,8 +514,17 @@ function chocoletras_shortCode()
                                         }else{
                                             $username = '';
                                         }
+
+                                        $currentLoggedInUser = get_current_user_id();
                                     ?>
                                     <input type="hidden" id="affiliateUserID" value="<?php echo $username; ?>"
+                                        readonly> 
+                                    
+                                    <input type="hidden" id="loggedInUser" value="<?php if($currentLoggedInUser !== "0"){
+                                        echo $currentLoggedInUser;
+                                    } else{
+                                        echo "";
+                                    } ?>"
                                         readonly>
                                     <input type="hidden" id="precLetras" value="<?php echo get_option('precLetra'); ?>"
                                         readonly>
@@ -684,7 +694,8 @@ function chocoletras_shortCode()
                                     </div>
                                 <?php } ?>
                                     <div class="lineBreaker">
-                                        <span>⬇️ <b>SELECCIONA EL METODO DE PAGO</b> ⬇️</span>
+                                        <span class="forDesktop">⬇️ <b>SELECCIONA EL METODO DE PAGO</b> ⬇️</span>
+                                        <span class="forMobile"><b>SELECCIONA EL METODO DE PAGO</b> <br> ⬇️⬇️</span>
                                     </div>
 
                                     <div class="paymentPanel">
