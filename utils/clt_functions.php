@@ -18,6 +18,7 @@ require_once plugin_dir_path(__FILE__) . '../admin/statuschange/setStatus.php';
 require_once plugin_dir_path(__FILE__) . '../admin/opciones/submenu.php';
 require_once plugin_dir_path(__FILE__) . '../admin/calander/calander.php';
 require_once plugin_dir_path(__FILE__) . '../admin/coupons/coupons.php';
+require_once plugin_dir_path(__FILE__) . '../admin/orderCoupon/coupon.php';
 require_once plugin_dir_path(__FILE__) . '../admin/payments/payments.php';
 require_once plugin_dir_path(__FILE__) . '../admin/abandoned/abandoned.php';
 require_once plugin_dir_path(__FILE__) . '../admin/affiliate/affiliate.php';
@@ -216,21 +217,54 @@ function validate_coupon()
   }
 
   $coupon_code = sanitize_text_field($_POST['coupon']);
-  $coupons = get_option('coupons', []);
 
+  // Check the chocoletras_coupons table for the coupon
+  global $wpdb;
+  $coupons_table = $wpdb->prefix . 'chocoletras_coupons';
+
+  // Query the new coupons table
+  $coupon = $wpdb->get_row($wpdb->prepare("SELECT * FROM $coupons_table WHERE coupon_name = %s", $coupon_code));
+
+  if ($coupon) {
+    // Check if the coupon has expired
+    if (!empty($coupon->expiry_date) && strtotime($coupon->expiry_date) < time()) {
+      wp_send_json_error(['message' => 'Este cupón ha caducado']);
+    }
+
+    // Check if the coupon has already been used
+    if ($coupon->usage_count >= $coupon->usage_limit) {
+      wp_send_json_error(['message' => 'Este cupón ya ha sido utilizado.']);
+    }
+
+    // Increment usage count
+    $new_usage_count = $coupon->usage_count + 1;
+    $wpdb->update($coupons_table, ['usage_count' => $new_usage_count], ['id' => $coupon->id]);
+
+    $remaining_usage = $coupon->usage_limit - $new_usage_count;
+
+    wp_send_json_success([
+      'message' => 'Coupon is valid',
+      'discount' => $coupon->discount_percentage, // Assuming this field stores the discount percentage
+      'type' => 'percentage', // or 'fixed', based on your implementation
+      'remaining_usage' => $remaining_usage
+    ]);
+  }
+
+  // Fallback to the old coupon method
+  $coupons = get_option('coupons', []);
   foreach ($coupons as &$coupon) {
     if ($coupon['name'] === $coupon_code) {
       // Check if the coupon has expired
       if (!empty($coupon['expiration']) && strtotime($coupon['expiration']) < time()) {
-        wp_send_json_error(['message' => 'This coupon has expired']);
+        wp_send_json_error(['message' => 'Este cupón ha caducado']);
       }
 
-      // Check usage limit
+      // Check if the coupon has already been used
       if (isset($coupon['usage_limit']) && $coupon['usage_count'] >= $coupon['usage_limit']) {
-        wp_send_json_error(['message' => 'This coupon has reached its usage limit']);
+        wp_send_json_error(['message' => 'Este cupón ya ha sido utilizado.']);
       }
 
-      // If valid, increment usage count
+      // Increment usage count
       $coupon['usage_count'] += 1;
       update_option('coupons', $coupons); // Update the option with the new usage count
 
@@ -245,8 +279,10 @@ function validate_coupon()
     }
   }
 
-  wp_send_json_error(['message' => 'Invalid coupon code']);
+  wp_send_json_error(['message' => 'Código de cupón no válido']);
 }
+
+
 
 
 function delete_rows_callback()
@@ -370,6 +406,7 @@ function addSubmenuChocoletras()
     4
   );
 
+
   add_submenu_page(
     'clt_amin',           // Parent slug
     'Socios afiliados',   // Page title
@@ -437,6 +474,21 @@ function addSubmenuAbandoned()
     'abandoned_cart',
     'abandonedOutput',
     7
+  );
+}
+
+
+add_action('admin_menu', 'chocoletras_display_coupons_menu');
+function chocoletras_display_coupons_menu()
+{
+  add_submenu_page(
+    'clt_amin',
+    'Order Coupons List',
+    'Order Coupons',
+    'install_plugins',
+    'chocoletras_display_coupons',
+    'chocoletrasDisplayCoupons',
+    9
   );
 }
 

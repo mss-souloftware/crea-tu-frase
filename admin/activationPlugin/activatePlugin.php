@@ -18,6 +18,7 @@ function createAllTables()
     try {
       $table_report = $wpdb->prefix . "reportes_errores";
       $table_plugin = $wpdb->prefix . "chocoletras_plugin";
+      $table_coupons = $wpdb->prefix . "chocoletras_coupons";
       $charset_collate = $wpdb->get_charset_collate();
 
       $createTableReport = "CREATE TABLE $table_report (
@@ -62,9 +63,23 @@ function createAllTables()
               PRIMARY KEY  (id)
             ) $charset_collate;";
 
+
+        // New table for storing coupon details
+        $createTableCoupons = "CREATE TABLE $table_coupons (
+          id int(11) NOT NULL AUTO_INCREMENT,
+          coupon_name varchar(50) NOT NULL,
+          created_date date NOT NULL,
+          expiry_date date NOT NULL,
+          discount_percentage varchar(50) NOT NULL DEFAULT 0,
+          usage_limit INT DEFAULT 1,
+          usage_count INT DEFAULT 0,
+          UNIQUE KEY id (id)
+        ) $charset_collate;";
+
       require_once ABSPATH . "wp-admin/includes/upgrade.php";
       dbDelta($createTableReport);
       dbDelta($createTablePlugin);
+      dbDelta($createTableCoupons);
 
       update_option($errorClTables, true);
     } catch (\Throwable $error) {

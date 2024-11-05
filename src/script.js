@@ -335,6 +335,12 @@
                 mainText.push($(this).val());
             });
 
+            if (paymentSelected === "") {
+                loader.css('height', '0px');
+                alert("Seleccione primero cualquier método de pago para continuar con el pedido!");
+                return;
+            }
+
             const dataToSend = {
                 action: 'test_action',
                 mainText: JSON.stringify(mainText),
@@ -441,7 +447,7 @@
                         console.error("Process failed: ", parsedResponse.Datos.message);
                     }
                 },
-                complete: function(){
+                complete: function () {
                     setTimeout(function () {
                         loader.css('height', '0px');
                     }, 5000);

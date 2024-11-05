@@ -83,7 +83,23 @@ function sendEmail($upcomingData)
             $mail->AltBody = 'Your product was sent!';
             break;
 
-        case 'eliminar':
+            case 'coupon':
+                // Fetch data from the database based on the row ID
+                $tablename = $wpdb->prefix . 'chocoletras_plugin';
+                $query = $wpdb->prepare("SELECT * FROM $tablename WHERE id = %d", $upcomingData['rowID']);
+                $result = $wpdb->get_row($query);
+    
+                if (!$result) {
+                    return 'No data found for the given row ID.';
+                }
+    
+                $mail->AddAddress($result->email, 'User');
+                $mail->Subject = 'Cupon Chocoletra';
+                $emailContent = modelemail('coupon', $result);
+                $mail->AltBody = 'Coupon for Next order!';
+                break;
+    
+            case 'eliminar':
             $mail->AddAddress($upcomingData['email'], 'User');
             $mail->Subject = 'Order Removed';
             $emailContent = 'Your order has been removed from the system.';

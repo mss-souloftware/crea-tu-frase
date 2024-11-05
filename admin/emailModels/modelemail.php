@@ -17,9 +17,11 @@ function modelemail($typeEmail, $data = null)
     } else if ($typeEmail === 'nuevo') {
         return typenuevo($data);
     } elseif ($typeEmail === 'proceso') {
-        return typeproceso(); // No data needed
+        return typeproceso();
     } elseif ($typeEmail === 'envio') {
-        return typeEnviado(); // No data needed
+        return typeEnviado();
+    } elseif ($typeEmail === 'coupon') {
+        return typeCoupon($data);
     } else {
         return 'Invalid email type';
     }
@@ -27,7 +29,9 @@ function modelemail($typeEmail, $data = null)
 
 function typeabandoned($data)
 {
-    $currentOrderDate = date('d F Y');
+    setlocale(LC_TIME, 'es_ES.UTF-8');
+
+    $currentOrderDate = strftime('%d %B %Y');
 
     $email = '
     
@@ -173,7 +177,7 @@ function typeabandoned($data)
                             $email .= '<li>
                             <p style="font-size: 14px; line-height: 120%; color: #000;">Envío Express</p>
                         </li>';
-                        } else{
+                        } else {
                         $email .= '<li>
                             <p style="font-size: 14px; line-height: 120%; color: #000;">Envío Normal</p>
                         </li>';
@@ -195,7 +199,7 @@ function typeabandoned($data)
                             <p style="font-size: 14px; line-height: 120%; color: #000; text-align: right;">';
                             if ($data->express === 'on') {
                                 $email .= '€' . get_option('expressShiping');
-                            } else{
+                            } else {
                                 $email .= '€' . get_option('precEnvio');
                             }
                             $email .= '</p>
@@ -268,7 +272,9 @@ function typeabandoned($data)
 
 function typenuevo($data)
 {
-    $currentOrderDate = date('d F Y');
+    setlocale(LC_TIME, 'es_ES.UTF-8');
+
+    $currentOrderDate = strftime('%d %B %Y');
 
     $email = '
     
@@ -416,7 +422,7 @@ function typenuevo($data)
                             $email .= '<li>
                             <p style="font-size: 14px; line-height: 120%; color: #000;">Envío Express</p>
                         </li>';
-                        } else{
+                        } else {
                         $email .= '<li>
                             <p style="font-size: 14px; line-height: 120%; color: #000;">Envío Normal</p>
                         </li>';
@@ -438,7 +444,7 @@ function typenuevo($data)
                             <p style="font-size: 14px; line-height: 120%; color: #000; text-align: right;">';
                             if ($data->express === 'on') {
                                 $email .= '€' . get_option('expressShiping');
-                            } else{
+                            } else {
                                 $email .= '€' . get_option('precEnvio');
                             }
                             $email .= '</p>
@@ -512,7 +518,9 @@ function typenuevo($data)
 
 function typeproceso()
 {
-    $currentOrderDate = date('d F Y');
+    setlocale(LC_TIME, 'es_ES.UTF-8');
+
+    $currentOrderDate = strftime('%d %B %Y');
 
     $email = '
     
@@ -586,7 +594,9 @@ function typeproceso()
 function typeEnviado()
 {
 
-    $currentOrderDate = date('d F Y');
+    setlocale(LC_TIME, 'es_ES.UTF-8');
+
+    $currentOrderDate = strftime('%d %B %Y');
 
     $email = '
     
@@ -657,3 +667,87 @@ function typeEnviado()
 
     return $email;
 }
+function typeCoupon($data)
+{
+    $couponName = str_replace(' ', '', $data->nombre); // Remove spaces
+    $couponName = substr($couponName, 0, 4); // Extract the first 4 letters
+    setlocale(LC_TIME, 'es_ES.UTF-8');
+
+    $currentOrderDate = strftime('%d %B %Y');
+
+
+
+    $email = '
+    
+    <table cellspacing="0"
+        style="max-width: 650px; width: 100%; margin: 0 auto; border: 1px solid #CCCCCC; padding: 15px; font-family: Arial, Helvetica, sans-serif; background:#fff;">
+        <thead>
+            <tr style="border-bottom: 2px solid #CCCCCC;">
+                <td>
+                    <a style="max-width: 150px;" href="https://chocoletra.com/" target="_blank">
+                        <img style="max-width: 150px;"
+                            src="https://chocoletra.com/wp-content/uploads/2022/03/imagenlogotipoOFCIALCHOCOLETRA-1.png"
+                            alt="Chocoletra">
+                    </a>
+                </td>
+                <td>
+                    <p style="text-align: right; color: #7d7d7d;">
+                        ' . $currentOrderDate . '                
+                     </p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="border-bottom: 1px solid #CCCCCC;"></div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                <img style="max-width: 150px; margin:auto; margin-bottom:30px;"
+                            src="https://test.chocoletra.com/wp-content/uploads/2024/10/272535.png"
+                            alt="Chocoletra">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    <span style="background:#DDDDDD; color:#000; padding:5px 15px; border-radius:5px; margin-top:10px; font-weight:bold; text-transform:uppercase;">' . $couponName . $data->id . '</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <h2 style="font-size: 24px; font-weight: bold; text-align: center; margin-top: 40px;">' . get_option('chocoletras_email_description', '') . '</h2>
+                    <p style="text-align: center; font-size: 16px;  margin-bottom: 40px;">Si tiene alguna pregunta? Cont&aacute;ctenos al siguiente email: <strong><em>info@chocoletra.com</em></strong></p>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot style="background: #000; padding: 20px;">
+            <tr>
+                <td colspan="2">
+                    <p style="text-align: center; margin: 25px 0;">
+                        <span style="color: #ffffff; line-height: 1; font-size: 14px;">
+                            <a rel="noopener" href="https://chocoletra.com/choco-store/" target="_blank"
+                                style="color: #ffffff;">Tienda</a> |
+                            <a rel="noopener" href="https://chocoletra.com/crea-tu-frase/" target="_blank"
+                                style="color: #ffffff;">Frase</a> |
+                            <a rel="noopener" href="https://chocoletra.com/mi-cuenta/" target="_blank"
+                                style="color: #ffffff;">Cuenta </a>|
+                            <a rel="noopener" href="https://chocoletra.com/quienes-somos/" target="_blank"
+                                style="color: #ffffff;">Quienes somos </a>|
+                            <a rel="noopener" href="https://chocoletra.com/contactanos/" target="_blank"
+                                style="color: #ffffff;">Contacto</a>
+                        </span>
+                    </p>
+                    <p style="font-size: 14px; line-height: 1; text-align: center; color: #fff; margin-bottom: 30px;">Copyright © 2024 <span
+                            style="color: #ffffff; line-height: 1;"><a rel="noopener"
+                                href="https://chocoletra.com/" target="_blank"
+                                style="color: #ffffff;">Chocoletra</a>.</span></p>
+                </td>
+            </tr>
+        </tfoot>
+    </table>';
+
+    return $email;
+}
+// echo typeCoupon($data);

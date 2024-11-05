@@ -75,6 +75,25 @@ if ($signatureCalculada === $signatureRecibida) {
 
             }
 
+            // Fetch the discount percentage from wp_options and convert to integer
+            $discount_percentage = intval(get_option('chocoletras_discount_percentage', ''));
+
+            // Create coupon
+            $name = str_replace(' ', '', $result->nombre); // Remove spaces from the name
+            $coupon_name = strtoupper(substr($name, 0, 4) . $result->id); // Get the first 4 characters, append the row ID, and convert to uppercase
+            $created_date = current_time('Y-m-d'); // Get current date
+            $expiry_date = date('Y-m-d', strtotime($created_date . ' + 15 days')); // Set expiry date to 15 days from today
+
+            $insert_coupon_query = $wpdb->prepare(
+                "INSERT INTO {$wpdb->prefix}chocoletras_coupons (coupon_name, created_date, expiry_date, discount_percentage) VALUES (%s, %s, %s, %f)",
+                $coupon_name,
+                $created_date,
+                $expiry_date,
+                $discount_percentage // Add discount percentage to the insert query
+            );
+            $wpdb->query($insert_coupon_query);
+
+
             // Prepare email data
             $upcomingData = [
                 'email' => $result->email, // Adjust as necessary
@@ -82,8 +101,15 @@ if ($signatureCalculada === $signatureRecibida) {
                 'rowID' => $result->id
             ];
 
+            $couponData = [
+                'email' => $result->email, // Adjust as necessary
+                'status' => 'coupon', // or 'envio' based on your logic
+                'rowID' => $result->id
+            ];
+
             // Send the email
             $emailResult = sendEmail($upcomingData);
+            $emailResult = sendEmail($couponData);
             echo $emailResult;
 
 
@@ -292,13 +318,40 @@ function paymentFrontend($dynamount, $dyninsertedId)
 
                         }
 
+                        // Fetch the discount percentage from wp_options and convert to integer
+                        $discount_percentage = intval(get_option('chocoletras_discount_percentage', ''));
+
+                        // Create coupon
+                        $name = str_replace(' ', '', $result->nombre); // Remove spaces from the name
+                        $coupon_name = strtoupper(substr($name, 0, 4) . $result->id); // Get the first 4 characters, append the row ID, and convert to uppercase
+                        $created_date = current_time('Y-m-d'); // Get current date
+                        $expiry_date = date('Y-m-d', strtotime($created_date . ' + 15 days')); // Set expiry date to 15 days from today
+    
+                        $insert_coupon_query = $wpdb->prepare(
+                            "INSERT INTO {$wpdb->prefix}chocoletras_coupons (coupon_name, created_date, expiry_date, discount_percentage) VALUES (%s, %s, %s, %f)",
+                            $coupon_name,
+                            $created_date,
+                            $expiry_date,
+                            $discount_percentage // Add discount percentage to the insert query
+                        );
+                        $wpdb->query($insert_coupon_query);
+
+
+                        // Prepare email data
                         $upcomingData = [
+                            'email' => $result->email, // Adjust as necessary
+                            'status' => 'nuevo', // or 'envio' based on your logic
+                            'rowID' => $result->id
+                        ];
+
+                        $couponData = [
                             'email' => $result->email,
-                            'status' => 'nuevo',
+                            'status' => 'coupon',
                             'rowID' => $result->id
                         ];
 
                         $emailResult = sendEmail($upcomingData);
+                        $emailResult = sendEmail($couponData);
                         log_ipn("Email result: " . $emailResult);
                     } else {
                         log_ipn("Order ID not found: " . $item_number);
@@ -500,7 +553,8 @@ function paymentFrontend($dynamount, $dyninsertedId)
     ?>
 
     <div style="display:none;" class="chocoletrasPlg__wrapperCode-payment-buttons-left">
-        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>" method="post">
+        <form id="payPayPal" action="https://ipnpb.paypal.com/cgi-bin/webscr<?php // echo PAYPAL_URL; ?>"
+            method="post">
             <!-- PayPal business email to collect payments -->
             <input type='hidden' name='business' value="<?php echo PAYPAL_EMAIL; ?>">
 
